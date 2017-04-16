@@ -5,6 +5,7 @@ printQuote($quotes);
 
 function printQuote($quotes)
 {
+    $authors = array();
     foreach ($quotes as $key => $value) {
         $quotes = $value['quotes'];
         foreach ($quotes as $quote) {
@@ -14,10 +15,17 @@ function printQuote($quotes)
             }
             if (!empty($quote['author'])) {
                 echo "<p><i>".$quote['author']."</i></p>";
+                $authors[] = $quote['author'];
             }
             echo '</blockquote>';
             echo '<br>';
         }
+    }
+    var_dump(count($authors));
+    $authors = array_unique($authors);
+    var_dump(count($authors));
+    foreach ($authors as $author) {
+        echo $author . '<br>';
     }
 }
 

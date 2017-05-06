@@ -5,15 +5,18 @@ require_once 'mysql.php';
 /**
  * Класс получает цитаты из JSON файла и содержит методы для дальнейшей работы с ними
  */
-class Qoutes
+class Quotes
 {
 
     private $quotesArray = array();
     private $authorsArray = array();
     private $dbh;
+    private $request;
 
-    public function __construct($filePath)
+    public function __construct($filePath, Request $request)
     {
+        $this->request = $request;
+
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
 
         $this->quotesArray = $this->getJson($filePath);
@@ -36,7 +39,7 @@ class Qoutes
         }
     }
 
-    public function printQuotes()
+    public function printQuotesFromJson()
     {
 
         foreach ($this->quotesArray as $value) {
@@ -116,21 +119,21 @@ class Qoutes
         // если таблица не пустая, то цитаты добавляться не будут
         $countRecords = $this->dbh->query("SELECT COUNT(*) FROM `quotes`", 'accos', '', array());
         $this->ensure($countRecords["COUNT(*)"] == 0, "Таблица `qoutes` не пустая");
-        
+
         $countQuotes = 0;
         $countAuthors = 0;
-        
-        foreach ($this->quotesArray as $value) {          
+
+        foreach ($this->quotesArray as $value) {
             $quotes = $value['quotes'];
 
             foreach ($quotes as $quote) {
-                
+
                 if (!empty($quote['quote'])) {
                     $author = trim($quote['author']);
-                    
+
                     if (!empty($quote['author'])) {
                         $authorID = $this->getAuthorID($author);
-                        
+
                         if (!empty($authorID)) {
                             $countAuthors++;
                         } else {
@@ -146,7 +149,7 @@ class Qoutes
                 }
             }
         }
-        
+
         echo "Добавлено $countQuotes новых цитат<br>";
         echo "Найдено $countAuthors авторов<br>";
     }
@@ -162,6 +165,78 @@ class Qoutes
         }
     }
 
+    public function printQuotesFromDB()
+    {
+        // связывает таблицу Цитаты с таблицей Авторы с помощью ID автора
+        $quotes = $this->dbh->query("SELECT quotes.qoute_text AS `text`, authors.name AS "
+                . "`author` FROM quotes JOIN authors ON quotes.author_id=authors.id;", 'fetchAll', '', array());
+
+        foreach ($quotes as $quote) {
+            echo '<blockquote>';
+
+            if (!empty($quote['text'])) {
+                echo "<p>" . $quote['text'] . "</p>";
+            }
+
+            if (!empty($quote['author'])) {
+                echo "<p><i>" . $quote['author'] . "</i></p>";
+            }
+
+            echo '</blockquote>';
+            echo '<br>';
+        }
+    }
+
+    public function getQuote()
+    {
+        $id = $this->request->getProperty('quote_id');
+
+        if (is_null($id)) {
+            $id = 0;
+        }
+
+        $quote = $this->dbh->query("SELECT quotes.qoute_text AS `text`, quotes.id AS `quote_id`, authors.name "
+                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'accos', '', array($id));
+
+        $randomID = $this->getRandomQouteID();
+
+        if ($quote) {
+            // получает предыдущий и следующий ID, нужны для перехода вперед и назад
+            // без этого, если удалить какую-то позицию - переход может сломаться
+            $prevAndNextIDs = $this->dbh->query("SELECT quotes.id FROM `quotes` WHERE (`id` = (SELECT MAX(`id`) "
+                    . "FROM `quotes` WHERE `id` < ?) OR `id` = (SELECT MIN(`id`) FROM `quotes` WHERE `id` > ?));", 'fetchAll', '', array($quote['quote_id'], $quote['quote_id']));
+
+            $quote['previous_id'] = $prevAndNextIDs[0]['id'];
+            $quote['next_id'] = $prevAndNextIDs[1]['id'];
+            $quote['random_id'] = $randomID;
+            return $quote;
+        } else {
+            return array('text' => 'Цитата не найдена',
+                'qoute_id' => 0,
+                'author' => 'Администратор',
+                'author_id' => 157,
+                'previous_id' => 0,
+                'next_id' => 0,
+                'random_id' => $randomID);
+        }
+    }
+    
+    // возвращает ID случайной цитаты
+    public function getRandomQouteID()
+    {
+        $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'accos', '', array());
+        $countRows = $countRows['COUNT(*)'];
+        // отнял 1 из-за смещения при использовании LIMIT
+        $randRow = rand(1, $countRows) - 1; 
+        $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'accos', '', array());
+        $id = $id['id'];
+        if ($id) {
+            return $id;
+        } else {
+            return NULL;
+        }
+    }
+
     // централизованная проверка условия и вызов исключения
     private function ensure($expr, $message)
     {
@@ -173,6 +248,54 @@ class Qoutes
 
 }
 
-$qotes = new Qoutes('./doc/quotes.json');
-$qotes->addAllAuthorsToDB();
-$qotes->addAllQoutesToDB();
+class Request
+{
+
+    private $properties;
+    // канал связи для передачии информации из классов-контроллеров пользователю
+    private $feedback = array();
+
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    private function init()
+    {
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            // $_REQUEST поумолчанию содержит данные суперглобальных переменных
+            $this->properties = $_REQUEST;
+            return;
+        }
+    }
+
+    public function getProperty($key)
+    {
+        if (isset($this->properties[$key])) {
+            return $this->properties[$key];
+        }
+
+        return null;
+    }
+
+    public function setProperty($key, $val)
+    {
+        $this->properties[$key] = $val;
+    }
+
+    public function addFeedback($msg)
+    {
+        array_push($this->feedback, $msg);
+    }
+
+    public function getFeedbackString($separator = "<br>")
+    {
+        return implode($separator, $this->feedback);
+    }
+
+}
+
+$request = new Request;
+$quotes = new Quotes('./doc/quotes.json', $request);
+$quote = $quotes->getQuote();
+$quotes->getRandomQouteID();

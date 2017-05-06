@@ -3,6 +3,6 @@
 
 В изначальном виде текст тяжело читать. Парсер разбирает строку на цитаты и авторов. После чего их можно представить в любом удобном виде, реализовать фильтр по авторам, импортировать в БД.
 
-[Результат в гуглдок](https://docs.google.com/document/d/1kA-yRMTNnxF_-qa04zlY7m_Xd2C0gMlArkii-fHlEDw/edit)
+[Результат в гуглдок](https://docs.google.com/document/d/1kA-yRMTNnxF_-qa04zlY7m_Xd2C0gMlArkii-fHlEDw/edit?usp=sharing)
 
 [Исходный текст](/doc/quotes.txt)

@@ -1,12 +1,17 @@
 <?php
 
+class Model
+{
+    
+}
+
 /**
  * Объект класса подключается к БД и работает с запросами
  * Новый уровень абстракции для работы с БД и запросами необходим, чтобы
  * если изменится способ подключения и настройки, то достаточно было бы изменить
  * только этот класс
  */
-class MysqlModel
+class MysqlModel extends Model
 {
 
     //хранит подключение к БД для доступа к нему из методов класса
@@ -20,8 +25,8 @@ class MysqlModel
     public function __construct($settingValue)
     {
         // получает настройки для соединения с БД
-        $mysqlConfig = Config::getInstance();
-        $this->$config_data = $mysqlConfig->getConfig($settingValue);
+        $mysqlConfig = ConfigModel::getInstance();
+        $this->config_data = $mysqlConfig->getConfig($settingValue);
 
         $this->connect();
     }
@@ -55,7 +60,7 @@ class MysqlModel
                     return $q->fetchColumn($num);
                     break;
 
-                // получает только одну строку
+                // возвращает одну строку в виде массива, где ключ - имя столбца
                 case 'accos':
                     $q->execute($query_param);
                     return $q->fetch(PDO::FETCH_ASSOC);
@@ -89,21 +94,20 @@ class MysqlModel
 /**
  * синглтон для хранения и получения настроек
  */
-class Config
+class ConfigModel extends Model
 {
 
     private $configArray;
     private static $instance;
-
-    const CONFIG_FILE_PATH = 'app.ini';
+    // путь к файлу с конфигурациями
+    private $configFilePath;
     // вариант настроек для подключения БД
-    const STK = 1;
-    const STKApps = 2;
+    const UNMARRIED = 1;
 
     public function __construct()
     {
+        $this->configFilePath = __DIR__ . '/app.ini';
         $this->configArray = $this->getAllConfig();
-        var_dump($this->configArray);
     }
 
     public static function getInstance()
@@ -112,35 +116,26 @@ class Config
         if (empty(self::$instance)) {
             // класс с закрытым конструктором может сам
             // себя создать
-            self::$instance = new Config();
+            self::$instance = new ConfigModel();
         }
         // возвращает ссылку на созданный объект
         return self::$instance;
     }
 
     /**
-     * возвращает настройки для подключения к БД
+     * возвращает настройки для подключения к БД, необходимо передать ключ секции настроек
      * @param type $settingValue значение для которого требуется получить настройки 
      * @return type массив с данными из заданной секции настроек
      */
-    // TODO: для работы с конфигом надо создать отдельный класс, в котором будет
-    // прописано какому классу какой конфиг отдавать
     public function getConfig($settingValue)
     {
 
         switch ($settingValue) {
-            case self::STK:
+            case self::UNMARRIED:
 
-                $this->ensure(isset($this->configArray['host6597']), "Настройки для константы STK не найдены");
+                $this->ensure(isset($this->configArray['unmarried']), "Настройки для константы STK не найдены");
 
-                return $this->configArray['host6597'];
-                break;
-
-            case self::STKApps:
-
-                $this->ensure(isset($this->configArray['host6597_test']), "Настройки для константы STKApps не найдены");
-
-                return $this->configArray['host6597_test'];
+                return $this->configArray['unmarried'];
                 break;
 
             default:
@@ -152,9 +147,9 @@ class Config
     // получает массив с содержимым файла конфигурации
     private function getAllConfig()
     {
-        $this->ensure(file_exists(self::CONFIG_FILE_PATH), "Файл с настройками не найден");
+        $this->ensure(file_exists($this->configFilePath), "Файл с настройками не найден");
 
-        $config_array = parse_ini_file(self::CONFIG_FILE_PATH, true);
+        $config_array = parse_ini_file($this->configFilePath, true);
 
         return $config_array;
     }
@@ -169,7 +164,3 @@ class Config
     }
 
 }
-
-$mysqlConfig = lConfig::getInstance();
-$config_data = $mysqlConfig->getConfig(Config::STKApps);
-var_dump($config_data);

@@ -1,0 +1,17 @@
+{
+    "name": "root/auth",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Grigory Movchan",
+            "email": "grigory08@ya.ru"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Application\\": "app/"
+        }
+    }
+}

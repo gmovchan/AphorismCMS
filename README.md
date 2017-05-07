@@ -5,4 +5,6 @@
 
 [Результат в гуглдок](https://docs.google.com/document/d/1kA-yRMTNnxF_-qa04zlY7m_Xd2C0gMlArkii-fHlEDw/edit?usp=sharing)
 
-[Исходный текст](/doc/quotes.txt)
+[Исходный текст](/support_scripts/quotes.txt)
+
+папка [/support_scripts](/support_scripts) содержит то с чего все начиналось - парсер, перенос JSON в MySQL, исходный материал, первые представления

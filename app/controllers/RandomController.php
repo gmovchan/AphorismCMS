@@ -20,7 +20,7 @@ class RandomController extends Controller
     public function getPage()
     {
         $this->data['quote'] = $this->quotes->getQuote();
-        $this->view->generate('/random/quoteRandom.php', 'indexTemplate.php', $this->data, $this->error);
+        $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data, $this->error);
     }
 }
 

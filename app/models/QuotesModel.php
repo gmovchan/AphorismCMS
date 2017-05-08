@@ -7,7 +7,7 @@ use Application\Models\MysqlModel;
 use Application\Models\ConfigModel;
 use Application\Core\Request;
 
-class QuotesModel
+class QuotesModel extends Model
 {
 
     //private $quotesArray = array();

@@ -22,6 +22,8 @@ class ComposerStaticInit58c5ce2a747eaa18878bc78d7ca97c65
 
     public static $classMap = array (
         'Application\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/controllers/AuthController.php',
+        'Application\\Controllers\\OfferController' => __DIR__ . '/../..' . '/app/controllers/OfferController.php',
+        'Application\\Controllers\\QuotesController' => __DIR__ . '/../..' . '/app/controllers/QuotesController.php',
         'Application\\Controllers\\RandomController' => __DIR__ . '/../..' . '/app/controllers/RandomController.php',
         'Application\\Core\\Controller' => __DIR__ . '/../..' . '/app/core/Controller.php',
         'Application\\Core\\Model' => __DIR__ . '/../..' . '/app/core/Model.php',
@@ -31,6 +33,7 @@ class ComposerStaticInit58c5ce2a747eaa18878bc78d7ca97c65
         'Application\\Models\\AuthModel' => __DIR__ . '/../..' . '/app/models/AuthModel.php',
         'Application\\Models\\ConfigModel' => __DIR__ . '/../..' . '/app/models/ConfigModel.php',
         'Application\\Models\\MysqlModel' => __DIR__ . '/../..' . '/app/models/MysqlModel.php',
+        'Application\\Models\\OfferModel' => __DIR__ . '/../..' . '/app/models/OfferModel.php',
         'Application\\Models\\QuotesModel' => __DIR__ . '/../..' . '/app/models/QuotesModel.php',
     );
 

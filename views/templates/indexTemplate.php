@@ -32,37 +32,35 @@
     </head>
 
     <body>
+        <div class="masthead clearfix">
+            <div class="inner">
+                <h3 class="masthead-brand">Знаменитые холостяки</h3>
+                <nav>
+                    <ul class="nav masthead-nav">
+                        <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
+                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
+                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
         <div class="site-wrapper">
 
             <div class="site-wrapper-inner">
 
                 <div class="cover-container">
 
-                    <div class="masthead clearfix">
-                        <div class="inner">
-                            <h3 class="masthead-brand">Знаменитые холостяки</h3>
-                            <nav>
-                                <ul class="nav masthead-nav">
-                                    <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
-                                    <li class="<?php if ($data['thisPage'][0] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
-                                    <li class="<?php if ($data['thisPage'][0] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    
                     <?php require_once __DIR__ . '/../' . $content_view ?>
-                    
-                    <div class="mastfoot">
-                        <div class="inner">
-                            <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-                        </div>
-                    </div>
 
                 </div>
 
             </div>
 
+        </div>
+        <div class="mastfoot">
+            <div class="inner">
+                <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
         </div>
         <!-- Bootstrap core JavaScript
         ================================================== -->

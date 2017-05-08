@@ -196,7 +196,12 @@ class QuotesModel
     
     public function getAllQuotes()
     {
+        $quotes = $this->dbh->query("SELECT quotes.qoute_text AS `text`, quotes.id AS `quote_id`, authors.name "
+                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id;",
+                'fetchAll', '');
         
+        return $quotes;
+        //var_dump($quotes);
     }
 
     public function getQuote()

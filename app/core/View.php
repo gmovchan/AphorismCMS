@@ -14,6 +14,11 @@ class View
     {
         require __DIR__ . '/../../views/templates/' . $template_view;
     }
+    
+    // Защита от XSS уязвимостей. Вызывается в представлении с помощью $this->html('text');
+    public function html($text) {
+        return htmlspecialchars($text, ENT_QUOTES);
+    }
 
 }
 

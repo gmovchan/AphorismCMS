@@ -43,10 +43,9 @@
                             <h3 class="masthead-brand">Знаменитые холостяки</h3>
                             <nav>
                                 <ul class="nav masthead-nav">
-                                    <li><a href="#">Цитаты</a></li>
-                                    <li class="active"><a href="#">Рандом</a></li>
-                                    <li><a href="#">Предложить</a></li>
-                                    <li><a href="#">Контакты</a></li>
+                                    <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
+                                    <li class="<?php if ($data['thisPage'][0] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
+                                    <li class="<?php if ($data['thisPage'][0] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
                                 </ul>
                             </nav>
                         </div>

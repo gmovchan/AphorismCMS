@@ -34,7 +34,7 @@
     <body>
         <div class="masthead clearfix">
             <div class="inner">
-                <h3 class="masthead-brand">Знаменитые холостяки</h3>
+                <h3 class="masthead-brand">Холостяки</h3>
                 <nav>
                     <ul class="nav masthead-nav">
                         <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>

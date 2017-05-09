@@ -33,15 +33,14 @@ class OfferModel extends Model
         $offerForm['quoteText'] = $this->request->getProperty('quoteText');
         $offerForm['authorOffer'] = $this->request->getProperty('authorOffer');
         
+        if (empty($offerForm['quoteText'])) {
+            $this->errors[] = "Текст цитаты не введен";
+            return false;
+        }
+        
         // защита от XSS уязвимостей
         foreach ($offerForm as $key => $value) {
             $offerForm[$key] = htmlspecialchars($value, ENT_QUOTES);
-        }
-        
-        if (empty($offerForm['quoteText'])) {
-            $this->errors[] = "Текст цитаты не введен";
-
-            return false;
         }
         
         $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 

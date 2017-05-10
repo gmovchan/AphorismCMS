@@ -22,7 +22,7 @@ class Controller
     function __construct()
     {
         $this->view = new View;
-        //$this->auth = new AuthModel();
+        $this->auth = new AuthModel();
         // задает путь к директории /public/, чтобы скрипт было легко модифцировать
         // для выделенного или виртуального хостинга
         $this->data['publicDir'] = '/public/';

@@ -9,7 +9,7 @@
         ?>
         <div class="form-group">
             <label for="name">Логин</label>
-            <input type="text" class="form-control" name="login" placeholder="Логин" value="<?php echo htmlspecialchars($data['login'], ENT_QUOTES) ?>">
+            <input type="text" class="form-control" name="login" placeholder="Логин" value="<?php echo @$this->html($data['login']); ?>">
         </div>
         <div class="form-group">
             <label for="password">Пароль</label>

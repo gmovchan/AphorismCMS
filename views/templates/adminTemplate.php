@@ -9,7 +9,7 @@
         <meta name="author" content="">
         <link rel="icon" href="<?php echo $data['publicDir']; ?>favicon.ico">
 
-        <title>Холостяки</title>
+        <title>Администрирование</title>
 
         <!-- Bootstrap core CSS -->
         <link href="<?php echo $data['publicDir']; ?>dist/css/bootstrap.min.css" rel="stylesheet">
@@ -43,12 +43,12 @@
     <body>
         <div class="masthead clearfix">
             <div class="inner">
-                <h3 class="masthead-brand">Холостяки</h3>
+                <h3 class="masthead-brand">Администрирование</h3>
                 <nav>
                     <ul class="nav masthead-nav">
-                        <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
+                        <li class="<?php if ($data['thisPage'][0] === 'quotesAdmin') echo 'active' ?>"><a href="quotes">Цитаты</a></li>
+                        <li class="<?php if ($data['thisPage'][0] === 'offerAdmin') echo 'active' ?>"><a href="offer">Предложенные</a></li>
+                        <li class="<?php if ($data['thisPage'][0] === 'quoteAdd') echo 'active' ?>"><a href="addquote">Добавить</a></li>
                     </ul>
                 </nav>
             </div>

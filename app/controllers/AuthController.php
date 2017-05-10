@@ -33,10 +33,10 @@ class AuthController extends Controller
             $this->view->generate('/auth/successfulAuth.php', 'authTemplate.php', $this->data, $this->error);
              * 
              */
-            $url = 'Location: /ads/';
+            $url = 'Location: /admin/';
             header($url);
         } else {
-            $this->view->generate('/auth/authForm.php', 'authTemplate.php', $this->data, $this->error);
+            $this->view->generate('/auth/authForm.php', '/authTemplate.php', $this->data, $this->error);
         }
     }
 

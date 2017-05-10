@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `session` (
 CREATE TABLE IF NOT EXISTS `users` (
   `id_user` int(5) NOT NULL AUTO_INCREMENT,
   `login_user` varchar(60) NOT NULL,
-  `passwd_user` varchar(255) NOT NULL,
+  `password_user` varchar(255) NOT NULL,
   `mail_user` varchar(255) NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

@@ -42,9 +42,9 @@ class Request
         array_push($this->feedback, $msg);
     }
 
-    public function getFeedbackString($separator = "<br>")
+    public function getFeedbackString()
     {
-        return implode($separator, $this->feedback);
+        return $this->feedback;
     }
 
 }

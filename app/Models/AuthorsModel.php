@@ -54,7 +54,10 @@ class AuthorsModel extends Model
                 foreach ($authors as $key => $author) {
                     $names[$key] = $author['name'];
                 }
-                array_multisort($names, SORT_STRING, SORT_ASC, $authors);
+
+                // для регистронезависимой сортировки все буквы заменяются на строчные
+                $namesStrtolower = array_map('mb_strtolower', $names);
+                array_multisort($namesStrtolower, SORT_STRING, SORT_ASC, $authors);
 
                 break;
 

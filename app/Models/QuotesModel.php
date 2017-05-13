@@ -6,6 +6,7 @@ use Application\Core\Model;
 use Application\Models\MysqlModel;
 use Application\Models\ConfigModel;
 use Application\Core\Request;
+use Application\Models\AuthorsModel;
 
 class QuotesModel extends Model
 {
@@ -22,7 +23,7 @@ class QuotesModel extends Model
     
     public function getAllQuotes()
     {
-        $quotes = $this->dbh->query("SELECT quotes.qoute_text AS `text`, quotes.id AS `quote_id`, authors.name "
+        $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id;",
                 'fetchAll', '');
         
@@ -37,14 +38,14 @@ class QuotesModel extends Model
         $id = $this->request->getProperty('quote_id');
 
         if (is_null($id)) {
-            $id = $this->getRandomQouteID();
+            $id = $this->getRandomQuoteID();
         }
 
-        $quote = $this->dbh->query("SELECT quotes.qoute_text AS `text`, quotes.id AS `quote_id`, authors.name "
+        $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;",
                 'accos', '', array($id));
 
-        $randomID = $this->getRandomQouteID();
+        $randomID = $this->getRandomQuoteID();
 
         if ($quote) {
             // получает предыдущий и следующий ID, нужны для перехода вперед и назад
@@ -80,7 +81,7 @@ class QuotesModel extends Model
     }
 
     // возвращает ID случайной цитаты
-    private function getRandomQouteID()
+    private function getRandomQuoteID()
     {
         $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'accos', '', array());
         $countRows = $countRows[0];
@@ -96,32 +97,35 @@ class QuotesModel extends Model
     }
     
     // добавляет новую цитату, должна вызываться только из панели администратора
-    public function addNewQuote()
+    public function addQuote()
     {
-        $addQouteForm = array();
+        $addQuoteForm = array();
         
-        $addQouteForm['quoteText'] = $this->request->getProperty('quoteText');
-        $addQouteForm['authorQuote'] = $this->request->getProperty('authorQuote');
-        $addQouteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
-        $addQouteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
+        $addQuoteForm['quoteText'] = $this->request->getProperty('quoteText');
+        $addQuoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
+        $addQuoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
+        $addQuoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
         
-        if (empty($addQouteForm['quoteText'])) {
+        if (empty($addQuoteForm['quoteText'])) {
             $this->errors[] = "Текст цитаты не введен";
             return false;
         }
         
-        if (iconv_strlen ($addQouteForm['quoteText']) > 15000) {
+        if (iconv_strlen ($addQuoteForm['quoteText']) > 15000) {
             $this->errors[] = "Текст длиннее 15 000 символов";
             return false;
         }
         
         // если авторство отсутствует, то ему будет присвоено id автора "низвестен"
-        if (empty($addQouteForm['authorQuote'])) {
-            $authorID = 157; 
+        if (empty($addQuoteForm['authorQuoteID'])) {
+            //$addQuoteForm['authorQuoteID'] = 157; 
         }
+        
 
-        $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `author_offer`, `source`, `creator`) VALUES (?, ?, ?, ?, ?)", 
-                'none', '', array());
+        $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `source`, `creator`) VALUES (?, ?, ?, ?)", 
+                'none', '', array($addQuoteForm['quoteText'], $addQuoteForm['authorQuoteID'], $addQuoteForm['sourceQuote'], $addQuoteForm['creatorQuote']));
+        
+        $this->successful[] = "Цитата успешно добавлена";
         
         return true;
     }

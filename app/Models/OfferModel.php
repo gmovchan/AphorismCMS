@@ -43,17 +43,11 @@ class OfferModel extends Model
             return false;
         }
         
-        // защита от XSS уязвимостей
-        // имеет смысл только в Представлении
-        /*
-        foreach ($offerForm as $key => $value) {
-            $offerForm[$key] = htmlspecialchars($value, ENT_QUOTES);
-        }
-         * 
-         */
-        
         $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 
                 'none', '', array($offerForm['quoteText'], $offerForm['authorQuote'], $offerForm['sourceQuote'], $offerForm['quoteText'], $offerForm['authorOffer']));
+        
+        $this->successful[] = "Цитата успешно отправлена";
+        $this->successful[] = "После проверки администраторам она появится в общем списке";
         
         return true;
     }

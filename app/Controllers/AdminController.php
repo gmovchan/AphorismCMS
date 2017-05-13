@@ -34,7 +34,7 @@ class AdminController extends Controller
     }
 
     public function getPage()
-    { 
+    {
         $this->data['quotes'] = $this->quotes->getAllQuotes();
         $this->view->generate('/quotesAdmin/quotesAll.php', 'adminTemplate.php', $this->data);
     }
@@ -54,11 +54,24 @@ class AdminController extends Controller
 
     public function addQuote()
     {
-        $this->data['login'] = $this->auth->getLogin();
         $this->data['thisPage'] = 'quoteAdd';
-        $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
+        $this->data['login'] = $this->auth->getLogin();
+        $this->data['authors'] = $this->authors->getAllAuthors('names');
+
+        if (isset($_POST['quoteText'])) {
+
+            if ($this->quotes->addQuote()) {
+                $this->data['successful'] = $this->authors->getSuccessful();
+                $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
+            } else {
+                $this->data['errors'] = $this->authors->getErrors();
+                $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
+            }
+        } else {
+            $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
+        }
     }
-    
+
     public function authorAdd()
     {
         if ($this->authors->authorAdd()) {

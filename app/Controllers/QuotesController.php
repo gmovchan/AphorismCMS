@@ -13,7 +13,7 @@ class QuotesController extends Controller
     {
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
-        $this->data['thisPage'][0] = 'quotes';
+        $this->data['thisPage'] = 'quotes';
         $this->quotes = new QuotesModel($this->request);
     }
     

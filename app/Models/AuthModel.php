@@ -63,7 +63,7 @@ class AuthModel extends Model
     public function authentication()
     {
         
-        $login = htmlspecialchars($_POST['login']);
+        $login = $_POST['login'];
         $password = md5($_POST['password'] . 'lol');
         
         $users = $this->dbh->query("SELECT * FROM `users` WHERE `login_user` = ? AND `password_user` = ?;", 'fetchAll', '', array($login, $password));

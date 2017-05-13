@@ -7,10 +7,10 @@
 Папка vendor не должна быть в репозитории (ее надо добавить в гитигнор), зато в него стоит положить composer.lock.
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/db.sql#L25
-> ENGINE=MyISAM
+>ENGINE=MyISAM
 Почитай сравнение движков MyISAM и InnoDB
 
-> `password_user` varchar(255) NOT NULL,
+>`password_user` varchar(255) NOT NULL,
 Тут нужен комментарий, что там хранится. Надеюсь, соленый хеш пароля, а не сам пароль в открытом виде? 
 
 В базе нужно проставить внешние ключи. 
@@ -24,22 +24,22 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Route.php#L69
 
 Убрать query string из URL лучше с помощью parse_url(). 
 
-> $url = 'Location: /' . strtolower($controllerName) . '/';
-> header($url);
+>$url = 'Location: /' . strtolower($controllerName) . '/';
+>header($url);
 Тут после отдачи Location скрипт продолжает выполняться.
 
 Также, код в Route->start() плохочитаемый, попробуй сам прочесть. Стена кода, ты бы хоть на функции ее разбил.
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Request.php#L45
-> public function getFeedbackString($separator = "<br>")
+>public function getFeedbackString($separator = "<br>")
 Класс Request не должен отвечать за вывод информации и ее оформление, генерацию HTML кода. 
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/View.php#L8
-> @param str 
-> @param arr
+>@param str 
+>@param arr
 В phpdoc нет типов str и arr: https://phpdoc.org/docs/latest/guides/types.html
 
-> public function generate($content_view, $template_view, $data = null, $error = null)
+>public function generate($content_view, $template_view, $data = null, $error = null)
 Не очень понятно, почему для $error сделан отдельный аргумент, а все остальное передается в $data. 
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Model.php
@@ -51,14 +51,14 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/configs/app_exampl
 Плохой пример так как не содержит пояснений и непонятно зачем там 2 секции с БД.
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/controllers/QuotesController.php#L16
-> $this->data['thisPage'][0] = 'quotes';
+>$this->data['thisPage'][0] = 'quotes';
 Тут по моему ты добавляешь элемент 0 в несуществующий массив. Зачем так запутывать код? 
 
-> $this->quotes = new QuotesModel($this->request);
+>$this->quotes = new QuotesModel($this->request);
 Непонятно зачем Модели нужен request. В MVC модели он не нужен.
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/QuotesModel.php#L22
-> $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+>$this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
 Почитай мой урок про DI. https://github.com/codedokode/pasta/blob/master/arch/di.md
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/QuotesModel.php#L207
@@ -66,7 +66,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/QuotesModel
 
 У тебя получилась плохая функция getQuote(). Вот допустим я хочу получить цитату с id = 7. Как ее получить, если в функцию нельзя передать id? 
 
-Получить след/пред цитату проще через WHERE id > ? ORDER BY id LIMIT 1
+Получить след/пред цитату проще через WHERE id >? ORDER BY id LIMIT 1
 
 Также, подход что при ошибке поиска возвращается имитация цитаты, тоже плохой. Ведь при твоем подходе непонятно как определить, что цитата не найдена. Да и при ненайденной цитате логичнее отдавать 404, а не притворяться что такая страница есть.
 
@@ -78,7 +78,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/MysqlModel.
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/MysqlModel.php#L50
 Тут неудачный подход, ты зря пытаешься объединить разные функции (fetchAll, fetch) в одну - это только создает неудобства. Ну например, из-за этого функция возвращает разные типы данных, а не один определенный. Ну и непонятно, зачем это сделано, такое ощущение что ты себе жизнь усложнить пытаешься. 
 
-> без понятия зачем тут нужен новый уровень абстракции
+>без понятия зачем тут нужен новый уровень абстракции
 Если без понятия, то не надо делать. Ты должен понимать каждую строчку кода. А так ты просто копируешь то, что увидел где-то, не понимая. Это какой-то культ карго. Зачем? Если ты хочешь произвести впечатление на собеседовании своим кодом, то любой опытный программист легко тебя раскусит. 
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.php#L66
@@ -97,5 +97,129 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 В форме ошибки нечитаемы, белый текст на светлом фоне.
 
 
-> Шаблон не осилил, верстка поехала, не смог в CSS. 
+>Шаблон не осилил, верстка поехала, не смог в CSS. 
 Пройди наши задачи на HTML/CSS из ОП поста и наверно тогда осилишь. Также, есть заблуждение, что использование бустрапа избавляет от необходимости учить CSS (как и использование ORM избавляет от необходимости учить SQL).
+
+
+###
+
+>Вообще, я бы тебе советовал почитать комментарии к задаче о студентах в ОП посте. Так как не хочется по второму разу их пересказывать. 
+Добавил в ридлист еще когда первый раз советовали, пока не дошли руки, но обязательно прочту.
+
+>У тебя есть папка public - почему тогда index.php вне нее? Ты по моему не понял идею, там идея в том, что public должна быть корневой папкой веб-сервера, и код лежит снаружи нее. 
+Поделка будет крутится на виртуальном хостинге. Не смог настроить htaccess так, чтобы в адресной строке не появлялась папка public. На выделенном хостинге index будет в папке public.
+
+>Папка vendor не должна быть в репозитории (ее надо добавить в гитигнор), зато в него стоит положить composer.lock.
+Пофиксил. Не нашел у себя файла composer.lock.
+
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/db.sql#L25
+>ENGINE=MyISAM
+>Почитай сравнение движков MyISAM и InnoDB
+Добавил в ридлист еще когда первый раз советовали, пока не дошли руки, но обязательно прочту. Честно говоря, код для БД не мой.
+
+>`password_user` varchar(255) NOT NULL,
+>Тут нужен комментарий, что там хранится. Надеюсь, соленый хеш пароля, а не сам пароль в открытом виде? 
+Хранится хэш с пароля солью.
+
+>В базе нужно проставить внешние ключи. 
+Добавил в ридлист.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Route.php#L69
+>Тут непонимание протокола HTTP. Нельзя отдавать заголовок Location при коде 4xx. Он используется с кодом 3xx в тех случаях, когда страница переехала на другой адрес. Если страница не найдена, надо отдавать код 404. Почитай назначение кодов состояния HTTP.
+Тоже не мой код. Пофикшу, как пойму.
+
+>Класс Route должен правильно называться FrontController.
+Пофикшу в следующем проджекте.
+
+>Используемый подход к роутингу плох тем, что для одной страницы существует много URL, например /controller, /CONTROLLER, /controller/index/1/2/3, /controller/index/4/5/6 - при ошибке в URL ты можешь не заметить что ошибся, и на индексации поисковиками это плохо скажется.
+Там в роутере регистр имени контроллера приводится к одному типу
+
+>Убрать query string из URL лучше с помощью parse_url(). 
+Пофиксил. За это отдельное спасибо.
+
+>$url = 'Location: /' . strtolower($controllerName) . '/';
+>header($url);
+>Тут после отдачи Location скрипт продолжает выполняться.
+Пофиксил.
+
+>Также, код в Route->start() плохочитаемый, попробуй сам прочесть. Стена кода, ты бы хоть на функции ее разбил.
+Пофиксил
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Request.php#L45
+>public function getFeedbackString($separator = "<br>")
+>Класс Request не должен отвечать за вывод информации и ее оформление, генерацию HTML кода. 
+Пофиксил. Я тогда тупо скопировал пример из учебника.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/View.php#L8
+>@param str 
+>@param arr
+>В phpdoc нет типов str и arr: https://phpdoc.org/docs/latest/guides/types.html
+Пофиксил
+
+>public function generate($content_view, $template_view, $data = null, $error = null)
+>Не очень понятно, почему для $error сделан отдельный аргумент, а все остальное передается в $data. 
+Взял пример из статьи на хабре. Наверное для наглядности. Пофикшу в следующей поделке
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Model.php
+>Этот класс выглядит сомнительно (например не очень понятно что такое в твоем понимании Model, для чего этот класс предназначен. Надо добавить комментарий перед ним). ensure() там явно не к месту, так как эта функция может быть полезна не только в модели и ее лучше сделать отдельным статическим методов в отдельном классе.
+Добавил комент. "Содержит основную логику приложения - вычисления, запросы к БД и обработку полученных из БД данных. Все то, чего не должно быть в Роутере, Контроллере или Представлении :)"
+Столкнулся с тем, что нет однозначного мнения по поводу того что пихать в контроллер и модель. Я пока остановился на варианте в моем коменте.
+
+>Не соблюдается PSR-4. Например неймспейс имеет вид namespace Application\Core, а папка называется core, с маленькой буквы.
+Пофиксил.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/configs/app_example.ini
+>Плохой пример так как не содержит пояснений и непонятно зачем там 2 секции с БД.
+Все так, 2 секции там не нужны, пример из другой поделки, где были нужны :) Пофиксил коментом
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/controllers/QuotesController.php#L16
+>$this->data['thisPage'][0] = 'quotes';
+>Тут по моему ты добавляешь элемент 0 в несуществующий массив. Зачем так запутывать код? 
+Пофиксил
+
+>$this->quotes = new QuotesModel($this->request);
+>Непонятно зачем Модели нужен request. В MVC модели он не нужен.
+Чтобы модель не работала на прямую с суперглобальными переменными типа ПОСТ и ГЕТ. В request я потом могу их обработать как мне надо. В ларавел есть request, правда, может он там по другому работает.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/QuotesModel.php#L22
+>$this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+>Почитай мой урок про DI. https://github.com/codedokode/pasta/blob/master/arch/di.md
+Добавил в ридлист еще когда первый раз советовали, пока не дошли руки, но обязательно прочту.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/QuotesModel.php#L207
+>тут видно полное непонимание идеи MVC. Идея ведь там отделить логику приложения (модель) от взаимодействия с внешним миром (контроллер).
+Не понял где косяк.
+
+>У тебя получилась плохая функция getQuote(). Вот допустим я хочу получить цитату с id = 7. Как ее получить, если в функцию нельзя передать id? 
+Функция получает id из request. Будет необходимость передать айди в виде аргумента - быстренько сделаю, просто пока такой необходимости не увидел.
+
+>Получить след/пред цитату проще через WHERE id >? ORDER BY id LIMIT 1
+Не понял как предыдущий получит
+
+>Также, подход что при ошибке поиска возвращается имитация цитаты, тоже плохой. Ведь при твоем подходе непонятно как определить, что цитата не найдена. Да и при ненайденной цитате логичнее отдавать 404, а не притворяться что такая страница есть.
+!!!Надо пофиксить
+
+>Выборка случайного id неэффективно сделана. Погугли про оптимизацию выборки случайной записи.
+Погуглил, однозначного решения не нашёл. Решил отложить этот вопрос, пока нет базы на сотни тысяч строк.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/MysqlModel.php
+>Тут непонятно на каком основании MysqlModel наследуется от Model (у них ведь ничего общего нет) и почему она вообще назвается Model. тебе надо определиться для начала, что ты называешь моделью. 
+!!!Выше отписался, считаю моделью все что не контроллер и не представление. Узнаю как по другому сделать - сделаю.
+
+>https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/MysqlModel.php#L50
+>Тут неудачный подход, ты зря пытаешься объединить разные функции (fetchAll, fetch) в одну - это только создает неудобства. Ну например, из-за этого функция возвращает разные типы данных, а не один определенный. Ну и непонятно, зачем это сделано, такое ощущение что ты себе жизнь усложнить пытаешься. 
+!!!
+
+>без понятия зачем тут нужен новый уровень абстракции
+>Если без понятия, то не надо делать. Ты должен понимать каждую строчку кода. А так ты просто копируешь то, что увидел где-то, не понимая. Это какой-то культ карго. Зачем? Если ты хочешь произвести впечатление на собеседовании своим кодом, то любой опытный программист легко тебя раскусит. 
+Старый комент, на момент поста его уже не было, так как разобрался и оставил новый комент.
+
+https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.php#L66
+Тут зачем htmlspecialchars? Это же не шаблон.
+
+>Вообще AuthModel требует упорядочивания, там как-то все перемешано. ну например, операции с БД можно из него убрать в другой класс.
+Не понимаю как и зачем убирать операции с БД в другой класс, там всего 100 строк кода из которых треть - коменты. 
+
+>Функции и переменные надо назвыать единообразно, а не одну с подчеркиванием, а другую кемел кейсом.
+Есть такой косяк, код написан сильно в разное время. Фикшу по мере столкновения.

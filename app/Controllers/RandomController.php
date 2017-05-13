@@ -13,7 +13,7 @@ class RandomController extends Controller
     {
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
-        $this->data['thisPage'][0] = 'random';
+        $this->data['thisPage'] = 'random';
         $this->quotes = new QuotesModel($this->request);
     }
     

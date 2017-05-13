@@ -46,9 +46,9 @@
                 <h3 class="masthead-brand">Холостяки</h3>
                 <nav>
                     <ul class="nav masthead-nav">
-                        <li class="<?php if ($data['thisPage'][0] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'random') echo 'offer' ?>"><a href="/offer">Предложить</a></li>
                     </ul>
                 </nav>
             </div>

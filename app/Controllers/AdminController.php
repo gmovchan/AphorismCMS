@@ -21,7 +21,7 @@ class AdminController extends Controller
         $this->checkAuth();
         
         // переменная содержит название загружаемой страницы для выделения пункта меню
-        $this->data['thisPage'][0] = 'quotesAdmin';
+        $this->data['thisPage'] = 'quotesAdmin';
         
         // FIXME: создавать кучу объектов, которые могут не пригодится - плохая идея
         $this->admin = new AdminModel($this->request);

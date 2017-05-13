@@ -46,9 +46,9 @@
                 <h3 class="masthead-brand">Администрирование</h3>
                 <nav>
                     <ul class="nav masthead-nav">
-                        <li class="<?php if ($data['thisPage'][0] === 'quotesAdmin') echo 'active' ?>"><a href="quotes">Цитаты</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'offerAdmin') echo 'active' ?>"><a href="offer">Предложенные</a></li>
-                        <li class="<?php if ($data['thisPage'][0] === 'quoteAdd') echo 'active' ?>"><a href="addquote">Добавить</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'quotesAdmin') echo 'active' ?>"><a href="quotes">Цитаты</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'offerAdmin') echo 'active' ?>"><a href="offer">Предложенные</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'quoteAdd') echo 'active' ?>"><a href="addquote">Добавить</a></li>
                     </ul>
                 </nav>
             </div>

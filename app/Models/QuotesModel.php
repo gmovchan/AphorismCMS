@@ -10,8 +10,6 @@ use Application\Core\Request;
 class QuotesModel extends Model
 {
 
-    //private $quotesArray = array();
-    //private $authorsArray = array();
     private $dbh;
     private $request;
 
@@ -20,179 +18,7 @@ class QuotesModel extends Model
         $this->request = $request;
 
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
-        /*
-        $this->quotesArray = $this->getJson($filePath);
-
-        if (empty($this->quotesArray)) {
-            throw new Exception("Объект с цитатами пустой");
-        }
-
-        $this->authorsArray = $this->getAuthors();
-         * 
-         */
     }
-    /*
-    private function getJson($filename)
-    {
-        if (file_exists($filename)) {
-            $jsonFile = file_get_contents($filename, 'r');
-            $dataArray = json_decode($jsonFile, true);
-            return $dataArray;
-        } else {
-            throw new Exception("Файл не найден");
-        }
-    }
-
-    public function printQuotesFromJson()
-    {
-
-        foreach ($this->quotesArray as $value) {
-            $quotes = $value['quotes'];
-
-            foreach ($quotes as $quote) {
-                echo '<blockquote>';
-
-                if (!empty($quote['quote'])) {
-                    echo "<p>" . $quote['quote'] . "</p>";
-                }
-
-                if (!empty($quote['author'])) {
-                    echo "<p><i>" . $quote['author'] . "</i></p>";
-                }
-
-                echo '</blockquote>';
-                echo '<br>';
-            }
-        }
-    }
-
-    private function getAuthors()
-    {
-        $authors = array();
-
-        foreach ($this->quotesArray as $key => $value) {
-            $quotes = $value['quotes'];
-
-            foreach ($quotes as $quote) {
-                if (!empty($quote['author'])) {
-                    $authors[] = trim($quote['author']);
-                }
-            }
-        }
-
-        if (empty($authors)) {
-            throw new Exception("Авторы не найдены");
-        }
-
-        // избавляется от дубликатов
-        $authors = array_unique($authors);
-
-        return $authors;
-    }
-
-    public function printAuthors()
-    {
-        echo 'Всего атворов: ' . count($this->authorsArray) . '<br>';
-
-        foreach ($this->authorsArray as $author) {
-            echo $author . '<br>';
-        }
-    }
-
-    // добавляет всех авторов из JSON файла в MySQL
-    public function addAllAuthorsToDB()
-    {
-        $countNew = 0;
-        $countRepeat = 0;
-
-        foreach ($this->authorsArray as $author) {
-            if ($this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'num_row', '', array($author)) !== 0) {
-                $countRepeat++;
-                continue;
-            }
-            $this->dbh->query("INSERT INTO `authors` (`name`) VALUES (?)", 'none', '', array($author));
-            $countNew++;
-        }
-
-        echo "Добавлено $countNew новых авторов<br>";
-        echo "Найдено повторов $countRepeat<br>";
-    }
-
-    public function addAllQoutesToDB()
-    {
-        // если таблица не пустая, то цитаты добавляться не будут
-        $countRecords = $this->dbh->query("SELECT COUNT(*) FROM `quotes`", 'accos', '', array());
-        $this->ensure($countRecords["COUNT(*)"] == 0, "Таблица `qoutes` не пустая");
-
-        $countQuotes = 0;
-        $countAuthors = 0;
-
-        foreach ($this->quotesArray as $value) {
-            $quotes = $value['quotes'];
-
-            foreach ($quotes as $quote) {
-
-                if (!empty($quote['quote'])) {
-                    $author = trim($quote['author']);
-
-                    if (!empty($quote['author'])) {
-                        $authorID = $this->getAuthorID($author);
-
-                        if (!empty($authorID)) {
-                            $countAuthors++;
-                        } else {
-                            // 157 ID неизвестного автора
-                            $authorID = 157;
-                        }
-                    } else {
-                        $authorID = 157;
-                    }
-
-                    $this->dbh->query("INSERT INTO `quotes` (`qoute_text`, `author_id`) VALUES (?, ?)", 'none', '', array($quote['quote'], $authorID));
-                    $countQuotes++;
-                }
-            }
-        }
-
-        echo "Добавлено $countQuotes новых цитат<br>";
-        echo "Найдено $countAuthors авторов<br>";
-    }
-    
-
-    private function getAuthorID($name)
-    {
-        $name = trim($name);
-        $authorID = $this->dbh->query("SELECT `id` FROM `authors` WHERE `name` = ?;", 'accos', '', array($name));
-        if (isset($authorID['id'])) {
-            return $authorID['id'];
-        } else {
-            return '';
-        }
-    }
-
-    public function printQuotesFromDB()
-    {
-        // связывает таблицу Цитаты с таблицей Авторы с помощью ID автора
-        $quotes = $this->dbh->query("SELECT quotes.qoute_text AS `text`, authors.name AS "
-                . "`author` FROM quotes JOIN authors ON quotes.author_id=authors.id;", 'fetchAll', '', array());
-
-        foreach ($quotes as $quote) {
-            echo '<blockquote>';
-
-            if (!empty($quote['text'])) {
-                echo "<p>" . $quote['text'] . "</p>";
-            }
-
-            if (!empty($quote['author'])) {
-                echo "<p><i>" . $quote['author'] . "</i></p>";
-            }
-
-            echo '</blockquote>';
-            echo '<br>';
-        }
-    }
-     * 
-     */
     
     public function getAllQuotes()
     {
@@ -201,11 +27,13 @@ class QuotesModel extends Model
                 'fetchAll', '');
         
         return $quotes;
-        //var_dump($quotes);
     }
 
     public function getQuote()
     {
+        // id запрашиваемой цитаты хранится в request, который получает её из GET пременной
+        // либо можно поменять это значение в контроллере с помощью соответсвующего метода 
+        // объекта Request
         $id = $this->request->getProperty('quote_id');
 
         if (is_null($id)) {
@@ -255,7 +83,7 @@ class QuotesModel extends Model
     private function getRandomQouteID()
     {
         $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'accos', '', array());
-        $countRows = $countRows['COUNT(*)'];
+        $countRows = $countRows[0];
         // отнял 1 из-за смещения при использовании LIMIT
         $randRow = rand(1, $countRows) - 1;
         $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'accos', '', array());
@@ -265,6 +93,37 @@ class QuotesModel extends Model
         } else {
             return NULL;
         }
+    }
+    
+    // добавляет новую цитату, должна вызываться только из панели администратора
+    public function addNewQuote()
+    {
+        $addQouteForm = array();
+        
+        $addQouteForm['quoteText'] = $this->request->getProperty('quoteText');
+        $addQouteForm['authorQuote'] = $this->request->getProperty('authorQuote');
+        $addQouteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
+        $addQouteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
+        
+        if (empty($addQouteForm['quoteText'])) {
+            $this->errors[] = "Текст цитаты не введен";
+            return false;
+        }
+        
+        if (iconv_strlen ($addQouteForm['quoteText']) > 15000) {
+            $this->errors[] = "Текст длиннее 15 000 символов";
+            return false;
+        }
+        
+        // если авторство отсутствует, то ему будет присвоено id автора "низвестен"
+        if (empty($addQouteForm['authorQuote'])) {
+            $authorID = 157; 
+        }
+
+        $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `author_offer`, `source`, `creator`) VALUES (?, ?, ?, ?, ?)", 
+                'none', '', array());
+        
+        return true;
     }
 
 }

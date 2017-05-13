@@ -18,7 +18,7 @@ class AuthController extends Controller
             $this->data['login'] = $_POST['login'];
 
             if (!$this->auth->authentication()) {
-                $this->error = $this->auth->getErrors();
+                $this->data['errors'] = $this->auth->getErrors();
             }
         }
 
@@ -30,13 +30,13 @@ class AuthController extends Controller
         if ($this->auth->authorization()) {
             /*
             $this->data['login'] = $this->auth->getLogin();
-            $this->view->generate('/auth/successfulAuth.php', 'authTemplate.php', $this->data, $this->error);
+            $this->view->generate('/auth/successfulAuth.php', 'authTemplate.php', $this->data);
              * 
              */
             $url = 'Location: /admin/';
             header($url);
         } else {
-            $this->view->generate('/auth/authForm.php', '/authTemplate.php', $this->data, $this->error);
+            $this->view->generate('/auth/authForm.php', '/authTemplate.php', $this->data);
         }
     }
 

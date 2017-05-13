@@ -19,17 +19,17 @@ class OfferController extends Controller
     
     public function getPage()
     {
-        $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data, $this->error);
+        $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
     }
     
     public function addOffer()
     {
         
         if ($this->offer->addOffer()) {
-            $this->view->generate('/offer/successfullAddOffer.php', 'indexTemplate.php', $this->data, $this->error);
+            $this->view->generate('/offer/successfullAddOffer.php', 'indexTemplate.php', $this->data);
         } else {
-            $this->error = $this->offer->getErrors();
-            $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data, $this->error);
+            $this->data['errors'] = $this->offer->getErrors();
+            $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
         }
     }
 }

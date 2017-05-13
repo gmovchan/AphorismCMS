@@ -20,7 +20,7 @@ class QuotesController extends Controller
     public function getPage()
     {
         $this->data['quotes'] = $this->quotes->getAllQuotes();
-        $this->view->generate('/index/quotesAll.php', 'indexTemplate.php', $this->data, $this->error);
+        $this->view->generate('/index/quotesAll.php', 'indexTemplate.php', $this->data);
     }
 }
 

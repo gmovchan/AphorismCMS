@@ -8,9 +8,8 @@ class View
      * @param string $content_view подключаемая страница, пример '/auth/successfulAuth.php'
      * @param string $template_view шаблон страницы, пример 'authTemplate.php'
      * @param array $data данные для отображения на странице 
-     * @param array $error текст ошибок, если есть
      */
-    public function generate($content_view, $template_view, $data = null, $error = null)
+    public function generate($content_view, $template_view, $data = null)
     {
         require __DIR__ . '/../../views/templates/' . $template_view;
     }

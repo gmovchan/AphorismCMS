@@ -1,5 +1,5 @@
 <?php
-if (isset($error)) {
+if (isset($data['errors'])) {
     require __DIR__ . '/../errors/errorsList.php';
 }
 ?>
@@ -9,23 +9,23 @@ if (isset($error)) {
     <form class="text-left" action="/offer/addOffer" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>
-            <textarea name="quoteText" class="form-control" rows="6" id="quoteText"></textarea>
+            <textarea name="quoteText" class="form-control" rows="6" id="quoteText"><?php echo @$this->html($_POST['quoteText']); ?></textarea>
         </div>
         <div class="form-group">
             <label for="authorQuote">Автор</label>
-            <input name="authorQuote" type="text" class="form-control" id="authorQuote" placeholder="Автор">
+            <input name="authorQuote" type="text" class="form-control" id="authorQuote" placeholder="Автор" value="<?php echo @$this->html($_POST['authorQuote']); ?>">
         </div>
         <div class="form-group">
             <label for="sourceQuote">Источник</label>
-            <input name="sourceQuote" type="text" class="form-control" id="sourceQuote" placeholder="Источник">
+            <input name="sourceQuote" type="text" class="form-control" id="sourceQuote" placeholder="Источник" value="<?php echo @$this->html($_POST['sourceQuote']); ?>">
         </div>
         <div class="form-group">
             <label for="comment">Комментарий для администратора</label>
-            <textarea name="comment" class="form-control" rows="3" id="comment"></textarea>
+            <textarea name="comment" class="form-control" rows="3" id="comment"><?php echo @$this->html($_POST['comment']); ?></textarea>
         </div>
         <div class="form-group">
             <label for="authorOffer">Ваш никнейм или ссылка на профиль</label>
-            <input name="authorOffer" type="text" class="form-control" id="authorOffer" placeholder="Представьтесь">
+            <input name="authorOffer" type="text" class="form-control" id="authorOffer" placeholder="Представьтесь" value="<?php echo @$this->html($_POST['authorOffer']); ?>">
         </div>
         <button type="submit" class="btn btn-default">Отправить</button>
     </form>

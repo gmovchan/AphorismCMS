@@ -3,7 +3,7 @@
     <form action="" method="post" class="form-signin">
         <h2 class="form-signin-heading">Пожалуйста войдите</h2>
         <?php
-        if (isset($error)) {
+        if (isset($data['errors'])) {
             require __DIR__ . '/../errors/errorsList.php';
         }
         ?>

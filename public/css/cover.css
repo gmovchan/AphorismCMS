@@ -171,3 +171,17 @@ body {
         width: 700px;
     }
 }
+
+.authors {
+    color: black;
+    text-shadow: none;
+}
+
+.errors {
+    color: red;
+    text-shadow: none;
+}
+
+.errors li {
+    text-align: left;
+}

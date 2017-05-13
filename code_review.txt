@@ -116,7 +116,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 >https://github.com/grigoryMovchan/AphorismCMS/blob/master/db.sql#L25
 >ENGINE=MyISAM
 >Почитай сравнение движков MyISAM и InnoDB
-Добавил в ридлист еще когда первый раз советовали, пока не дошли руки, но обязательно прочту. Честно говоря, код для БД не мой.
+Добавил в ридлист еще когда первый раз советовали, пока не дошли руки, но обязательно прочту. Честно говоря, код для создания БД не мой.
 
 >`password_user` varchar(255) NOT NULL,
 >Тут нужен комментарий, что там хранится. Надеюсь, соленый хеш пароля, а не сам пароль в открытом виде? 
@@ -144,7 +144,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 Пофиксил.
 
 >Также, код в Route->start() плохочитаемый, попробуй сам прочесть. Стена кода, ты бы хоть на функции ее разбил.
-Пофиксил
+Пофиксил.
 
 >https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/core/Request.php#L45
 >public function getFeedbackString($separator = "<br>")
@@ -155,7 +155,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 >@param str 
 >@param arr
 >В phpdoc нет типов str и arr: https://phpdoc.org/docs/latest/guides/types.html
-Пофиксил
+Пофиксил.
 
 >public function generate($content_view, $template_view, $data = null, $error = null)
 >Не очень понятно, почему для $error сделан отдельный аргумент, а все остальное передается в $data. 
@@ -171,12 +171,12 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 
 >https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/configs/app_example.ini
 >Плохой пример так как не содержит пояснений и непонятно зачем там 2 секции с БД.
-Все так, 2 секции там не нужны, пример из другой поделки, где были нужны :) Пофиксил коментом
+Все так, 2 секции там не нужны, пример из другой поделки, где были нужны :) Пофиксил коментом.
 
 >https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/controllers/QuotesController.php#L16
 >$this->data['thisPage'][0] = 'quotes';
 >Тут по моему ты добавляешь элемент 0 в несуществующий массив. Зачем так запутывать код? 
-Пофиксил
+Пофиксил.
 
 >$this->quotes = new QuotesModel($this->request);
 >Непонятно зачем Модели нужен request. В MVC модели он не нужен.
@@ -195,7 +195,7 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 Функция получает id из request. Будет необходимость передать айди в виде аргумента - быстренько сделаю, просто пока такой необходимости не увидел.
 
 >Получить след/пред цитату проще через WHERE id >? ORDER BY id LIMIT 1
-Не понял как предыдущий получит
+Не понял как предыдущий получить.
 
 >Также, подход что при ошибке поиска возвращается имитация цитаты, тоже плохой. Ведь при твоем подходе непонятно как определить, что цитата не найдена. Да и при ненайденной цитате логичнее отдавать 404, а не притворяться что такая страница есть.
 !!!Надо пофиксить
@@ -213,7 +213,8 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 
 >без понятия зачем тут нужен новый уровень абстракции
 >Если без понятия, то не надо делать. Ты должен понимать каждую строчку кода. А так ты просто копируешь то, что увидел где-то, не понимая. Это какой-то культ карго. Зачем? Если ты хочешь произвести впечатление на собеседовании своим кодом, то любой опытный программист легко тебя раскусит. 
-Старый комент, на момент поста его уже не было, так как разобрался и оставил новый комент.
+Старый комент, на момент поста его уже не было, так как разобрался и оставил новый комент. 
+!!!Если бы не копировал код, то не было бы и шанса его понять, по крайней мере на моем уровне, когда надо все самому потыкать.
 
 https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.php#L66
 Тут зачем htmlspecialchars? Это же не шаблон.
@@ -222,4 +223,4 @@ https://github.com/grigoryMovchan/AphorismCMS/blob/master/app/models/AuthModel.p
 Не понимаю как и зачем убирать операции с БД в другой класс, там всего 100 строк кода из которых треть - коменты. 
 
 >Функции и переменные надо назвыать единообразно, а не одну с подчеркиванием, а другую кемел кейсом.
-Есть такой косяк, код написан сильно в разное время. Фикшу по мере столкновения.
+Код написан в разное время. Фикшу по мере столкновения.

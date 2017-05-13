@@ -1,5 +1,5 @@
 <?php
-if (isset($error)) {
+if (isset($data['errors'])) {
     require __DIR__ . '/../errors/errorsList.php';
 }
 ?>

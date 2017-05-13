@@ -1,5 +1,5 @@
 <?php
-if (isset($error)) {
+if (isset($data['errors'])) {
     require __DIR__ . '/../errors/errorsList.php';
 }
 ?>
@@ -9,19 +9,19 @@ if (isset($error)) {
     <form class="text-left" action="/admin/quoteAdd" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>
-            <textarea name="quoteText" class="form-control" rows="6" id="quoteText"></textarea>
+            <textarea name="quoteText" class="form-control" rows="6"><?php echo @$this->html($_POST['quoteText']); ?></textarea>
         </div>
         <div class="form-group">
             <label for="authorQuote">Автор</label>
-            <input name="authorQuote" type="text" class="form-control" id="authorQuote" placeholder="Автор">
+            <input name="authorQuote" type="text" class="form-control" placeholder="Автор" value="<?php echo @$this->html($_POST['authorQuote']); ?>">
         </div>
         <div class="form-group">
             <label for="sourceQuote">Источник</label>
-            <input name="sourceQuote" type="text" class="form-control" id="sourceQuote" placeholder="Источник">
+            <input name="sourceQuote" type="text" class="form-control" placeholder="Источник" value="<?php echo @$this->html($_POST['sourceQuote']); ?>">
         </div>
         <div class="form-group">
-            <label for="authorOffer">Создал</label>
-            <input name="authorOffer" type="text" class="form-control" id="authorOffer" placeholder="Представьтесь" value="<?php echo $data['login'] ?>">
+            <label for="creatorQuote">Создал</label>
+            <input name="creatorQuote" type="text" class="form-control" placeholder="Представьтесь" value="<?php echo $data['login'] ?>">
         </div>
         <button type="submit" class="btn btn-default">Добавить</button>
     </form>

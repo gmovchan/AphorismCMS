@@ -64,7 +64,7 @@ class MysqlModel extends Model
                 // возвращает одну строку в виде массива, где ключ - имя столбца
                 case 'accos':
                     $q->execute($query_param);
-                    return $q->fetch(PDO::FETCH_ASSOC);
+                    return $q->fetch(PDO::FETCH_BOTH );
                     break;
 
                 // получает все строки в виде массива

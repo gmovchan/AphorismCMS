@@ -82,5 +82,12 @@ class AdminController extends Controller
             $this->authors();
         }
     }
+    
+    public function offers() 
+    {
+        $this->data['thisPage'] = 'offersAdmin';
+        $data['offers'] = $this->offer->getOffersAll();
+        $this->view->generate('/offerAdmin/offersAll.php', 'adminTemplate.php', $this->data);
+    }
 
 }

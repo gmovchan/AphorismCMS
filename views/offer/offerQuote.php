@@ -5,7 +5,7 @@ if (isset($data['errors'])) {
 
 if (isset($data['successful'])) {
     require __DIR__ . '/../successful/successfulList.php';
-    // если автор успешно добавлен, то поля формы должны стать пыстыми
+    // если автор успешно добавлен, то поля формы останутся пыстыми
     unset($_POST);
 }
 ?>

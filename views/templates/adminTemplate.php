@@ -48,7 +48,7 @@
                     <ul class="nav masthead-nav">
                         <li class="<?php if ($data['thisPage'] === 'quotesAdmin') echo 'active' ?>"><a href="quotes">Цитаты</a></li>
                         <li class="<?php if ($data['thisPage'] === 'authorsAdmin') echo 'active' ?>"><a href="authors">Авторы</a></li>
-                        <li class="<?php if ($data['thisPage'] === 'offerAdmin') echo 'active' ?>"><a href="offer">Предложенные</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'offersAdmin') echo 'active' ?>"><a href="offers">Предложенные</a></li>
                         <li class="<?php if ($data['thisPage'] === 'addquote') echo 'active' ?>"><a href="addquote">Добавить</a></li>
                         <li><a href="/auth/logout" title="Выйти"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
                     </ul>

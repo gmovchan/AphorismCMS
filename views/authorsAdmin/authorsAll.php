@@ -5,7 +5,7 @@ if (isset($data['errors'])) {
 
 if (isset($data['successful'])) {
     require __DIR__ . '/../successful/successfulList.php';
-    // если автор успешно добавлен, то поле "authorName" будет пустым
+    // если автор успешно добавлен, то поля формы останутся пустыми
     $_POST['authorName'] = NULL;
 }
 ?>

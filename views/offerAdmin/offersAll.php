@@ -1,13 +1,10 @@
 <?php
-var_dump($_POST);
 if (isset($data['errors'])) {
     require __DIR__ . '/../errors/errorsList.php';
 }
 
 if (isset($data['successful'])) {
     require __DIR__ . '/../successful/successfulList.php';
-    // если автор успешно добавлен, то поле "authorName" будет пустым
-    unset($_POST);
 }
 ?>
 <div class="inner cover">

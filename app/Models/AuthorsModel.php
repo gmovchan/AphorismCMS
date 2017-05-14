@@ -100,13 +100,8 @@ class AuthorsModel extends Model
     private function authorSearch(string $name)
     {
         $searchQuery = "%$name%";
-        $countAuthor = $this->dbh->query("SELECT * FROM `authors` WHERE `name` LIKE ?;", 'num_row', '', array($searchQuery));
-
-        if ($countAuthor >= 1) {
-            return true;
-        } else {
-            return false;
-        }
+        $countAuthor = $this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'num_row', '', array($searchQuery));
+        return $countAuthor >= 1;
     }
 
 }

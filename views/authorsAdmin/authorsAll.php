@@ -9,7 +9,7 @@ if (isset($data['successful'])) {
     $_POST['authorName'] = NULL;
 }
 ?>
-
+<br>
 <div class="inner cover">
     <form class="text-left" action="/admin/authorAdd" method="POST">
         <div class="input-group">
@@ -19,10 +19,7 @@ if (isset($data['successful'])) {
             </div>
         </div>
     </form>
-</div>
-
 <br>
-
 <ul class="list-group authors">
     <?php foreach ($data['authors'] as $author): ?>   
         <li class="list-group-item">
@@ -31,3 +28,4 @@ if (isset($data['successful'])) {
         </li>
     <?php endforeach; ?>
 </ul>
+</div>

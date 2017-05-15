@@ -27,7 +27,7 @@ class OfferController extends Controller
         
         if ($this->offer->addOffer()) { 
             $this->data['successful'] = $this->offer->getSuccessful();
-            $this->view->generate('/offer/successfullAddOffer.php', 'indexTemplate.php', $this->data);
+            $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
         } else {
             $this->data['errors'] = $this->offer->getErrors();
             $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);

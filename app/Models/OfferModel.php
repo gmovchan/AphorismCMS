@@ -29,20 +29,27 @@ class OfferModel extends Model
         $offerForm['quoteText'] = $this->request->getProperty('quoteText');
         $offerForm['authorQuote'] = $this->request->getProperty('authorQuote');
         $offerForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
-        $offerForm['quoteText'] = $this->request->getProperty('quoteText');
+        $offerForm['comment'] = $this->request->getProperty('comment');
         $offerForm['authorOffer'] = $this->request->getProperty('authorOffer');
 
         if (empty($offerForm['quoteText'])) {
             $this->errors[] = "Текст цитаты не введен";
             return false;
         }
-
+        /*
+         * TODO: написать функцию, которая будет возвращать ошибку и её описания, если текст превышает максимальную длину
+         * пока скрипт просто выкидывает исключение
+         * 
+         */
+        
+        // потому что в mysql для поля типа TEXT нельзя указать максимальную длину
         if (iconv_strlen($offerForm['quoteText']) > 15000) {
-            $this->errors[] = "Текст длиннее 15 000 символов";
+            $this->errors[] = "Текст цитаты длиннее 15 000 символов";
             return false;
         }
-
-        $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 'none', '', array($offerForm['quoteText'], $offerForm['authorQuote'], $offerForm['sourceQuote'], $offerForm['quoteText'], $offerForm['authorOffer']));
+        
+        $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 'none', '',
+                array($offerForm['quoteText'], $offerForm['authorQuote'], $offerForm['authorQuote'], $offerForm['sourceQuote'], $offerForm['comment']));
 
         $this->successful[] = "Цитата успешно отправлена";
         $this->successful[] = "После проверки администраторам она появится в общем списке";
@@ -53,7 +60,6 @@ class OfferModel extends Model
     public function getOffersAll()
     {
         $offers = $this->dbh->query("SELECT * FROM `offer_quotes`;", 'fetchAll', '');
-        var_dump($offers);
         return $offers;
     }
 

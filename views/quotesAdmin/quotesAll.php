@@ -1,23 +1,36 @@
+<br>
 <div class="inner cover">
-    <p class="lead"></p>
+    <?php
+    if (isset($data['errors'])) {
+        require __DIR__ . '/../errors/errorsList.php';
+    }
+
+    if (isset($data['successful'])) {
+        require __DIR__ . '/../successful/successfulList.php';
+    }
+    ?>
     <?php foreach ($data['quotes'] as $qoute): ?>
-        <a href="/quotes#quote<?php echo $qoute['quote_id']; ?>" id="quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
-        <span> / </span>
-        <a href="quotes#quoteedit?quote_id=<?php echo $qoute['quote_id']; ?>">Изменить</a>
-        <span> / </span>
-        <a href="quotes#quotedelete?quote_id=<?php echo $qoute['quote_id']; ?>" data-toggle="modal" data-target="#confirmDeletion" data-whatever="@mdo">Удалить</a>
-        <!--
-        <span> / </span>
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#confirmDeletion" data-whatever="<?php //echo $qoute['quote_id']; ?>">Удалить</button>
-        -->
-        <blockquote class="text-left">
-            <p><?php echo $this->html($qoute['text']); ?></p>
-            <footer>
-                <a href="?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
-            </footer>
-        </blockquote>
+        <div class="panel panel-default panel-quote" id="quote<?php echo $qoute['quote_id']; ?>">
+            <div class="panel-body">
+                <blockquote class="text-left">
+                    <p><?php echo $this->html($qoute['text']); ?></p>
+                    <footer>
+                        <a href="?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
+                    </footer>
+                </blockquote>
+            </div>
+            <div class="panel-footer">
+                <a href="quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
+                <span> / </span>
+                <a href="quotes#quoteedit?quote_id=<?php echo $qoute['quote_id']; ?>">Изменить</a>
+                <span> / </span>
+                <a href="delquote?quote_id=<?php echo $qoute['quote_id']; ?>">Удалить</a>
+            </div>
+        </div>
     <?php endforeach; ?>
 </div>
+
+
 
 <!-- Всплывающее окно для подтверждения удаления цитаты -->
 <!--

@@ -1,5 +1,4 @@
 <?php
-var_dump($_POST);
 if (isset($data['errors'])) {
     require __DIR__ . '/../errors/errorsList.php';
 }
@@ -12,8 +11,10 @@ if (isset($data['successful'])) {
 ?>
 
 <div class="inner cover">
-    <h1 class="cover-heading">Новая цитата</h1>
-    <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
+    <div class="form-header">
+        <h1 class="cover-heading">Добавить цитату</h1>
+        <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
+    </div>
     <form class="text-left" action="/admin/addquote" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>

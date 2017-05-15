@@ -26,7 +26,10 @@ class AdminController extends Controller
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'quotesAdmin';
 
-        // FIXME: создавать кучу объектов, которые могут не пригодится - плохая идея
+        /*
+         * FIXME: создавать кучу объектов, которые могут не пригодится - плохая 
+         * идея. Ошибка в одном сломает весь скрипт. Но пока не придумал ничего лучше
+         */
         $this->admin = new AdminModel($this->request);
         $this->quotes = new QuotesModel($this->request);
         $this->offer = new OfferModel($this->request);
@@ -54,17 +57,17 @@ class AdminController extends Controller
 
     public function addQuote()
     {
-        $this->data['thisPage'] = 'quoteAdd';
+        $this->data['thisPage'] = 'addQuote';
         $this->data['login'] = $this->auth->getLogin();
         $this->data['authors'] = $this->authors->getAllAuthors('names');
 
         if (isset($_POST['quoteText'])) {
 
             if ($this->quotes->addQuote()) {
-                $this->data['successful'] = $this->authors->getSuccessful();
+                $this->data['successful'] = $this->quotes->getSuccessful();
                 $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
             } else {
-                $this->data['errors'] = $this->authors->getErrors();
+                $this->data['errors'] = $this->quotes->getErrors();
                 $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
             }
         } else {
@@ -82,12 +85,24 @@ class AdminController extends Controller
             $this->authors();
         }
     }
-    
-    public function offers() 
+
+    public function offers()
     {
         $this->data['thisPage'] = 'offersAdmin';
-        $data['offers'] = $this->offer->getOffersAll();
+        $this->data['offers'] = $this->offer->getOffersAll();
         $this->view->generate('/offerAdmin/offersAll.php', 'adminTemplate.php', $this->data);
+    }
+
+    public function delQuote()
+    {
+
+        if ($this->quotes->delQuote()) {
+            $this->data['successful'] = $this->quotes->getSuccessful();
+            $this->getPage();
+        } else {
+            $this->data['errors'] = $this->quotes->getErrors();
+            $this->getPage();
+        }
     }
 
 }

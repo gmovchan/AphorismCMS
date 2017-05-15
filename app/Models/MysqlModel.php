@@ -50,6 +50,10 @@ class MysqlModel extends Model
     public function query($query, $typeQuery = null, $num = null, array $query_param = array())
     {
         if ($q = $this->dbh->prepare($query)) {
+            /*
+             * FIXME: переписать имена, так чтобы они были в одном стиле
+             * FIXME: лучше всего, если они будут такими же, как название метода PDO
+             */
             switch ($typeQuery) {
                 case 'num_row':
                     $q->execute($query_param);
@@ -76,6 +80,12 @@ class MysqlModel extends Model
                 case 'none':
                     $q->execute($query_param);
                     return $q;
+                    break;
+                
+                // возвращает количество столбцов, модифицированных запросом
+                case 'rowCount':
+                    $q->execute($query_param);
+                    return $q->rowCount();
                     break;
 
                 default:

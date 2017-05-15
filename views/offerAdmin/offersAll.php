@@ -7,31 +7,25 @@ if (isset($data['successful'])) {
     require __DIR__ . '/../successful/successfulList.php';
 }
 ?>
+<br>
 <div class="inner cover">
-    <h1 class="cover-heading">Новая цитата</h1>
-    <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
-    <form class="text-left" action="/offer/addOffer" method="POST">
-        <div class="form-group">
-            <label for="quoteText">Текст</label>
-            <textarea name="quoteText" class="form-control" rows="6" id="quoteText"><?php echo $_POST['quoteText']; ?></textarea>
+<?php foreach ($data['offers'] as $offer): ?>
+    <div class="panel panel-default panel-quote">
+        <div class="panel-body">
+            <p><b>Текст цитаты:</b> <?php echo $this->html($offer['quote_text']); ?></p>
+            <p><b>Автор:</b> <?php echo $this->html($offer['author_quote']); ?></p>
+            <p><b>Предложил:</b> <?php echo $this->html($offer['author_offer']); ?></p>
+            <p><b>Источник:</b> <?php echo $this->html($offer['source_quote']); ?></p>
+            <p><b>Комментарий:</b> <?php echo $this->html($offer['comment']); ?></p>
+            <p><b>Время создания:</b> <?php echo $offer['time_add_offer']; ?></p>
         </div>
-        <div class="form-group">
-            <label for="authorQuote">Автор</label>
-            <input name="authorQuote" type="text" class="form-control" id="authorQuote" placeholder="Автор" value="<?php echo $_POST['authorQuote']; ?>">
+        <div class="panel-footer">
+            <a href="#">Опубликовать</a>
+            <span> / </span>
+            <a href="#">Изменить</a>
+            <span> / </span>
+            <a href="#">Удалить</a>
         </div>
-        <div class="form-group">
-            <label for="sourceQuote">Источник</label>
-            <input name="sourceQuote" type="text" class="form-control" id="sourceQuote" placeholder="Источник" value="<?php echo $_POST['sourceQuote']; ?>">
-        </div>
-        <div class="form-group">
-            <label for="comment">Комментарий для администратора</label>
-            <textarea name="comment" class="form-control" rows="3" id="comment"><?php echo $_POST['comment']; ?></textarea>
-        </div>
-        <div class="form-group">
-            <label for="authorOffer">Ваш никнейм или ссылка на профиль</label>
-            <input name="authorOffer" type="text" class="form-control" id="authorOffer" placeholder="Представьтесь" value="<?php echo $_POST['authorOffer']; ?>">
-        </div>
-        <button type="submit" class="btn btn-default">Отправить</button>
-    </form>
+    </div>
+<?php endforeach; ?>
 </div>
-

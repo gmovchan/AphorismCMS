@@ -1,4 +1,4 @@
-<div class="bg-success">Успешно выполнено:
+<div class="bg-success successful">Успешно выполнено:
     <ul>
         <?php if (!is_null($data['successful'])):
             foreach ($data['successful'] as $key => $value): ?>

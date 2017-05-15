@@ -2,8 +2,16 @@
 <script src="<?php echo $data['publicDir']; ?>/js/random.js"></script>
 
 <div class="inner cover">
-    <!--<h1 class="cover-heading">Цитата</h1>-->
+    <?php
+    if (isset($data['errors'])) {
+        require __DIR__ . '/../errors/errorsList.php';
+    }
+    ?>
+    <!--
+    <h1 class="cover-heading">Цитата</h1>
     <p class="lead"></p>
+    -->
+    <?php if($data['quote']): ?>
     <div class="panel panel-default">
         <div class="panel-body">
             <blockquote class="text-left">
@@ -12,6 +20,7 @@
             </blockquote>
         </div>
     </div>
+    <?php endif; ?>
 
     <p class="lead ">
 

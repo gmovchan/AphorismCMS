@@ -80,7 +80,7 @@ class QuotesModel extends Model
      * 
      */
     
-    // получает цитату по её id
+    // Получает цитату по её id
     public function getQuote($id)
     {
         $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
@@ -108,12 +108,11 @@ class QuotesModel extends Model
             $quote['random_id'] = $this->getRandomQuoteID();
             return $quote;
         } else {
-            $this->errors[] = "Цитата не найдена";
             return false;
         }
     }
     
-    // получает случайную цитату
+    // Получает случайную цитату
     public function getRandomQuote()
     {
         $id = $this->getRandomQuoteID();
@@ -121,7 +120,7 @@ class QuotesModel extends Model
         return $randomQuote;
     }
 
-    // возвращает ID случайной цитаты
+    // Возвращает ID случайной цитаты
     private function getRandomQuoteID()
     {
         $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'accos', '', array());
@@ -138,8 +137,20 @@ class QuotesModel extends Model
             return false;
         }
     }
+    
+    // Возвращает цитату по умолчанию, обычно используется, если цитата не найдена
+    public function getEmptyQuote()
+    {
+        return array('text' => 'Цитата не найдена. Неверный id.',
+                'quote_id' => 0,
+                'author' => 'Администратор',
+                'author_id' => 157,
+                'previous_id' => 0,
+                'next_id' => 0,
+                'random_id' => $this->getRandomQuoteID());
+    }
 
-    // добавляет новую цитату, должна вызываться только из панели администратора
+    // Добавляет новую цитату, должна вызываться только из панели администратора
     public function addQuote()
     {
         $addQuoteForm = array();
@@ -172,7 +183,7 @@ class QuotesModel extends Model
         return true;
     }
 
-    // удалить цитату из БД
+    // Удалить цитату из БД
     public function delQuote()
     {
         $id = $this->request->getProperty('quote_id');
@@ -180,10 +191,10 @@ class QuotesModel extends Model
         $delete = $this->dbh->query("DELETE FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
 
         if ($delete === 1) {
-            $this->successful[] = "Цитата id$id удалена.";
+            $this->successful[] = "Цитата id{$id} удалена.";
             return true;
         } else {
-            $this->errors[] = "Не удалось удалить цитату id$id";
+            $this->errors[] = "Не удалось удалить цитату id{$id}";
             return false;
         }
     }

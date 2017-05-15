@@ -21,8 +21,14 @@ class RandomController extends Controller
     public function getPage()
     {
         if (!is_null($this->request->getProperty('quote_id'))) {
-            $this->data['quote'] = $this->quotes->getQuote($this->request->getProperty('quote_id'));
-            $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+
+            // если не удалось получить цитату, то вернет ошибку
+            if (!$this->data['quote'] = $this->quotes->getQuote($this->request->getProperty('quote_id'))) {
+                $this->data['quote'] = $this->quotes->getEmptyQuote();
+                $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+            } else {
+                $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+            }
         } else {
             $this->data['quote'] = $this->quotes->getRandomQuote();
             $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);

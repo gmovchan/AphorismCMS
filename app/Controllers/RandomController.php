@@ -22,7 +22,7 @@ class RandomController extends Controller
     {
         if (!is_null($this->request->getProperty('quote_id'))) {
 
-            // если не удалось получить цитату, то вернет ошибку
+            // если не удалось получить цитату, то вернет цитату по умолчанию
             if (!$this->data['quote'] = $this->quotes->getQuote($this->request->getProperty('quote_id'))) {
                 $this->data['quote'] = $this->quotes->getEmptyQuote();
                 $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);

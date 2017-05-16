@@ -7,6 +7,7 @@ use Application\Models\AdminModel;
 use Application\Models\QuotesModel;
 use Application\Models\OfferModel;
 use Application\Models\AuthorsModel;
+use Application\Core\Errors;
 
 class AdminController extends Controller
 {
@@ -95,13 +96,52 @@ class AdminController extends Controller
 
     public function delQuote()
     {
-
         if ($this->quotes->delQuote()) {
             $this->data['successful'] = $this->quotes->getSuccessful();
             $this->getPage();
         } else {
             $this->data['errors'] = $this->quotes->getErrors();
             $this->getPage();
+        }
+    }
+
+    public function quoteEdit()
+    {
+        // нет пункта меню для этой страницы
+        $this->data['thisPage'] = null;
+        
+        if (isset($_POST['quote_id'])) {
+            $quoteID = $_POST['quote_id'];
+        } else {
+            $quoteID = $this->request->getProperty('quote_id');
+        }
+
+        if (!is_null($quoteID)) {
+            $quote = $this->quotes->getQuote($quoteID);
+
+            // если не удалось получить цитату, то вернет страницу 404
+            if ($quote) {
+                $this->data['authors'] = $this->authors->getAllAuthors('quotes');
+                $this->data['quote'] = $quote;
+                $this->view->generate('/quotesAdmin/quoteEdit.php', 'adminTemplate.php', $this->data);
+            } else {
+                Errors::getErrorPage404();
+            }
+        } else {
+            Errors::getErrorPage404();
+        }
+    }
+
+    public function quoteSaveChanges()
+    {
+        $resultEdit = $this->quotes->quoteEditSave();
+
+        if ($resultEdit) {
+            $this->data['successful'] = $this->quotes->getSuccessful();
+            $this->getPage();
+        } else {
+            $this->data['errors'] = $this->quotes->getErrors();
+            $this->quoteEdit();
         }
     }
 

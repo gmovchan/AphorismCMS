@@ -1,16 +1,15 @@
-<?php
-if (isset($data['errors'])) {
-    require __DIR__ . '/../errors/errorsList.php';
-}
-
-if (isset($data['successful'])) {
-    require __DIR__ . '/../successful/successfulList.php';
-    // если автор успешно добавлен, то поле "authorName" будет пустым
-    unset($_POST);
-}
-?>
-
 <div class="inner cover">
+    <?php
+    if (isset($data['errors'])) {
+        require __DIR__ . '/../errors/errorsList.php';
+    }
+
+    if (isset($data['successful'])) {
+        require __DIR__ . '/../successful/successfulList.php';
+        // если автор успешно добавлен, то поле "authorName" будет пустым
+        unset($_POST);
+    }
+    ?>
     <div class="form-header">
         <h1 class="cover-heading">Добавить цитату</h1>
         <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
@@ -26,6 +25,7 @@ if (isset($data['successful'])) {
                 <?php foreach ($data['authors'] as $author): ?>
                     <?php //сохраняет выбранным элемент списка в случае ошибки после отправки формы ?>
                     <?php if (isset($_POST['authorQuoteID'])): ?>
+
                         <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
                             <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
                         <?php else: ?>
@@ -33,7 +33,14 @@ if (isset($data['successful'])) {
                         <?php endif; ?>
 
                     <?php else: ?>
-                        <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                        <?php //по умолчанию автор "низвестен" ?>
+                        <?php $_POST['authorQuoteID'] = 157 ?>
+
+                        <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                        <?php else: ?>
+                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>

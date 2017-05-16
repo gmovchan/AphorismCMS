@@ -22,9 +22,9 @@
             <div class="panel-footer">
                 <a href="quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
                 <span> / </span>
-                <a href="quotes#quoteedit?quote_id=<?php echo $qoute['quote_id']; ?>">Изменить</a>
+                <a href="/admin/quoteedit?quote_id=<?php echo $qoute['quote_id']; ?>">Изменить</a>
                 <span> / </span>
-                <a href="delquote?quote_id=<?php echo $qoute['quote_id']; ?>">Удалить</a>
+                <a href="/admin/delquote?quote_id=<?php echo $qoute['quote_id']; ?>">Удалить</a>
             </div>
         </div>
     <?php endforeach; ?>

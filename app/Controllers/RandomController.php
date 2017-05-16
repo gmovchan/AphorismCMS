@@ -4,6 +4,7 @@ namespace Application\Controllers;
 
 use Application\Core\Controller;
 use Application\Models\QuotesModel;
+use Application\Core\Errors;
 
 class RandomController extends Controller
 {
@@ -20,14 +21,16 @@ class RandomController extends Controller
 
     public function getPage()
     {
-        if (!is_null($this->request->getProperty('quote_id'))) {
+        $quoteID = $this->request->getProperty('quote_id');
 
-            // если не удалось получить цитату, то вернет цитату по умолчанию
-            if (!$this->data['quote'] = $this->quotes->getQuote($this->request->getProperty('quote_id'))) {
-                $this->data['quote'] = $this->quotes->getEmptyQuote();
+        if (!is_null($quoteID)) {
+            $quote = $this->quotes->getQuote($quoteID);
+            // если не удалось получить цитату, то вернет страницу 404
+            if ($quote) {
+                $this->data['quote'] = $quote;
                 $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
             } else {
-                $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+                Errors::getErrorPage404();
             }
         } else {
             $this->data['quote'] = $this->quotes->getRandomQuote();

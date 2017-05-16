@@ -28,58 +28,7 @@ class QuotesModel extends Model
 
         return $quotes;
     }
-    
-    /*
-    public function getQuote()
-    {
-        // id запрашиваемой цитаты хранится в request, который получает её из GET пременной
-        // либо можно поменять это значение в контроллере с помощью соответсвующего метода 
-        // объекта Request
-        $id = $this->request->getProperty('quote_id');
 
-        if (is_null($id)) {
-            $id = $this->getRandomQuoteID();
-        }
-
-        $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
-                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'accos', '', array($id));
-
-        $randomID = $this->getRandomQuoteID();
-
-        if ($quote) {
-            // получает предыдущий и следующий ID, нужны для перехода вперед и назад
-            // без этого, если удалить какую-то позицию - переход может сломаться
-            $prevAndNextIDs = $this->dbh->query("SELECT quotes.id FROM `quotes` WHERE (`id` = (SELECT MAX(`id`) "
-                    . "FROM `quotes` WHERE `id` < ?) OR `id` = (SELECT MIN(`id`) FROM `quotes` WHERE `id` > ?));", 'fetchAll', '', array($quote['quote_id'], $quote['quote_id']));
-
-            // условные операторы на случай если цитата будет первой или последней
-            // чтобы правило отобразить кнопки перехода вперед-назад
-            if ((int) $id === 1) {
-                $quote['previous_id'] = 0;
-                $quote['next_id'] = 2;
-            } elseif ($id > 1 && count($prevAndNextIDs) === 1) {
-                $quote['previous_id'] = $prevAndNextIDs[0]['id'];
-                $quote['next_id'] = 0;
-            } else {
-                $quote['previous_id'] = $prevAndNextIDs[0]['id'];
-                $quote['next_id'] = $prevAndNextIDs[1]['id'];
-            }
-
-            $quote['random_id'] = $randomID;
-            return $quote;
-        } else {
-            return array('text' => 'Цитата не найдена',
-                'quote_id' => 0,
-                'author' => 'Администратор',
-                'author_id' => 157,
-                'previous_id' => 0,
-                'next_id' => 0,
-                'random_id' => $randomID);
-        }
-    }
-     * 
-     */
-    
     // Получает цитату по её id
     public function getQuote($id)
     {
@@ -87,31 +36,42 @@ class QuotesModel extends Model
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'accos', '', array($id));
 
         if ($quote) {
-            // получает предыдущий и следующий ID, нужны для перехода вперед и назад
-            // без этого, если удалить какую-то позицию - переход может сломаться
-            $prevAndNextIDs = $this->dbh->query("SELECT quotes.id FROM `quotes` WHERE (`id` = (SELECT MAX(`id`) "
-                    . "FROM `quotes` WHERE `id` < ?) OR `id` = (SELECT MIN(`id`) FROM `quotes` WHERE `id` > ?));", 'fetchAll', '', array($quote['quote_id'], $quote['quote_id']));
 
-            // условные операторы на случай если цитата будет первой или последней
-            // чтобы правило отобразить кнопки перехода вперед-назад
-            if ((int) $id === 1) {
-                $quote['previous_id'] = 0;
-                $quote['next_id'] = 2;
-            } elseif ($id > 1 && count($prevAndNextIDs) === 1) {
-                $quote['previous_id'] = $prevAndNextIDs[0]['id'];
-                $quote['next_id'] = 0;
-            } else {
-                $quote['previous_id'] = $prevAndNextIDs[0]['id'];
-                $quote['next_id'] = $prevAndNextIDs[1]['id'];
-            }
-
+            $prevAndNextRows = $this->getPrevAndNextRows($quote['quote_id']);
+            $quote['previous_id'] = $prevAndNextRows['previous_id'];
+            $quote['next_id'] = $prevAndNextRows['next_id'];
             $quote['random_id'] = $this->getRandomQuoteID();
             return $quote;
         } else {
             return false;
         }
     }
-    
+
+    // получает предыдущий и следующий ID, нужны для перехода к предыдущей или следующей цитатам
+    private function getPrevAndNextRows($id)
+    {
+        $idForReturn = array();
+
+        // если просто получать по предыдущему и следующему id, то удалив какую-то позицию - переход может сломаться
+        $prevAndNextID = $this->dbh->query("SELECT quotes.id FROM `quotes` WHERE (`id` = (SELECT MAX(`id`) "
+                . "FROM `quotes` WHERE `id` < ?) OR `id` = (SELECT MIN(`id`) FROM `quotes` WHERE `id` > ?));", 'fetchAll', '', array($id, $id));
+
+        // проверка на случай если цитата будет первой или последней
+        // чтобы правило отобразить кнопки перехода вперед-назад
+        if ((int) $id === 1) {
+            $idForReturn['previous_id'] = 0;
+            $idForReturn['next_id'] = 2;
+        } elseif ($id > 1 && count($prevAndNextID) === 1) {
+            $idForReturn['previous_id'] = $prevAndNextID[0]['id'];
+            $idForReturn['next_id'] = 0;
+        } else {
+            $idForReturn['previous_id'] = $prevAndNextID[0]['id'];
+            $idForReturn['next_id'] = $prevAndNextID[1]['id'];
+        }
+
+        return $idForReturn;
+    }
+
     // Получает случайную цитату
     public function getRandomQuote()
     {
@@ -129,7 +89,7 @@ class QuotesModel extends Model
         $randRow = rand(1, $countRows) - 1;
         $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'accos', '', array());
         $id = $id['id'];
-        
+
         if ($id) {
             return (int) $id;
         } else {
@@ -137,49 +97,35 @@ class QuotesModel extends Model
             return false;
         }
     }
-    
+
     // Возвращает цитату по умолчанию, обычно используется, если цитата не найдена
     public function getEmptyQuote()
     {
         return array('text' => 'Цитата не найдена. Неверный id.',
-                'quote_id' => 0,
-                'author' => 'Администратор',
-                'author_id' => 157,
-                'previous_id' => 0,
-                'next_id' => 0,
-                'random_id' => $this->getRandomQuoteID());
+            'quote_id' => 0,
+            'author' => 'Администратор',
+            'author_id' => 157,
+            'previous_id' => 0,
+            'next_id' => 0,
+            'random_id' => $this->getRandomQuoteID());
     }
 
     // Добавляет новую цитату, должна вызываться только из панели администратора
     public function addQuote()
     {
-        $addQuoteForm = array();
+        $quoteForm = array();
+        $quoteForm['quoteText'] = $this->request->getProperty('quoteText');
+        $quoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
+        $quoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
+        $quoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
 
-        $addQuoteForm['quoteText'] = $this->request->getProperty('quoteText');
-        $addQuoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
-        $addQuoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
-        $addQuoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
-
-        if (empty($addQuoteForm['quoteText'])) {
-            $this->errors[] = "Текст цитаты не введен";
+        if (!$this->checkDataForm($quoteForm['quoteText'])) {
             return false;
         }
 
-        if (iconv_strlen($addQuoteForm['quoteText']) > 15000) {
-            $this->errors[] = "Текст длиннее 15 000 символов";
-            return false;
-        }
-
-        // если авторство отсутствует, то ему будет присвоено id автора "низвестен"
-        if (empty($addQuoteForm['authorQuoteID'])) {
-            //$addQuoteForm['authorQuoteID'] = 157; 
-        }
-
-
-        $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `source`, `creator`) VALUES (?, ?, ?, ?)", 'none', '', array($addQuoteForm['quoteText'], $addQuoteForm['authorQuoteID'], $addQuoteForm['sourceQuote'], $addQuoteForm['creatorQuote']));
-
+        $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `source`, `creator`) "
+                . "VALUES (?, ?, ?, ?)", 'none', '', array($quoteForm['quoteText'], $quoteForm['authorQuoteID'], $quoteForm['sourceQuote'], $quoteForm['creatorQuote']));
         $this->successful[] = "Цитата успешно добавлена";
-
         return true;
     }
 
@@ -187,7 +133,6 @@ class QuotesModel extends Model
     public function delQuote()
     {
         $id = $this->request->getProperty('quote_id');
-        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'num_row', '', array($id));
         $delete = $this->dbh->query("DELETE FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
 
         if ($delete === 1) {
@@ -197,6 +142,53 @@ class QuotesModel extends Model
             $this->errors[] = "Не удалось удалить цитату id{$id}";
             return false;
         }
+    }
+
+    // проверяет существование цитаты
+    private function checkID($id)
+    {
+        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'num_row', '', array($id));
+        return $query === 1;
+    }
+
+    public function quoteEditSave()
+    {
+        //FIXME: надо упростить эту конструкцию, переписав Request на хранение содержимого POST переменной в отдельном массивк
+        // чтобы он извлекался и передавался из контроллера
+        $quoteForm = array();
+        $quoteForm['quoteText'] = $this->request->getProperty('quoteText');
+        $quoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
+        $quoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
+        $quoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
+        $quoteForm['quoteID'] = $this->request->getProperty('quote_id');
+
+        $this->ensure($this->checkID($quoteForm['quoteID']), "Цитата id{$quoteForm['quoteID']} не найдена в БД");
+        
+        if (!$this->checkDataForm($quoteForm['quoteText'])) {
+            return false;
+        }
+
+        $this->dbh->query("UPDATE `quotes` SET `quote_text` = ?, `author_id` = ?, `source` = ?, `creator` = ? "
+                . " WHERE `id` = ?;", 'none', '', array($quoteForm['quoteText'], $quoteForm['authorQuoteID'], $quoteForm['sourceQuote'], $quoteForm['creatorQuote'], $quoteForm['quoteID']));
+
+        $this->successful[] = "Изменения в цитате id{$quoteForm['quoteID']} сохранены";
+        return true;
+    }
+
+    // проверяет поля формы на валидность
+    private function checkDataForm($quoteText)
+    {
+        if (empty($quoteText)) {
+            $this->errors[] = "Текст цитаты не введен";
+            return false;
+        }
+
+        if (iconv_strlen($quoteText) > 15000) {
+            $this->errors[] = "Текст длиннее 15 000 символов";
+            return false;
+        }
+
+        return true;
     }
 
 }

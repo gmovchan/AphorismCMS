@@ -1,6 +1,7 @@
 <?php
 
 namespace Application\Core;
+use Application\Core\Errors;
 
 class Route
 {
@@ -12,7 +13,7 @@ class Route
         $controllerlClass = $resultParseUrl['controllerName'] . 'Controller';
         $controllerNamespace = 'Application\\Controllers\\' . $controllerlClass;
         if (!class_exists($controllerNamespace)) {
-            $this->getErrorPage404();
+            Errors::getErrorPage404();
         }
 
         $controller = new $controllerNamespace;
@@ -21,7 +22,7 @@ class Route
         if (method_exists($controller, $action)) {
             $controller->$action();
         } else {
-            $this->getErrorPage404();
+            Errors::getErrorPage404();
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace Application\Core;
 
+// TODO: перенести сюда метод ensure из Model, потому что он может понадобится и в других классах
 class Errors
 {
 

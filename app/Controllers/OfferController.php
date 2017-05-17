@@ -24,8 +24,9 @@ class OfferController extends Controller
     
     public function addOffer()
     {
+        $formContent = $this->request->getProperty('POST');
         
-        if ($this->offer->addOffer()) { 
+        if ($this->offer->addOffer($formContent)) { 
             $this->data['successful'] = $this->offer->getSuccessful();
             $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
         } else {

@@ -24,7 +24,7 @@ class QuotesModel extends Model
     public function getAllQuotes()
     {
         $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
-                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id;", 'fetchAll', '');
+                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id  ORDER BY quotes.id DESC;", 'fetchAll', '');
 
         return $quotes;
     }
@@ -111,20 +111,14 @@ class QuotesModel extends Model
     }
 
     // Добавляет новую цитату, должна вызываться только из панели администратора
-    public function addQuote()
+    public function addQuote($formContent)
     {
-        $quoteForm = array();
-        $quoteForm['quoteText'] = $this->request->getProperty('quoteText');
-        $quoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
-        $quoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
-        $quoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
-
-        if (!$this->checkDataForm($quoteForm['quoteText'])) {
+        if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;
         }
 
         $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`, `source`, `creator`) "
-                . "VALUES (?, ?, ?, ?)", 'none', '', array($quoteForm['quoteText'], $quoteForm['authorQuoteID'], $quoteForm['sourceQuote'], $quoteForm['creatorQuote']));
+                . "VALUES (?, ?, ?, ?)", 'none', '', array($formContent['quoteText'], $formContent['authorQuoteID'], $formContent['sourceQuote'], $formContent['creatorQuote']));
         $this->successful[] = "Цитата успешно добавлена";
         return true;
     }
@@ -151,27 +145,32 @@ class QuotesModel extends Model
         return $query === 1;
     }
 
-    public function quoteEditSave()
+    public function quoteEditSave($formContent)
     {
         //FIXME: надо упростить эту конструкцию, переписав Request на хранение содержимого POST переменной в отдельном массивк
         // чтобы он извлекался и передавался из контроллера
+        /*
         $quoteForm = array();
         $quoteForm['quoteText'] = $this->request->getProperty('quoteText');
         $quoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
         $quoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
         $quoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
         $quoteForm['quoteID'] = $this->request->getProperty('quote_id');
-
-        $this->ensure($this->checkID($quoteForm['quoteID']), "Цитата id{$quoteForm['quoteID']} не найдена в БД");
+         * 
+         */
         
-        if (!$this->checkDataForm($quoteForm['quoteText'])) {
+        var_dump($formContent);
+
+        $this->ensure($this->checkID($formContent['quoteID']), "Цитата id{$formContent['quoteID']} не найдена в БД");
+        
+        if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;
         }
 
         $this->dbh->query("UPDATE `quotes` SET `quote_text` = ?, `author_id` = ?, `source` = ?, `creator` = ? "
-                . " WHERE `id` = ?;", 'none', '', array($quoteForm['quoteText'], $quoteForm['authorQuoteID'], $quoteForm['sourceQuote'], $quoteForm['creatorQuote'], $quoteForm['quoteID']));
+                . " WHERE `id` = ?;", 'none', '', array($formContent['quoteText'], $formContent['authorQuoteID'], $formContent['sourceQuote'], $formContent['creatorQuote'], $formContent['quoteID']));
 
-        $this->successful[] = "Изменения в цитате id{$quoteForm['quoteID']} сохранены";
+        $this->successful[] = "Изменения в цитате id{$formContent['quoteID']} сохранены";
         return true;
     }
 

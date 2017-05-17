@@ -6,7 +6,7 @@ use Application\Core\Controller;
 use Application\Models\QuotesModel;
 use Application\Core\Errors;
 
-class RandomController extends Controller
+class QuoteController extends Controller
 {
 
     private $quotes;
@@ -15,7 +15,7 @@ class RandomController extends Controller
     {
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
-        $this->data['thisPage'] = 'random';
+        $this->data['thisPage'] = 'quote';
         $this->quotes = new QuotesModel($this->request);
     }
 

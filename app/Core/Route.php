@@ -28,7 +28,7 @@ class Route
 
     private function parseURL()
     {
-        $controllerName = 'Random';
+        $controllerName = 'Quote';
         $actionName = 'getPage';
 
         $urlParsed = parse_url($_SERVER['REQUEST_URI']);

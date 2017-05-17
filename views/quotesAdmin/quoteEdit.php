@@ -41,7 +41,7 @@ if (isset($data['errors'])) {
             <input name="creatorQuote" type="text" class="form-control" placeholder="" value="<?php echo @$this->html($data['quote']['creator']); ?>">
         </div>
         <!-- скрытое поле для передачи id сохраняемой цитаты -->
-        <input style="display: none;" name="quote_id" value="<?php echo @$this->html($data['quote']['quote_id']); ?>">
+        <input style="display: none;" name="quoteID" value="<?php echo @$this->html($data['quote']['quote_id']); ?>">
         <button type="submit" class="btn btn-default">Сохранить</button>
     </form>
 </div>

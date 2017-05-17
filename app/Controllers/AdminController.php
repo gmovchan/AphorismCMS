@@ -58,13 +58,14 @@ class AdminController extends Controller
 
     public function addQuote()
     {
+        $formContent = $this->request->getProperty('POST');
         $this->data['thisPage'] = 'addQuote';
         $this->data['login'] = $this->auth->getLogin();
         $this->data['authors'] = $this->authors->getAllAuthors('names');
 
         if (isset($_POST['quoteText'])) {
 
-            if ($this->quotes->addQuote()) {
+            if ($this->quotes->addQuote($formContent)) {
                 $this->data['successful'] = $this->quotes->getSuccessful();
                 $this->view->generate('/quotesAdmin/quoteAdd.php', 'adminTemplate.php', $this->data);
             } else {
@@ -113,11 +114,11 @@ class AdminController extends Controller
         if (isset($_POST['quote_id'])) {
             $quoteID = $_POST['quote_id'];
         } else {
-            $quoteID = $this->request->getProperty('quote_id');
+            $quoteID = $this->request->getProperty('GET');
         }
 
         if (!is_null($quoteID)) {
-            $quote = $this->quotes->getQuote($quoteID);
+            $quote = $this->quotes->getQuote($quoteID['quote_id']);
 
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
@@ -134,7 +135,8 @@ class AdminController extends Controller
 
     public function quoteSaveChanges()
     {
-        $resultEdit = $this->quotes->quoteEditSave();
+        $formContent = $this->request->getProperty('POST');
+        $resultEdit = $this->quotes->quoteEditSave($formContent);
 
         if ($resultEdit) {
             $this->data['successful'] = $this->quotes->getSuccessful();

@@ -25,7 +25,7 @@ class ComposerStaticInit58c5ce2a747eaa18878bc78d7ca97c65
         'Application\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Controllers/AuthController.php',
         'Application\\Controllers\\OfferController' => __DIR__ . '/../..' . '/app/Controllers/OfferController.php',
         'Application\\Controllers\\QuotesController' => __DIR__ . '/../..' . '/app/Controllers/QuotesController.php',
-        'Application\\Controllers\\RandomController' => __DIR__ . '/../..' . '/app/Controllers/RandomController.php',
+        'Application\\Controllers\\RandomController' => __DIR__ . '/../..' . '/app/Controllers/QuoteController.php',
         'Application\\Core\\Controller' => __DIR__ . '/../..' . '/app/Core/Controller.php',
         'Application\\Core\\Errors' => __DIR__ . '/../..' . '/app/Core/Errors.php',
         'Application\\Core\\Model' => __DIR__ . '/../..' . '/app/Core/Model.php',

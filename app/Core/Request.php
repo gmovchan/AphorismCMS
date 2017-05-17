@@ -17,9 +17,29 @@ class Request
     private function init()
     {
         if (isset($_SERVER['REQUEST_METHOD'])) {
-            // $_REQUEST поумолчанию содержит данные суперглобальных переменных
-            $this->properties = $_REQUEST;
-            return;
+            
+            /*
+             * содержимое переменных POST и GET отправляется в одноименный массив
+             * чтобы передать его из контроллера в модель одной переменной
+             * а не получать каждое значение по одному с помощью getProperty
+             */
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'POST':
+                    $this->properties['POST'] = $_REQUEST;
+                    return;
+                    break;
+
+                case 'GET':
+                    $this->properties['GET'] = $_REQUEST;
+                    return;
+                    break;
+
+                default:
+                    // $_REQUEST поумолчанию содержит данные суперглобальных переменных
+                    $this->properties = $_REQUEST;
+                    return;
+                    break;
+            }
         }
     }
 
@@ -48,4 +68,3 @@ class Request
     }
 
 }
-

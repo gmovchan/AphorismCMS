@@ -47,7 +47,7 @@
                 <nav>
                     <ul class="nav masthead-nav">
                         <li class="<?php if ($data['thisPage'] === 'quotes') echo 'active' ?>"><a href="/quotes">Цитаты</a></li>
-                        <li class="<?php if ($data['thisPage'] === 'random') echo 'active' ?>"><a href="/random">Рандом</a></li>
+                        <li class="<?php if ($data['thisPage'] === 'quote') echo 'active' ?>"><a href="/quote">Рандом</a></li>
                         <li class="<?php if ($data['thisPage'] === 'offer') echo 'active' ?>"><a href="/offer">Предложить</a></li>
                     </ul>
                 </nav>

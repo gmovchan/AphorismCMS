@@ -147,20 +147,6 @@ class QuotesModel extends Model
 
     public function quoteEditSave($formContent)
     {
-        //FIXME: надо упростить эту конструкцию, переписав Request на хранение содержимого POST переменной в отдельном массивк
-        // чтобы он извлекался и передавался из контроллера
-        /*
-        $quoteForm = array();
-        $quoteForm['quoteText'] = $this->request->getProperty('quoteText');
-        $quoteForm['authorQuoteID'] = $this->request->getProperty('authorQuoteID');
-        $quoteForm['sourceQuote'] = $this->request->getProperty('sourceQuote');
-        $quoteForm['creatorQuote'] = $this->request->getProperty('creatorQuote');
-        $quoteForm['quoteID'] = $this->request->getProperty('quote_id');
-         * 
-         */
-        
-        var_dump($formContent);
-
         $this->ensure($this->checkID($formContent['quoteID']), "Цитата id{$formContent['quoteID']} не найдена в БД");
         
         if (!$this->checkDataForm($formContent['quoteText'])) {

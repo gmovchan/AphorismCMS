@@ -46,10 +46,10 @@ class AuthModel extends Model
         // получаю логин, чтобы потом его использовать в view для обращения к пользователю
         // TODO: лучше в таблице сделать отдельную ячейку для имени, которая не
         // участвует в авторизации и аутентификации
-        $login = $this->dbh->query("SELECT `login_user` FROM `users` WHERE `id_user` = ?;", 'result', '0', array($id_user));
+        $login = $this->dbh->query("SELECT `login_user` FROM `users` WHERE `id_user` = ?;", 'fetch', '', array($id_user));
         $this->userData['login'] = $login;
 
-        if ($this->dbh->query("SELECT * FROM `users` WHERE `id_user` = ? AND `password_user` = ?;", 'num_row', '', array($id_user, $password)) == 1) {
+        if ($this->dbh->query("SELECT * FROM `users` WHERE `id_user` = ? AND `password_user` = ?;", 'rowCount', '', array($id_user, $password)) == 1) {
             return true;
         } else {
             return false;
@@ -83,7 +83,7 @@ class AuthModel extends Model
         } else {
 
             //пользователь не найден в БД или пароль неверный
-            if ($this->dbh->query("SELECT * FROM `users` WHERE `login_user` = ?;", 'num_row', 0, array($login)) == 1) {
+            if ($this->dbh->query("SELECT * FROM `users` WHERE `login_user` = ?;", 'rowCount', 0, array($login)) == 1) {
                 $error[] = 'Неверный пароль';
             } else {
                 $error[] = 'Пользователя не сущестует';

@@ -33,7 +33,7 @@ class QuotesModel extends Model
     public function getQuote($id)
     {
         $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
-                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'accos', '', array($id));
+                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'fetch', '', array($id));
 
         if ($quote) {
 
@@ -83,11 +83,11 @@ class QuotesModel extends Model
     // Возвращает ID случайной цитаты
     private function getRandomQuoteID()
     {
-        $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'accos', '', array());
+        $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'fetch', '', array());
         $countRows = $countRows[0];
         // отнял 1 из-за смещения при использовании LIMIT
         $randRow = rand(1, $countRows) - 1;
-        $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'accos', '', array());
+        $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'fetch', '', array());
         $id = $id['id'];
 
         if ($id) {
@@ -124,11 +124,11 @@ class QuotesModel extends Model
     }
 
     // Удалить цитату из БД
-    public function delQuote()
+    public function delQuote($id)
     {
-        $id = $this->request->getProperty('quote_id');
+        var_dump($id);
+        $this->ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
         $delete = $this->dbh->query("DELETE FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
-
         if ($delete === 1) {
             $this->successful[] = "Цитата id{$id} удалена.";
             return true;
@@ -141,7 +141,7 @@ class QuotesModel extends Model
     // проверяет существование цитаты
     private function checkID($id)
     {
-        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'num_row', '', array($id));
+        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
         return $query === 1;
     }
 

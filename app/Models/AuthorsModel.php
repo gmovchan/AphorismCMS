@@ -34,7 +34,7 @@ class AuthorsModel extends Model
 
         // получает количество цитат автора
         foreach ($authors as $key => $author) {
-            $countQuotes = $this->dbh->query("SELECT COUNT(*) FROM `quotes` WHERE `author_id` = ?;", 'accos', '', array($author['id']));
+            $countQuotes = $this->dbh->query("SELECT COUNT(*) FROM `quotes` WHERE `author_id` = ?;", 'fetch', '', array($author['id']));
             $countQuotes = $countQuotes[0];
             $authors[$key]['countQuotes'] = (integer) $countQuotes;
         }
@@ -100,7 +100,7 @@ class AuthorsModel extends Model
     private function authorSearch(string $name)
     {
         $searchQuery = "%$name%";
-        $countAuthor = $this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'num_row', '', array($searchQuery));
+        $countAuthor = $this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'rowCount', '', array($searchQuery));
         return $countAuthor >= 1;
     }
 

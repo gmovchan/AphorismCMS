@@ -97,7 +97,10 @@ class AdminController extends Controller
 
     public function delQuote()
     {
-        if ($this->quotes->delQuote()) {
+        $getArray = $this->request->getProperty('GET');
+        $id = $getArray['quote_id'];
+        
+        if ($this->quotes->delQuote($id)) {
             $this->data['successful'] = $this->quotes->getSuccessful();
             $this->getPage();
         } else {
@@ -111,14 +114,11 @@ class AdminController extends Controller
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
         
-        if (isset($_POST['quote_id'])) {
-            $quoteID = $_POST['quote_id'];
-        } else {
-            $quoteID = $this->request->getProperty('GET');
-        }
+        $getArray = $this->request->getProperty('GET');
+        $id = $getArray['quote_id'];
 
-        if (!is_null($quoteID)) {
-            $quote = $this->quotes->getQuote($quoteID['quote_id']);
+        if (!is_null($id)) {
+            $quote = $this->quotes->getQuote($id);
 
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {

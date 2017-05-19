@@ -46,58 +46,51 @@ class MysqlModel extends Model
      * без понятия зачем тут нужен новый уровень абстракции
      * $section_name принимает массив с параметрами для подготавливаемого 
      * запроса с неименованными псевдопеременными для защиты от инъекций
+     * FIXME: аргумент $num стал не нужен, запрос 'num_row' заменён на 'fetch'
+     * но пусть будет, чтобы не переделывать четыре десятка запросов из-за
+     * одних пустых кавычек
      */
-    public function query($query, $typeQuery = null, $num = null, array $query_param = array())
+    public function query($query, $typeQuery = null, $num = null, array $queryParam = array())
     {
         if ($q = $this->dbh->prepare($query)) {
-            /*
-             * FIXME: переписать имена, так чтобы они были в одном стиле
-             * FIXME: лучше всего, если они будут такими же, как название метода PDO
-             */
             switch ($typeQuery) {
-                case 'num_row':
-                    $q->execute($query_param);
-                    return $q->rowCount();
-                    break;
 
-                case 'result':
-                    $q->execute($query_param);
-                    return $q->fetchColumn($num);
-                    break;
-
-                // возвращает одну строку в виде массива, где ключ - имя столбца
-                case 'accos':
-                    $q->execute($query_param);
-                    return $q->fetch(PDO::FETCH_BOTH );
+                /*
+                 * возвращает одну строку в виде массива, где ключ - имя столбца 
+                 * или порядковый номер колонки
+                 */
+                case 'fetch':
+                    $q->execute($queryParam);
+                    return $q->fetch(PDO::FETCH_BOTH);
                     break;
 
                 // получает все строки в виде массива
                 case 'fetchAll':
-                    $q->execute($query_param);
+                    $q->execute($queryParam);
                     return $q->fetchAll();
                     break;
 
                 case 'none':
-                    $q->execute($query_param);
+                    $q->execute($queryParam);
                     return $q;
                     break;
-                
+
                 // возвращает количество столбцов, модифицированных запросом
                 case 'rowCount':
-                    $q->execute($query_param);
+                    $q->execute($queryParam);
                     return $q->rowCount();
                     break;
-
+                
+                // возвращает id последней добавленной в БД строки
+                case 'lastInsertId':
+                    return intval($this->dbh->lastInsertId());
+                    break;
+                    
                 default:
                     // выкидывает исключение и завершает скрипт, если не найден переданный тип SQL запроса
                     throw new \Exception("Ошибка при указании типа SQL запроса");
             }
         }
-    }
-
-    public function getLastInsertId()
-    {
-        return intval($this->dbh->lastInsertId());
     }
 
 }

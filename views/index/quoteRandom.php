@@ -11,15 +11,22 @@
     <h1 class="cover-heading">Цитата</h1>
     <p class="lead"></p>
     -->
-    <?php if($data['quote']): ?>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <blockquote class="text-left">
-                <p><?php echo $this->html($data['quote']['text']); ?></p>
-                <footer><a href="?author_id=<?php echo $data['quote']['author_id']; ?>"><cite data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->html($data['quote']['author']); ?>"><?php echo $this->html($data['quote']['author']); ?></cite></a></footer>
-            </blockquote>
+    <?php if ($data['quote']): ?>
+        <div class="panel panel-default panel-quote" id="quote<?php echo $data['quote']['quote_id']; ?>">
+            <div class="panel-body">
+                <blockquote class="text-left">
+                    <p><?php echo $this->html($data['quote']['text']); ?></p>
+                    <footer>
+                        <a href="/quotes?author_id=<?php echo $data['quote']['author_id']; ?>"><cite title="<?php echo $this->html($data['quote']['author']); ?>"><?php echo $this->html($data['quote']['author']); ?></cite></a>
+                    </footer>
+                </blockquote>
+            </div>
+            <div class="panel-footer">
+                <a href="/quotes#quote<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
+                <span> / </span>
+                <a href="open?quote_id=<?php echo $data['quote']['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
+            </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <p class="lead ">
@@ -31,8 +38,8 @@
             echo '<button id="previous-quote" class="btn btn btn-default" type="button" onclick="self.location.href=\'/quote?quote_id=' . $data['quote']['previous_id'] . '\';" data-toggle="tooltip" data-placement="bottom" title="A, ←"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>';
         }
         ?>
+        
         <button id="random-quote" class="btn btn btn-default" type="button" onclick="self.location.href = '/quote?quote_id=<?php echo $data['quote']['random_id']; ?>';" data-toggle="tooltip" data-placement="bottom" title="R"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></button>
-        <button id="comment-quote" class="btn btn btn-default" type="button" onclick="self.location.href = '?comment=<?php echo $data['quote']['quote_id']; ?>';" data-toggle="tooltip" data-placement="bottom" title="C"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
 
         <?php
         if ($data['quote']['next_id'] === 0) {

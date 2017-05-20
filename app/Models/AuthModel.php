@@ -47,7 +47,7 @@ class AuthModel extends Model
         // TODO: лучше в таблице сделать отдельную ячейку для имени, которая не
         // участвует в авторизации и аутентификации
         $login = $this->dbh->query("SELECT `login_user` FROM `users` WHERE `id_user` = ?;", 'fetch', '', array($id_user));
-        $this->userData['login'] = $login;
+        $this->userData['login'] = $login[0];
 
         if ($this->dbh->query("SELECT * FROM `users` WHERE `id_user` = ? AND `password_user` = ?;", 'rowCount', '', array($id_user, $password)) == 1) {
             return true;

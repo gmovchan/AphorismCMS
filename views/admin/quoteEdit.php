@@ -9,7 +9,7 @@ if (isset($data['errors'])) {
         <h1 class="cover-heading">Изменить цитату</h1>
         <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
     </div>
-    <form class="text-left" action="/admin/quoteSaveChanges" method="POST">
+    <form class="text-left" action="/admin/savequote" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>
             <textarea name="quoteText" class="form-control" rows="6"><?php echo @$this->html($data['quote']['text']); ?></textarea>
@@ -41,7 +41,7 @@ if (isset($data['errors'])) {
             <input name="creatorQuote" type="text" class="form-control" placeholder="" value="<?php echo @$this->html($data['quote']['creator']); ?>">
         </div>
         <!-- скрытое поле для передачи id сохраняемой цитаты -->
-        <input style="display: none;" name="quoteID" value="<?php echo @$this->html($data['quote']['quote_id']); ?>">
+        <input style="display: none;" name="idInDB" value="<?php echo @$this->html($data['quote']['quote_id']); ?>">
         <button type="submit" class="btn btn-default">Сохранить</button>
     </form>
 </div>

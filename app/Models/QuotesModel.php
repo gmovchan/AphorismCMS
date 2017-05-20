@@ -21,11 +21,17 @@ class QuotesModel extends Model
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
     }
 
-    public function getAllQuotes()
+    public function getAllQuotes($author = null)
     {
-        $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
+        if (is_null($author)) {
+            $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id  ORDER BY quotes.id DESC;", 'fetchAll', '');
-
+        } else {
+            $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
+                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON "
+                    . "quotes.author_id=authors.id  WHERE authors.id = ? ORDER BY quotes.id DESC;", 'fetchAll', '', array($author));
+        }
+        
         return $quotes;
     }
 
@@ -126,7 +132,6 @@ class QuotesModel extends Model
     // Удалить цитату из БД
     public function delQuote($id)
     {
-        var_dump($id);
         $this->ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
         $delete = $this->dbh->query("DELETE FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
@@ -145,18 +150,18 @@ class QuotesModel extends Model
         return $query === 1;
     }
 
-    public function quoteEditSave($formContent)
+    public function saveQuote($formContent)
     {
-        $this->ensure($this->checkID($formContent['quoteID']), "Цитата id{$formContent['quoteID']} не найдена в БД");
+        $this->ensure($this->checkID($formContent['idInDB']), "Цитата id{$formContent['idInDB']} не найдена в БД");
         
         if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;
         }
 
         $this->dbh->query("UPDATE `quotes` SET `quote_text` = ?, `author_id` = ?, `source` = ?, `creator` = ? "
-                . " WHERE `id` = ?;", 'none', '', array($formContent['quoteText'], $formContent['authorQuoteID'], $formContent['sourceQuote'], $formContent['creatorQuote'], $formContent['quoteID']));
+                . " WHERE `id` = ?;", 'none', '', array($formContent['quoteText'], $formContent['authorQuoteID'], $formContent['sourceQuote'], $formContent['creatorQuote'], $formContent['idInDB']));
 
-        $this->successful[] = "Изменения в цитате id{$formContent['quoteID']} сохранены";
+        $this->successful[] = "Изменения в цитате id{$formContent['idInDB']} сохранены";
         return true;
     }
 

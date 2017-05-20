@@ -19,7 +19,7 @@ class OfferController extends Controller
     
     public function getPage()
     {
-        $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
+        $this->view->generate('/index/quoteOffer.php', 'indexTemplate.php', $this->data);
     }
     
     public function addOffer()
@@ -28,10 +28,10 @@ class OfferController extends Controller
         
         if ($this->offer->addOffer($formContent)) { 
             $this->data['successful'] = $this->offer->getSuccessful();
-            $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
+            $this->view->generate('/index/quoteOffer.php', 'indexTemplate.php', $this->data);
         } else {
             $this->data['errors'] = $this->offer->getErrors();
-            $this->view->generate('/offer/offerQuote.php', 'indexTemplate.php', $this->data);
+            $this->view->generate('/index/quoteOffer.php', 'indexTemplate.php', $this->data);
         }
     }
 }

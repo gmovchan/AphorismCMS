@@ -6,14 +6,14 @@
                 <blockquote class="text-left">
                     <p><?php echo $this->html($qoute['text']); ?></p>
                     <footer>
-                        <a href="?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
+                        <a href="/quotes?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
                     </footer>
                 </blockquote>
             </div>
             <div class="panel-footer">
                 <a href="/quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
                 <span> / </span>
-                <a href="open?quote_id=<?php echo $qoute['quote_id']; ?>">Открыть</a>
+                <a href="open?quote_id=<?php echo $qoute['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
             </div>
         </div>
     <?php endforeach; ?>

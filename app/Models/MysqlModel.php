@@ -88,7 +88,7 @@ class MysqlModel extends Model
                     
                 default:
                     // выкидывает исключение и завершает скрипт, если не найден переданный тип SQL запроса
-                    throw new \Exception("Ошибка при указании типа SQL запроса");
+                    $this->ensure(false, "Ошибка при указании типа SQL запроса");
             }
         }
     }

@@ -5,7 +5,6 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Models\MysqlModel;
 use Application\Models\ConfigModel;
-use Application\Core\Request;
 
 class AuthorsModel extends Model
 {
@@ -13,12 +12,9 @@ class AuthorsModel extends Model
     //private $quotesArray = array();
     //private $authorsArray = array();
     private $dbh;
-    private $request;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->request = $request;
-
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
     }
 
@@ -70,18 +66,15 @@ class AuthorsModel extends Model
     }
 
     // добавляет нового автора
-    public function authorAdd()
+    public function addAuthor($name = null)
     {
-        $authorNew = array();
-        $name = $this->request->getProperty('authorName');
-
-        if (empty($name)) {
+        if (is_null($name)) {
             $this->errors[] = "Имя автора пустое";
             return false;
         }
 
         // проверяет, существует ли автор с похожим именем в таблице
-        if ($this->authorSearch($name)) {
+        if ($this->searchAuthor($name)) {
             $this->errors[] = "Автор уже существует";
             return false;
         } else {
@@ -97,7 +90,7 @@ class AuthorsModel extends Model
      * @param string $name
      * @return boolean
      */
-    private function authorSearch(string $name)
+    private function searchAuthor(string $name)
     {
         $searchQuery = "%$name%";
         $countAuthor = $this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'rowCount', '', array($searchQuery));

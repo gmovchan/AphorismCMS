@@ -11,7 +11,7 @@ if (isset($data['successful'])) {
 ?>
 <br>
 <div class="inner cover">
-    <form class="text-left" action="/admin/authorAdd" method="POST">
+    <form class="text-left" action="/admin/addauthor" method="POST">
         <div class="input-group">
             <input type="text" class="form-control" aria-label="..." name="authorName" value="<?php echo @$this->html($_POST['authorName']); ?>">
             <div class="input-group-btn">

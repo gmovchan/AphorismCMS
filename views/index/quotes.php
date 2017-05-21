@@ -13,7 +13,7 @@
             <div class="panel-footer">
                 <a href="/quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
                 <span> / </span>
-                <a href="open?quote_id=<?php echo $qoute['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
+                <a href="quote/comments?quote_id=<?php echo $qoute['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
             </div>
         </div>
     <?php endforeach; ?>

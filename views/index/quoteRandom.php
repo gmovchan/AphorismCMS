@@ -1,5 +1,5 @@
 <!-- Скрипт управления с клавиатуры -->
-<script src="<?php echo $data['publicDir']; ?>/js/quote.js"></script>
+<script src="<?php echo $data['publicDir']; ?>/js/random.js"></script>
 
 <div class="inner cover">
     <?php
@@ -24,7 +24,7 @@
             <div class="panel-footer">
                 <a href="/quotes#quote<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
                 <span> / </span>
-                <a href="open?quote_id=<?php echo $data['quote']['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
+                <a href="quote/comments?quote_id=<?php echo $qoute['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
             </div>
         </div>
     <?php endif; ?>

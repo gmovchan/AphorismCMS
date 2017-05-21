@@ -5,7 +5,6 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Models\MysqlModel;
 use Application\Models\ConfigModel;
-use Application\Core\Request;
 
 class OfferModel extends Model
 {
@@ -13,12 +12,9 @@ class OfferModel extends Model
     //private $quotesArray = array();
     //private $authorsArray = array();
     private $dbh;
-    private $request;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->request = $request;
-
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
     }
 

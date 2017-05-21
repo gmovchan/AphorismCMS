@@ -30,9 +30,9 @@ class AdminController extends Controller
          * FIXME: создавать кучу объектов, которые могут не пригодится - плохая 
          * идея. Ошибка в одном сломает весь скрипт. Но пока не придумал ничего лучше
          */
-        $this->quotes = new QuotesModel($this->request);
-        $this->offer = new OfferModel($this->request);
-        $this->authors = new AuthorsModel($this->request);
+        $this->quotes = new QuotesModel();
+        $this->offer = new OfferModel();
+        $this->authors = new AuthorsModel();
     }
 
     public function getPage()
@@ -88,9 +88,11 @@ class AdminController extends Controller
         }
     }
 
-    public function authorAdd()
+    public function addAuthor()
     {
-        if ($this->authors->authorAdd()) {
+        $formContent = $this->request->getProperty('POST');
+        $name = $formContent['authorName'];
+        if ($this->authors->addAuthor($name)) {
             $this->data['successful'] = $this->authors->getSuccessful();
             $this->authors();
         } else {

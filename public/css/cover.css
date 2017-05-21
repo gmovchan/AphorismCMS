@@ -179,7 +179,8 @@ body {
 }
 
 form, 
-.form-header {
+.form-header,
+.white-text{
     color: #fff;
 }
 

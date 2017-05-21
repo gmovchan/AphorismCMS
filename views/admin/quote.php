@@ -1,6 +1,3 @@
-<!-- Скрипт для кнопок -->
-<script src="<?php echo $data['publicDir']; ?>js/quote.js"></script>
-
 <div class="inner cover">
     <?php
     if (isset($data['errors'])) {
@@ -25,40 +22,14 @@
             </div>
             <div class="panel-footer">
                 <a href="/quote/comments?quote_id=<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
+                <span> / </span>
+                <a href="/admin/quoteedit?quote_id=<?php echo $data['quote']['quote_id']; ?>">Изменить</a>
+                <span> / </span>
+                <a href="/admin/delquote?quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
             </div>
         </div>
     <?php endif; ?>
-    
-    <button class="btn btn-default" type="button" id="open-comment-form">Оставить комментарий</button>        
-
-    <form class="form-horizontal" action="/quote/comments" method="POST" id="comment-form">
-        <div class="form-group">
-            <label for="name" class="col-sm-1 control-label">Имя</label>
-            <div class="col-sm-10">
-                <div class="input-group">
-                    <input name="name" type="text" class="form-control" placeholder="" value="<?php echo @$this->html($_POST['name']); ?>">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default">Отправить</button>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="comment" class="col-sm-1 control-label">Пост</label>
-            <div class="col-sm-10">
-                <textarea name="comment" class="form-control" rows="6"><?php echo @$this->html($_POST['comment']); ?></textarea>
-            </div>
-        </div>
-        <input style="display: none;" name="idInDB" value="<?php echo @$this->html($data['quote']['quote_id']); ?>">
-        <!--
-        <div class="form-group">
-            <div class="col-sm-offset-1 col-sm-10">
-                <button type="submit" class="btn btn-default">Отправить</button>
-            </div>
-        </div>
-        -->
-    </form>
-
+    <h3 class="white-text">Комментарии</h3>
     <?php foreach ($data['comments'] as $comment): ?>
         <div class="panel panel-default comment">
             <div class="panel-body">
@@ -70,6 +41,9 @@
                     <?php echo "{$comment['timeArray']['day']}:{$comment['timeArray']['day']}"; ?>
                 </p>
                 <p><?php echo $this->html($comment['comment_text']); ?></p>
+            </div>
+            <div class="panel-footer">
+                <a href="/admin/delcomment?comment_id=<?php echo $comment['id']; ?>&quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
             </div>
         </div>
     <?php endforeach; ?>

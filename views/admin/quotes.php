@@ -24,6 +24,8 @@
                 <span> / </span>
                 <a href="/admin/quoteedit?quote_id=<?php echo $qoute['quote_id']; ?>">Изменить</a>
                 <span> / </span>
+                <a href="/admin/comments?quote_id=<?php echo $qoute['quote_id']; ?>">Комментарии (<?php echo $qoute['amountComments']; ?>)</a>
+                <span> / </span>
                 <a href="/admin/delquote?quote_id=<?php echo $qoute['quote_id']; ?>">Удалить</a>
             </div>
         </div>

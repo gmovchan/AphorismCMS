@@ -7,6 +7,7 @@ use Application\Models\AdminModel;
 use Application\Models\QuotesModel;
 use Application\Models\OfferModel;
 use Application\Models\AuthorsModel;
+use Application\Models\CommentsModel;
 use Application\Core\Errors;
 
 class AdminController extends Controller
@@ -15,6 +16,7 @@ class AdminController extends Controller
     private $quotes;
     private $offer;
     private $authors;
+    private $comments;
 
     public function __construct()
     {
@@ -33,6 +35,7 @@ class AdminController extends Controller
         $this->quotes = new QuotesModel();
         $this->offer = new OfferModel();
         $this->authors = new AuthorsModel();
+        $this->comments = new CommentsModel();
     }
 
     public function getPage()
@@ -208,7 +211,7 @@ class AdminController extends Controller
         // проверка, получилось ли создать цитату
         if ($approveOffer) {
             $this->addSuccessful($this->quotes->getSuccessful(), 'successful');
-            
+
             // если цитата создана, то предложение удаляется
             if ($this->offer->delOffer($offerID)) {
                 $this->addSuccessful($this->offer->getSuccessful(), 'successful');
@@ -230,15 +233,15 @@ class AdminController extends Controller
     }
 
     /*
-     * требуется, когда в одном методе контроллера требуется собрать сообщения 
-     * из двух и более моделей
+     * Требуется, когда в одном методе контроллера необходимо собрать сообщения 
+     * из двух и более моделей.
      */
     private function addSuccessful($messages, $type)
     {
         if (empty($messages)) {
             return;
         }
-        
+
         switch ($type) {
             case 'successful':
                 foreach ($messages as $message) {
@@ -246,7 +249,7 @@ class AdminController extends Controller
                 }
 
                 break;
-                
+
             case 'errors':
                 foreach ($messages as $message) {
                     $this->data['errors'][] = $message;
@@ -258,7 +261,7 @@ class AdminController extends Controller
                 break;
         }
     }
-    
+
     public function saveOffer()
     {
         $formContent = $this->request->getProperty('POST');
@@ -270,6 +273,49 @@ class AdminController extends Controller
         } else {
             $this->data['errors'] = $this->offer->getErrors();
             $this->offerEdit();
+        }
+    }
+
+    public function comments()
+    {
+        // нет пункта меню для этой страницы
+        $this->data['thisPage'] = null;
+        
+        $getArray = $this->request->getProperty('GET');
+        $quoteID = $getArray['quote_id'];
+        $this->getQuotePage($quoteID);
+    }
+
+    private function getQuotePage($quoteID)
+    {
+        if (!is_null($quoteID)) {
+            $quote = $this->quotes->getQuote($quoteID);
+            $comments = $this->comments->getComments($quoteID);
+            ;
+            // если не удалось получить цитату, то вернет страницу 404
+            if ($quote) {
+                $this->data['quote'] = $quote;
+                $this->data['comments'] = $comments;
+                $this->view->generate('/admin/quote.php', 'adminTemplate.php', $this->data);
+            } else {
+                Errors::getErrorPage404();
+            }
+        } else {
+            Errors::getErrorPage404();
+        }
+    }
+    
+    public function delComment()
+    {
+        $getArray = $this->request->getProperty('GET');
+        $id = $getArray['comment_id'];
+
+        if ($this->comments->delComment($id)) {
+            $this->data['successful'] = $this->comments->getSuccessful();
+            $this->comments();
+        } else {
+            $this->data['errors'] = $this->comments->getErrors();
+            $this->comments();
         }
     }
 

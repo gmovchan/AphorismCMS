@@ -25,7 +25,12 @@ class QuoteController extends Controller
     public function getPage()
     {
         $getArray = $this->request->getProperty('GET');
-        $quoteID = $getArray['quote_id'];
+        
+        if (!empty($getArray)) {
+            $quoteID = $getArray['quote_id'];
+        } else {
+            $quoteID = null;
+        }
 
         if (!is_null($quoteID)) {
             $quote = $this->quotes->getQuote($quoteID);
@@ -44,6 +49,8 @@ class QuoteController extends Controller
 
     public function comments()
     {
+        // нет пункта меню для этой страницы
+        $this->data['thisPage'] = null;
 
         if (isset($_POST['comment'])) {
 

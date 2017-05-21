@@ -6,15 +6,18 @@ use Application\Core\Model;
 use Application\Models\MysqlModel;
 use Application\Models\ConfigModel;
 use Application\Models\AuthorsModel;
+use Application\Models\CommentsModel;
 
 class QuotesModel extends Model
 {
 
     private $dbh;
+    private $comments;
 
     public function __construct()
     {
         $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+        $this->comments = new CommentsModel();
     }
 
     public function getAllQuotes($author = null)
@@ -26,6 +29,17 @@ class QuotesModel extends Model
             $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON "
                     . "quotes.author_id=authors.id  WHERE authors.id = ? ORDER BY quotes.id DESC;", 'fetchAll', '', array($author));
+        }
+        
+        $quotes = $this->getAmountComments($quotes);
+
+        return $quotes;
+    }
+    
+    private function getAmountComments($quotes)
+    {
+        foreach ($quotes as $quoteKey => $quoteValue) {
+            $quotes[$quoteKey]['amountComments'] = $this->comments->countComments($quoteValue['quote_id']);
         }
         
         return $quotes;

@@ -1,4 +1,3 @@
-<br>
 <div class="inner cover">
     <ul class="list-group authors">
         <?php foreach ($data['authors'] as $author): ?>   

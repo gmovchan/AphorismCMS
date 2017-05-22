@@ -148,7 +148,7 @@ class AdminController extends Controller
             $this->getPage();
         }
     }
-    
+
     public function delAuthor()
     {
         $getArray = $this->request->getProperty('GET');
@@ -250,6 +250,7 @@ class AdminController extends Controller
      * Требуется, когда в одном методе контроллера необходимо собрать сообщения 
      * из двух и более моделей.
      */
+
     private function addSuccessful($messages, $type)
     {
         if (empty($messages)) {
@@ -294,7 +295,7 @@ class AdminController extends Controller
     {
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
-        
+
         $getArray = $this->request->getProperty('GET');
         $quoteID = $getArray['quote_id'];
         $this->getQuotePage($quoteID);
@@ -318,7 +319,7 @@ class AdminController extends Controller
             Errors::getErrorPage404();
         }
     }
-    
+
     public function delComment()
     {
         $getArray = $this->request->getProperty('GET');
@@ -331,6 +332,43 @@ class AdminController extends Controller
             $this->data['errors'] = $this->comments->getErrors();
             $this->comments();
         }
+    }
+
+    public function editAuthor()
+    {
+        // нет пункта меню для этой страницы
+        $this->data['thisPage'] = null;
+
+        if (isset($_POST['author_id'])) {
+
+            $formContent = $this->request->getProperty('POST');
+            $authorID = $formContent['idInDB'];
+
+            if ($this->authors->renameAuthor($authorID)) {
+                $this->data['successful'] = $this->authors->getSuccessful();
+                $this->authors();
+            } else {
+                $this->data['errors'] = $this->comments->getErrors();
+                $this->getAuthorEditor($authorID);
+            }
+        } else {
+            $getArray = $this->request->getProperty('GET');
+            $authorID = $getArray['author_id'];
+            $this->getAuthorEditor($authorID);
+        }
+    }
+
+    private function getAuthorEditor($authorID)
+    {
+        $author = $this->authors->getAuthor($authorID);
+
+        if (is_null($author)) {
+            Errors::getErrorPage404();
+        } else {
+            $this->data['author'] = $author;
+        }
+
+        $this->view->generate('/admin/authorEdit.php', 'adminTemplate.php', $this->data);
     }
 
 }

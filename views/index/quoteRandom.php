@@ -1,12 +1,6 @@
 <!-- Скрипт управления с клавиатуры -->
 <script src="<?php echo $data['publicDir']; ?>/js/random.js"></script>
-
 <div class="inner cover">
-    <?php
-    if (isset($data['errors'])) {
-        require __DIR__ . '/../errors/errorsList.php';
-    }
-    ?>
     <!--
     <h1 class="cover-heading">Цитата</h1>
     <p class="lead"></p>

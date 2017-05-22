@@ -1,14 +1,4 @@
-<br>
 <div class="inner cover">
-    <?php
-    if (isset($data['errors'])) {
-        require __DIR__ . '/../errors/errorsList.php';
-    }
-
-    if (isset($data['successful'])) {
-        require __DIR__ . '/../successful/successfulList.php';
-    }
-    ?>
     <?php foreach ($data['offers'] as $offer): ?>
         <div class="panel panel-default panel-quote">
             <div class="panel-body">

@@ -60,7 +60,10 @@
             <div class="site-wrapper-inner">
 
                 <div class="cover-container">
-
+                    <br>
+                    <div class="inner cover">
+                        <?php require __DIR__ . '/../notice/notice.php'; ?>
+                    </div>
                     <?php require_once __DIR__ . '/../' . $content_view ?>
 
                 </div>

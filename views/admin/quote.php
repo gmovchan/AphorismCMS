@@ -1,15 +1,4 @@
 <div class="inner cover">
-    <?php
-    if (isset($data['errors'])) {
-        require __DIR__ . '/../errors/errorsList.php';
-    }
-
-    if (isset($data['successful'])) {
-        require __DIR__ . '/../successful/successfulList.php';
-        // если элемент успешно добавлен, то поля формы обнулятся
-        unset($_POST);
-    }
-    ?>
     <?php if ($data['quote']): ?>
         <div class="panel panel-default panel-quote" id="quote<?php echo $data['quote']['quote_id']; ?>">
             <div class="panel-body">

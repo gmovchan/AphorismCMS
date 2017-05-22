@@ -1,14 +1,3 @@
-<?php
-if (isset($data['errors'])) {
-    require __DIR__ . '/../errors/errorsList.php';
-}
-
-if (isset($data['successful'])) {
-    require __DIR__ . '/../successful/successfulList.php';
-    // если автор успешно добавлен, то поля формы останутся пыстыми
-    unset($_POST);
-}
-?>
 <div class="inner cover">
     <div class="form-header">
         <h1 class="cover-heading">Предложить цитату</h1>

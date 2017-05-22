@@ -101,15 +101,15 @@ class AuthorsModel extends Model
     public function delAuthor($id)
     {
         $this->ensure(!is_null($id), "Не удалось получить id автора.");
-        
+
         $name = $this->checkID($id);
-        
+
         // FIXME: id автора надо вынести в конфиг-файл, он испольуется по всему 
         // сркипту и должна быть возможность менять его в одном месте
         $this->replaceAuthor($id, 157);
-        
+
         $delete = $this->dbh->query("DELETE FROM `authors` WHERE `id` = ?;", 'rowCount', '', array($id));
-        
+
         if ($delete === 1) {
             $this->successful[] = "Автор \"{$name}\" удален.";
             return true;
@@ -127,17 +127,17 @@ class AuthorsModel extends Model
     private function replaceAuthor($authorIdReplaceable, $authorIdReplacing)
     {
         $quotes = $this->dbh->query("SELECT `id` FROM `quotes` WHERE `author_id` = ?;", 'fetchAll', '', array($authorIdReplaceable));
-        
+
         foreach ($quotes as $quote) {
             $replace = $this->dbh->query("UPDATE `quotes` SET `author_id` = ? WHERE `id` = ?;", 'none', '', array($authorIdReplacing, $quote['id']));
         }
     }
-    
+
     // проверяет существование автора и возвращает его имя
     private function checkID($id)
     {
         $author = $this->dbh->query("SELECT `name` FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
-        
+
         if (!empty($author)) {
             return $author['name'];
         } else {
@@ -145,5 +145,15 @@ class AuthorsModel extends Model
         }
     }
 
-
+    public function getAuthor($id)
+    {
+        $author = $this->dbh->query("SELECT * FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
+        return $author;
+    }
+    
+    // Переименовывает автора.
+    public function renameAuthor()
+    {
+        
+    }
 }

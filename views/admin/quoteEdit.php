@@ -1,9 +1,3 @@
-<?php
-if (isset($data['errors'])) {
-    require __DIR__ . '/../errors/errorsList.php';
-    var_dump($data);
-}
-?>
 <div class="inner cover">
     <div class="form-header">
         <h1 class="cover-heading">Изменить цитату</h1>

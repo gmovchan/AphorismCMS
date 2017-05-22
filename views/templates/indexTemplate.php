@@ -29,7 +29,7 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        
+
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
@@ -59,7 +59,10 @@
             <div class="site-wrapper-inner">
 
                 <div class="cover-container">
-
+                    <br>
+                    <div class="inner cover">
+                        <?php require __DIR__ . '/../notice/notice.php'; ?>
+                    </div>
                     <?php require_once __DIR__ . '/../' . $content_view ?>
 
                 </div>

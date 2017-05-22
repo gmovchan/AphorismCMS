@@ -148,6 +148,20 @@ class AdminController extends Controller
             $this->getPage();
         }
     }
+    
+    public function delAuthor()
+    {
+        $getArray = $this->request->getProperty('GET');
+        $id = $getArray['author_id'];
+
+        if ($this->authors->delAuthor($id)) {
+            $this->data['successful'] = $this->authors->getSuccessful();
+            $this->authors();
+        } else {
+            $this->data['errors'] = $this->authors->getErrors();
+            $this->authors();
+        }
+    }
 
     public function quoteEdit()
     {

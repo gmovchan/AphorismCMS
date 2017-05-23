@@ -150,10 +150,26 @@ class AuthorsModel extends Model
         $author = $this->dbh->query("SELECT * FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
         return $author;
     }
-    
+
     // Переименовывает автора.
-    public function renameAuthor()
+    public function renameAuthor($formContent)
     {
-        
+        $id = $formContent['idInDB'];
+        $name = $formContent['authorName'];
+                
+        $this->ensure($this->checkID($id), "Автор id{$id} не найден в БД");
+
+        if (empty($name)) {
+            $this->errors[] = "Поле с именем не должно быть пустым.";
+            return false;
+            } elseif (iconv_strlen($name) > 128) {
+            $this->errors[] = "Длина имени больше 128 символов.";
+            return false;
+        }
+
+        $this->dbh->query("UPDATE `authors` SET `name` = ? WHERE `id` = ?;", 'none', '', array($name, $id));
+        $this->successful[] = "Автор переименован.";
+        return true;
     }
+
 }

@@ -12,7 +12,7 @@
         <?php foreach ($data['authors'] as $author): ?>   
             <li class="list-group-item">
                 <span class="badge"><?php echo $author['countQuotes']; ?></span>
-                <a href="/admin/quotes?author_id=<?php echo $author['id']; ?>"><?php echo $author['name']; ?></a>
+                <a href="/admin/quotes?author_id=<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></a>
                 <span> / </span>
                 <a href="/admin/editauthor?author_id=<?php echo $author['id']; ?>">Переименовать</span></a>
                 <span> / </span>

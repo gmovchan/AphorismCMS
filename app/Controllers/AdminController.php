@@ -339,16 +339,16 @@ class AdminController extends Controller
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
 
-        if (isset($_POST['author_id'])) {
+        if (isset($_POST['idInDB'])) {
 
             $formContent = $this->request->getProperty('POST');
             $authorID = $formContent['idInDB'];
 
-            if ($this->authors->renameAuthor($authorID)) {
+            if ($this->authors->renameAuthor($formContent)) {
                 $this->data['successful'] = $this->authors->getSuccessful();
                 $this->authors();
             } else {
-                $this->data['errors'] = $this->comments->getErrors();
+                $this->data['errors'] = $this->authors->getErrors();
                 $this->getAuthorEditor($authorID);
             }
         } else {

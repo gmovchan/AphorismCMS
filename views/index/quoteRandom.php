@@ -18,7 +18,7 @@
             <div class="panel-footer">
                 <a href="/quotes#quote<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
                 <span> / </span>
-                <a href="quote/comments?quote_id=<?php echo $data['quote']['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
+                <a href="/quote/comments?quote_id=<?php echo $data['quote']['quote_id']; ?>">Комментировать (<?php /* чсило комментариев */ echo 0; ?>)</a>
             </div>
         </div>
     <?php endif; ?>

@@ -99,7 +99,7 @@ class AuthModel extends Model
         session_destroy();
         setcookie("login", '', time() - 3600, '/', null, false, true);
         setcookie("password", '', time() - 3600, '/', null, false, true);
-        $host = 'http://' . $_SERVER['HTTP_HOST'] . '/auth';
+        $host = 'http://' . $_SERVER['HTTP_HOST'] . '/admin/auth';
         header("Location:" . $host);
         exit();
     }

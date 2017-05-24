@@ -3,7 +3,7 @@
         <h1 class="cover-heading">Изменить цитату</h1>
         <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
     </div>
-    <form class="text-left" action="/admin/savequote" method="POST">
+    <form class="text-left" action="/admin/quote/savequote" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>
             <textarea name="quoteText" class="form-control" rows="6"><?php echo @$this->html($data['quote']['text']); ?></textarea>
@@ -15,13 +15,13 @@
                     <?php //сохраняет выбранным элемент списка в случае ошибки после отправки формы ?>
                     <?php if (isset($data['quote']['author_id'])): ?>
                         <?php if ($data['quote']['author_id'] == $author['id']): ?>
-                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php endif; ?>
 
                     <?php else: ?>
-                        <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                        <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>

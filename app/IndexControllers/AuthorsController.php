@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Controllers;
+namespace Application\IndexControllers;
 
 use Application\Core\Controller;
 use Application\Models\AuthorsModel;

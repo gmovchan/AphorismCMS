@@ -10,15 +10,17 @@
                 </blockquote>
             </div>
             <div class="panel-footer">
-                <a href="/quote/comments?quote_id=<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
+                <a href="/quotes#quote=<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>
                 <span> / </span>
-                <a href="/admin/quoteedit?quote_id=<?php echo $data['quote']['quote_id']; ?>">Изменить</a>
+                <a href="/admin/quote/editquote?quote_id=<?php echo $data['quote']['quote_id']; ?>">Изменить</a>
                 <span> / </span>
-                <a href="/admin/delquote?quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
+                <a href="/admin/quote/delquote?quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
             </div>
         </div>
     <?php endif; ?>
-    <h3 class="white-text">Комментарии</h3>
+    <?php if (!empty($data['comments'])): ?>
+        <h3 class="white-text">Комментарии</h3>
+    <?php endif; ?>
     <?php foreach ($data['comments'] as $comment): ?>
         <div class="panel panel-default comment">
             <div class="panel-body">

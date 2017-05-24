@@ -18,21 +18,18 @@
                 <?php foreach ($data['authors'] as $author): ?>
                     <?php //сохраняет выбранным элемент списка в случае ошибки после отправки формы ?>
                     <?php if (isset($data['offer']['author_id'])): ?>
-
-                        <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
-                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                        <?php if ($data['offer']['author_id'] === $author['id']): ?>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php endif; ?>
-
                     <?php else: ?>
                         <?php //по умолчанию автор "низвестен" ?>
                         <?php $_POST['authorQuoteID'] = 157 ?>
-
                         <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
-                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
@@ -52,8 +49,8 @@
         </div>
         <!-- скрытое поле для передачи id сохраняемой цитаты -->
         <input style="display: none;" name="idInDB" value="<?php echo @$this->html($data['offer']['id']); ?>">
-        <button type="submit" formaction="/admin/saveoffer" class="btn btn-default">Сохранить</button>
-        <button type="submit" formaction="/admin/approveoffer" class="btn btn-default">Опубликовать</button>
+        <button type="submit" formaction="/admin/offer/saveoffer" class="btn btn-default">Сохранить</button>
+        <button type="submit" formaction="/admin/offer/approveoffer" class="btn btn-default">Опубликовать</button>
     </form>
 </div>
 

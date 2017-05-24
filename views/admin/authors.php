@@ -1,5 +1,5 @@
 <div class="inner cover">
-    <form class="text-left" action="/admin/addauthor" method="POST">
+    <form class="text-left" action="/admin/authors/addauthor" method="POST">
         <div class="input-group">
             <input type="text" class="form-control" aria-label="..." name="authorName" value="<?php echo @$this->html($_POST['authorName']); ?>">
             <div class="input-group-btn">
@@ -14,9 +14,9 @@
                 <span class="badge"><?php echo $author['countQuotes']; ?></span>
                 <a href="/admin/quotes?author_id=<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></a>
                 <span> / </span>
-                <a href="/admin/editauthor?author_id=<?php echo $author['id']; ?>">Переименовать</span></a>
+                <a href="/admin/authors/editauthor?author_id=<?php echo $author['id']; ?>">Переименовать</span></a>
                 <span> / </span>
-                <a href="/admin/delauthor?author_id=<?php echo $author['id']; ?>">Удалить</span></a>
+                <a href="/admin/authors/delauthor?author_id=<?php echo $author['id']; ?>">Удалить</span></a>
             </li>
         <?php endforeach; ?>
     </ul>

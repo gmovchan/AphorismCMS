@@ -6,66 +6,12 @@ use Application\Core\Errors;
 
 class Route
 {
-    /*
-      public function start()
-      {
-      $resultParseUrl = $this->parseURL();
-
-      $controllerlClass = $resultParseUrl['controllerName'] . 'Controller';
-      $controllerNamespace = 'Application\\Controllers\\' . $controllerlClass;
-
-      if (!class_exists($controllerNamespace)) {
-      Errors::getErrorPage404();
-      }
-
-      $controller = new $controllerNamespace;
-      $action = $resultParseUrl['actionName'];
-
-      if (method_exists($controller, $action)) {
-      $controller->$action();
-      } else {
-      Errors::getErrorPage404();
-      }
-      }
-
-      private function parseURL()
-      {
-      $controllerName = 'Quote';
-      $actionName = 'getPage';
-
-      $urlParsed = parse_url($_SERVER['REQUEST_URI']);
-      $routes = explode('/', $urlParsed['path']);
-
-      if (!empty($routes[1])) {
-
-      // делает первую блукву прописной, остальные строчными, потому что
-      // так выглядят названия соответствующих классов и файлов, например AuthModel
-      $controllerName = ucfirst(strtolower($routes[1]));
-      } else {
-      // по умолчанию отправляет на страницу по умолчанию
-      // без изменения адреса - будут ломаться ссылки во вью
-      $this->goToPage($controllerName);
-      }
-
-      if (!empty($routes[2])) {
-
-      $actionName = strtolower($routes[2]);
-      }
-
-      return array(
-      'controllerName' => $controllerName,
-      'actionName' => $actionName,
-      );
-      }
-     * 
-     */
-
     public function start()
     {
         $resultParseUrl = $this->parseURL();
 
         $controllerlClass = $resultParseUrl['controllerName'] . 'Controller';
-        $controllerNamespace = 'Application\\' . $resultParseUrl['controllerDirName']. '\\' . $controllerlClass;
+        $controllerNamespace = 'Application\\' . $resultParseUrl['controllerDirName'] . '\\' . $controllerlClass;
 
         if (!class_exists($controllerNamespace)) {
             Errors::getErrorPage404();
@@ -73,6 +19,12 @@ class Route
 
         $controller = new $controllerNamespace;
         $action = $resultParseUrl['actionName'];
+        
+        /*
+        var_dump($controller);
+        var_dump($action);
+         * 
+         */
 
         if (method_exists($controller, $action)) {
             $controller->$action();
@@ -84,41 +36,43 @@ class Route
     private function parseURL()
     {
         $controllerName = 'Quote';
+        $redirectPath = $controllerName;
         $actionName = 'getPage';
-        $keyOne = 1;
-        $keyTwo = 2;
+        $keyController = 1;
+        $keyAction = 2;
         // Название папки в которой находятся контроллеры
-        $controllerDirName = 'Controllers';
+        $controllerDirName = 'IndexControllers';
 
         $urlParsed = parse_url($_SERVER['REQUEST_URI']);
         $routes = explode('/', $urlParsed['path']);
 
-        // Если первый элемент пути указывает на админку, то дальнейший разбор 
-        // пути сдвигается на один элемент, чтобы получить контроллер и метод 
-        // админки, а не основного приложения
         /*
-        if ($routes[1] === 'admin') {
-            $keyOne = 2;
-            $keyTwo = 3;
-            $controllerDirName = 'ControllersAdmin';
-        } 
-         * 
+         * Если первый элемент пути указывает на админку, то дальнейший разбор 
+         * пути сдвигается на один элемент, чтобы получить контроллер и метод 
+         * админки, а не основного приложения
          */
+        if ($routes[1] === 'admin') {
+            $controllerName = 'Quotes';
+            $redirectPath = 'admin/quotes';
+            $keyController = 2;
+            $keyAction = 3;
+            $controllerDirName = 'AdminControllers';
+        }
 
-        if (!empty($routes[$keyOne])) {
+        if (!empty($routes[$keyController])) {
 
             // делает первую блукву прописной, остальные строчными, потому что 
             // так выглядят названия соответствующих классов и файлов, например AuthModel
-            $controllerName = ucfirst(strtolower($routes[1]));
+            $controllerName = ucfirst(strtolower($routes[$keyController]));
         } else {
-            // по умолчанию отправляет на страницу по умолчанию
-            // без изменения адреса - будут ломаться ссылки во вью
-            $this->goToPage($controllerName);
+            // Если в пути не передано имя контроллера, то произойдет перенаправление
+            // на страницу по ссылке в которой уже будет подставлено имя контроллера
+            $this->goToPage($redirectPath);
         }
 
-        if (!empty($routes[$keyTwo])) {
+        if (!empty($routes[$keyAction])) {
 
-            $actionName = strtolower($routes[2]);
+            $actionName = strtolower($routes[$keyAction]);
         }
 
         return array(
@@ -133,17 +87,7 @@ class Route
     {
         $url = 'Location: /' . strtolower($defaultPage) . '/';
         header($url);
-        // прекращает выполнять функцию
+        // останавливает скрипт, чтобы не было неожиданностей
         exit();
     }
-
-    private function getErrorPage404()
-    {
-        $host = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-        header('HTTP/1.1 404 Not Found');
-        header('Status: 404 Not Found');
-        header('Location:' . $host . '404');
-        exit;
-    }
-
 }

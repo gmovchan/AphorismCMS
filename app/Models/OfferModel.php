@@ -73,12 +73,14 @@ class OfferModel extends Model
         
         $rowCount = $this->dbh->query("UPDATE `offer_quotes` SET `quote_text` = ?, `author_quote` = ?, `author_offer` = ?, `source_quote` = ?, `comment` = ?, `author_id` = ?"
                 . "  WHERE `id` = ?;", 'rowCount', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['creatorQuote'], $formContent['sourceQuote'], $formContent['comment'], $formContent['authorQuoteID'], $formContent['idInDB']));
+        
+        var_dump($formContent);
 
         if ($rowCount === 1) {
             $this->successful[] = "Изменения в цитате id{$formContent['idInDB']} сохранены";
             return true;
         } else {
-            $this->errors[] = "Не удалось сохранить изменения id{$formContent['idInDB']}";
+            $this->errors[] = "Не удалось сохранить изменения id{$formContent['idInDB']}. Возможно, не было правок.";
             return false;
         }
 

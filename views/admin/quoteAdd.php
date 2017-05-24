@@ -3,7 +3,7 @@
         <h1 class="cover-heading">Добавить цитату</h1>
         <p>Поле с текстом цитаты необходимо обязательно заполнить. Все остальные поля - по желанию.</p>
     </div>
-    <form class="text-left" action="/admin/addquote" method="POST">
+    <form class="text-left" action="/admin/quote/addquote" method="POST">
         <div class="form-group">
             <label for="quoteText">Текст</label>
             <textarea name="quoteText" class="form-control" rows="6"><?php echo @$this->html($_POST['quoteText']); ?></textarea>
@@ -16,19 +16,18 @@
                     <?php if (isset($_POST['authorQuoteID'])): ?>
 
                         <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
-                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php endif; ?>
 
                     <?php else: ?>
                         <?php //по умолчанию автор "низвестен" ?>
                         <?php $_POST['authorQuoteID'] = 157 ?>
-
                         <?php if ($_POST['authorQuoteID'] == $author['id']): ?>
-                            <option selected value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option selected value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $author['id']; ?>"><?php echo $author['name']; ?></option>
+                            <option value="<?php echo $author['id']; ?>"><?php echo @$this->html($author['name']); ?></option>
                         <?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>

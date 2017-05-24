@@ -10,9 +10,9 @@
                 <p><b>Время создания:</b> <?php echo $offer['time_add_offer']; ?></p>
             </div>
             <div class="panel-footer">
-                <a href="/admin/editoffer?offer_id=<?php echo $offer['id']; ?>">Открыть</a>
+                <a href="/admin/offer/editoffer?offer_id=<?php echo $offer['id']; ?>">Открыть</a>
                 <span> / </span>
-                <a href="/admin/deloffer?offer_id=<?php echo $offer['id']; ?>">Удалить</a>
+                <a href="/admin/offer/deloffer?offer_id=<?php echo $offer['id']; ?>">Удалить</a>
             </div>
         </div>
     <?php endforeach; ?>

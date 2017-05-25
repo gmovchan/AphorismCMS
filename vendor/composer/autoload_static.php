@@ -21,15 +21,17 @@ class ComposerStaticInit58c5ce2a747eaa18878bc78d7ca97c65
     );
 
     public static $classMap = array (
+        'Application\\AdminControllers\\AdminController' => __DIR__ . '/../..' . '/app/AdminControllers/AdminController.php',
+        'Application\\AdminControllers\\AuthController' => __DIR__ . '/../..' . '/app/AdminControllers/AuthController.php',
+        'Application\\AdminControllers\\AuthorsController' => __DIR__ . '/../..' . '/app/AdminControllers/AuthorsController.php',
+        'Application\\AdminControllers\\OfferController' => __DIR__ . '/../..' . '/app/AdminControllers/OfferController.php',
+        'Application\\AdminControllers\\QuoteController' => __DIR__ . '/../..' . '/app/AdminControllers/QuoteController.php',
         'Application\\AdminControllers\\QuotesController' => __DIR__ . '/../..' . '/app/AdminControllers/QuotesController.php',
-        'Application\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/AdminControllers/AdminController.php',
-        'Application\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/AdminControllers/AuthController.php',
-        'Application\\Controllers\\AuthorsController' => __DIR__ . '/../..' . '/app/AdminControllers/AuthorsController.php',
-        'Application\\Controllers\\OfferController' => __DIR__ . '/../..' . '/app/AdminControllers/OfferController.php',
-        'Application\\Controllers\\QuoteController' => __DIR__ . '/../..' . '/app/AdminControllers/QuoteController.php',
+        'Application\\Core\\ConfigModel' => __DIR__ . '/../..' . '/app/Core/Config.php',
         'Application\\Core\\Controller' => __DIR__ . '/../..' . '/app/Core/Controller.php',
         'Application\\Core\\Errors' => __DIR__ . '/../..' . '/app/Core/Errors.php',
         'Application\\Core\\Model' => __DIR__ . '/../..' . '/app/Core/Model.php',
+        'Application\\Core\\MysqlModel' => __DIR__ . '/../..' . '/app/Core/Mysql.php',
         'Application\\Core\\Request' => __DIR__ . '/../..' . '/app/Core/Request.php',
         'Application\\Core\\Route' => __DIR__ . '/../..' . '/app/Core/Route.php',
         'Application\\Core\\View' => __DIR__ . '/../..' . '/app/Core/View.php',
@@ -40,8 +42,6 @@ class ComposerStaticInit58c5ce2a747eaa18878bc78d7ca97c65
         'Application\\Models\\AuthModel' => __DIR__ . '/../..' . '/app/Models/AuthModel.php',
         'Application\\Models\\AuthorsModel' => __DIR__ . '/../..' . '/app/Models/AuthorsModel.php',
         'Application\\Models\\CommentsModel' => __DIR__ . '/../..' . '/app/Models/CommentsModel.php',
-        'Application\\Models\\ConfigModel' => __DIR__ . '/../..' . '/app/Models/ConfigModel.php',
-        'Application\\Models\\MysqlModel' => __DIR__ . '/../..' . '/app/Models/MysqlModel.php',
         'Application\\Models\\OfferModel' => __DIR__ . '/../..' . '/app/Models/OfferModel.php',
         'Application\\Models\\QuotesModel' => __DIR__ . '/../..' . '/app/Models/QuotesModel.php',
     );

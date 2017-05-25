@@ -3,8 +3,8 @@
 namespace Application\Models;
 
 use Application\Core\Model;
-use Application\Models\MysqlModel;
-use Application\Models\ConfigModel;
+use Application\Core\Mysql;
+use Application\Core\Config;
 
 class OfferModel extends Model
 {
@@ -15,7 +15,7 @@ class OfferModel extends Model
 
     public function __construct()
     {
-        $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+        $this->dbh = new Mysql(Config::UNMARRIED);
     }
 
     public function addOffer($formContent)
@@ -73,8 +73,6 @@ class OfferModel extends Model
         
         $rowCount = $this->dbh->query("UPDATE `offer_quotes` SET `quote_text` = ?, `author_quote` = ?, `author_offer` = ?, `source_quote` = ?, `comment` = ?, `author_id` = ?"
                 . "  WHERE `id` = ?;", 'rowCount', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['creatorQuote'], $formContent['sourceQuote'], $formContent['comment'], $formContent['authorQuoteID'], $formContent['idInDB']));
-        
-        var_dump($formContent);
 
         if ($rowCount === 1) {
             $this->successful[] = "Изменения в цитате id{$formContent['idInDB']} сохранены";

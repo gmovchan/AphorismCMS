@@ -3,8 +3,8 @@
 namespace Application\Models;
 
 use Application\Core\Model;
-use Application\Models\MysqlModel;
-use Application\Models\ConfigModel;
+use Application\Core\Mysql;
+use Application\Core\Config;
 
 /**
  * класс переписан так, чтобы для аутентификации и авторизации использовались только куки,
@@ -23,7 +23,7 @@ class AuthModel extends Model
     {
         // передает класса из которого вызывается, для каждого класса свои
         // настройки mysql
-        $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+        $this->dbh = new Mysql(Config::UNMARRIED);
     }
 
     /**

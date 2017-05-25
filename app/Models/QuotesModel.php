@@ -3,8 +3,8 @@
 namespace Application\Models;
 
 use Application\Core\Model;
-use Application\Models\MysqlModel;
-use Application\Models\ConfigModel;
+use Application\Core\Mysql;
+use Application\Core\Config;
 use Application\Models\AuthorsModel;
 use Application\Models\CommentsModel;
 
@@ -16,7 +16,7 @@ class QuotesModel extends Model
 
     public function __construct()
     {
-        $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+        $this->dbh = new Mysql(Config::UNMARRIED);
         $this->comments = new CommentsModel();
     }
 

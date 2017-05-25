@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Models;
+namespace Application\Core;
 
 use Application\Core\Model;
 
-class ConfigModel extends Model
+class Config extends Model
 {
 
     private $configArray;
@@ -27,7 +27,7 @@ class ConfigModel extends Model
         if (empty(self::$instance)) {
             // класс с закрытым конструктором может сам
             // себя создать
-            self::$instance = new ConfigModel();
+            self::$instance = new Config();
         }
         // возвращает ссылку на созданный объект
         return self::$instance;

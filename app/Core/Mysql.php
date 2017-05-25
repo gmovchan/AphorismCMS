@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Models;
+namespace Application\Core;
 
 use Application\Core\Model;
 use PDO;
-use Application\Models\ConfigModel;
+use Application\Core\Config;
 
 /**
  * Объект класса подключается к БД и работает с запросами
@@ -12,7 +12,7 @@ use Application\Models\ConfigModel;
  * если изменится способ подключения и настройки, то достаточно было бы изменить
  * только этот класс
  */
-class MysqlModel extends Model
+class Mysql extends Model
 {
 
     //хранит подключение к БД для доступа к нему из методов класса
@@ -26,7 +26,7 @@ class MysqlModel extends Model
     public function __construct($settingValue)
     {
         // получает настройки для соединения с БД
-        $mysqlConfig = ConfigModel::getInstance();
+        $mysqlConfig = Config::getInstance();
         $this->config_data = $mysqlConfig->getConfig($settingValue);
 
         $this->connect();

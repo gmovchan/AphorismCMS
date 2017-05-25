@@ -3,8 +3,8 @@
 namespace Application\Models;
 
 use Application\Core\Model;
-use Application\Models\MysqlModel;
-use Application\Models\ConfigModel;
+use Application\Core\Mysql;
+use Application\Core\Config;
 
 class AuthorsModel extends Model
 {
@@ -15,7 +15,7 @@ class AuthorsModel extends Model
 
     public function __construct()
     {
-        $this->dbh = new MysqlModel(ConfigModel::UNMARRIED);
+        $this->dbh = new Mysql(Config::UNMARRIED);
     }
 
     /**

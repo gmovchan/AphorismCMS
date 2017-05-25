@@ -6,15 +6,17 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Application\\AdminControllers\\AdminController' => $baseDir . '/app/AdminControllers/AdminController.php',
+    'Application\\AdminControllers\\AuthController' => $baseDir . '/app/AdminControllers/AuthController.php',
+    'Application\\AdminControllers\\AuthorsController' => $baseDir . '/app/AdminControllers/AuthorsController.php',
+    'Application\\AdminControllers\\OfferController' => $baseDir . '/app/AdminControllers/OfferController.php',
+    'Application\\AdminControllers\\QuoteController' => $baseDir . '/app/AdminControllers/QuoteController.php',
     'Application\\AdminControllers\\QuotesController' => $baseDir . '/app/AdminControllers/QuotesController.php',
-    'Application\\Controllers\\AdminController' => $baseDir . '/app/AdminControllers/AdminController.php',
-    'Application\\Controllers\\AuthController' => $baseDir . '/app/AdminControllers/AuthController.php',
-    'Application\\Controllers\\AuthorsController' => $baseDir . '/app/AdminControllers/AuthorsController.php',
-    'Application\\Controllers\\OfferController' => $baseDir . '/app/AdminControllers/OfferController.php',
-    'Application\\Controllers\\QuoteController' => $baseDir . '/app/AdminControllers/QuoteController.php',
+    'Application\\Core\\ConfigModel' => $baseDir . '/app/Core/Config.php',
     'Application\\Core\\Controller' => $baseDir . '/app/Core/Controller.php',
     'Application\\Core\\Errors' => $baseDir . '/app/Core/Errors.php',
     'Application\\Core\\Model' => $baseDir . '/app/Core/Model.php',
+    'Application\\Core\\MysqlModel' => $baseDir . '/app/Core/Mysql.php',
     'Application\\Core\\Request' => $baseDir . '/app/Core/Request.php',
     'Application\\Core\\Route' => $baseDir . '/app/Core/Route.php',
     'Application\\Core\\View' => $baseDir . '/app/Core/View.php',
@@ -25,8 +27,6 @@ return array(
     'Application\\Models\\AuthModel' => $baseDir . '/app/Models/AuthModel.php',
     'Application\\Models\\AuthorsModel' => $baseDir . '/app/Models/AuthorsModel.php',
     'Application\\Models\\CommentsModel' => $baseDir . '/app/Models/CommentsModel.php',
-    'Application\\Models\\ConfigModel' => $baseDir . '/app/Models/ConfigModel.php',
-    'Application\\Models\\MysqlModel' => $baseDir . '/app/Models/MysqlModel.php',
     'Application\\Models\\OfferModel' => $baseDir . '/app/Models/OfferModel.php',
     'Application\\Models\\QuotesModel' => $baseDir . '/app/Models/QuotesModel.php',
 );

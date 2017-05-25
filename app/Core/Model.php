@@ -2,6 +2,8 @@
 
 namespace Application\Core;
 
+use Application\Models\ConfigModel;
+
 /**
  * Содержит основную логику приложения - вычисления, запросы к БД и обработку полученных из БД данных.
  * Все то, чего не должно быть в Роутере, Контроллере или Представлении :) 
@@ -10,6 +12,11 @@ class Model {
 
     protected $errors = array();
     protected $successful = array();
+    
+    public function __construct()
+    {
+        $constants = ConfigModel::CONSTANTS;
+    }
 
     public function getErrors() {
         return $this->errors;
@@ -31,6 +38,13 @@ class Model {
         if (!$expr) {
             throw new \Exception($message);
         }
+    }
+    
+    protected function getConstants($name)
+    {
+        $config = ConfigModel::getInstance();
+        $constants = $config->getConfig(ConfigModel::CONSTANTS);
+        return $constants[$name];
     }
 
 }

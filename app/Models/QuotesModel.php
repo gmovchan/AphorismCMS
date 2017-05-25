@@ -23,9 +23,11 @@ class QuotesModel extends Model
     public function getAllQuotes($author = null)
     {
         if (is_null($author)) {
+            // получает все цитаты
             $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
-                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id  ORDER BY quotes.id DESC;", 'fetchAll', '');
+                . "AS `author`, authors.id AS author_id FROM quotes LEFT JOIN authors ON quotes.author_id=authors.id  ORDER BY quotes.id DESC;", 'fetchAll', '');
         } else {
+            // получает только цитаты конкретного автора
             $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON "
                     . "quotes.author_id=authors.id  WHERE authors.id = ? ORDER BY quotes.id DESC;", 'fetchAll', '', array($author));
@@ -49,10 +51,14 @@ class QuotesModel extends Model
     public function getQuote($id)
     {
         $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
-                . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'fetch', '', array($id));
+                . "AS `author`, authors.id AS author_id FROM quotes LEFT JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'fetch', '', array($id));
 
         if ($quote) {
-
+            // поместил аргумент в массив, потому что функция работает только с массивами
+            $quote = $this->getAmountComments(array($quote));
+            // извлекает цитату из возвращенного массива
+            $quote = $quote[0];
+            
             $prevAndNextRows = $this->getPrevAndNextRows($quote['quote_id']);
             $quote['previous_id'] = $prevAndNextRows['previous_id'];
             $quote['next_id'] = $prevAndNextRows['next_id'];
@@ -112,18 +118,6 @@ class QuotesModel extends Model
             $this->errors[] = "не удалось получить случайный id цитаты.";
             return false;
         }
-    }
-
-    // Возвращает цитату по умолчанию, обычно используется, если цитата не найдена
-    public function getEmptyQuote()
-    {
-        return array('text' => 'Цитата не найдена. Неверный id.',
-            'quote_id' => 0,
-            'author' => 'Администратор',
-            'author_id' => 157,
-            'previous_id' => 0,
-            'next_id' => 0,
-            'random_id' => $this->getRandomQuoteID());
     }
 
     // Добавляет новую цитату, должна вызываться только из панели администратора

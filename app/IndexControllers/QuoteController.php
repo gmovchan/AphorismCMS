@@ -76,7 +76,7 @@ class QuoteController extends Controller
         if (!is_null($quoteID)) {
             $quote = $this->quotes->getQuote($quoteID);
             $comments = $this->comments->getComments($quoteID);
-            ;
+            
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
                 $this->data['quote'] = $quote;

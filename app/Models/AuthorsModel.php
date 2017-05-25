@@ -101,13 +101,8 @@ class AuthorsModel extends Model
     public function delAuthor($id)
     {
         $this->ensure(!is_null($id), "Не удалось получить id автора.");
-
         $name = $this->checkID($id);
-
-        // FIXME: id автора надо вынести в конфиг-файл, он испольуется по всему 
-        // сркипту и должна быть возможность менять его в одном месте
-        $this->replaceAuthor($id, 157);
-
+        $this->replaceAuthor($id, $this->getConstants('unknown_author_id'));
         $delete = $this->dbh->query("DELETE FROM `authors` WHERE `id` = ?;", 'rowCount', '', array($id));
 
         if ($delete === 1) {

@@ -13,6 +13,7 @@ class ConfigModel extends Model
     private $configFilePath;
     // вариант настроек для подключения БД
     const UNMARRIED = 1;
+    const CONSTANTS = 2;
 
     public function __construct()
     {
@@ -47,6 +48,13 @@ class ConfigModel extends Model
 
                 return $this->configArray['unmarried'];
                 break;
+            
+            case self::CONSTANTS:
+
+                $this->ensure(isset($this->configArray['constants']), "Настройки для константы CONSTANTS не найдены");
+
+                return $this->configArray['constants'];
+                break;
 
             default:
                 $this->ensure(false, "Переданная константа для получения настроек не задана");
@@ -57,10 +65,9 @@ class ConfigModel extends Model
     // получает массив с содержимым файла конфигурации
     private function getAllConfig()
     {
-        $this->ensure(file_exists($this->configFilePath), "Файл с настройками не найден");
-
-        $config_array = parse_ini_file($this->configFilePath, true);
-
+        $this->ensure(file_exists($this->configFilePath), "Файл с настройками не найден");       
+        // по возможности сохраняет тип значения
+        $config_array = parse_ini_file($this->configFilePath, true, $scanner_mode = INI_SCANNER_TYPED);
         return $config_array;
     }
 

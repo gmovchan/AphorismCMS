@@ -11,7 +11,7 @@ class View
      */
     public function generate($content_view, $template_view, $data = null)
     {
-        require __DIR__ . '/../../views/templates/' . $template_view;
+        require __DIR__ . '/../../views/layouts/' . $template_view;
     }
     
     // Защита от XSS уязвимостей. Вызывается в представлении с помощью $this->html('text');

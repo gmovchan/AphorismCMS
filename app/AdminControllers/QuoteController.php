@@ -93,7 +93,7 @@ class QuoteController extends AdminController
         }
     }
 
-    public function editQuote($id)
+    public function editQuote($id = null)
     {
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;

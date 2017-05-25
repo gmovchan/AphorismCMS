@@ -14,11 +14,7 @@ class Controller
     protected $view;
     protected $request;
 
-    /**
-     * 
-     * @param type $config_path
-     * @param type $section_name
-     */
+
     function __construct()
     {
         $this->view = new View;

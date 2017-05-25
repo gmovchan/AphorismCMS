@@ -11,13 +11,13 @@ class Route
         $resultParseUrl = $this->parseURL();
 
         $controllerlClass = $resultParseUrl['controllerName'] . 'Controller';
-        $controllerNamespace = 'Application\\' . $resultParseUrl['controllerDirName'] . '\\' . $controllerlClass;
+        $controllerlClass = 'Application\\' . $resultParseUrl['controllerDirName'] . '\\' . $controllerlClass;
 
-        if (!class_exists($controllerNamespace)) {
+        if (!class_exists($controllerlClass)) {
             Errors::getErrorPage404();
         }
 
-        $controller = new $controllerNamespace;
+        $controller = new $controllerlClass;
         $action = $resultParseUrl['actionName'];
         
         /*

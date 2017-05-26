@@ -46,15 +46,19 @@ body {
     width: 100%;
     height: 100%; /* For at least Firefox */
     min-height: 100%;
-    /*
     -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
     box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-    */
 }
 .site-wrapper-inner {
     display: table-cell;
+}
+
+.site-wrapper-inner-middle {
+    display: table-cell;
     vertical-align: middle;
 }
+
+
 .cover-container {
     margin-right: auto;
     margin-left: auto;
@@ -133,6 +137,7 @@ body {
 .mastfoot {
     color: #999; /* IE8 proofing */
     color: rgba(255,255,255,.5);
+    bottom: 0;
 }
 
 
@@ -149,7 +154,14 @@ body {
         top: 0;
         margin-right: auto;
         margin-left: auto;
+        padding-bottom: 20px;
     }
+    
+    .masthead-middle {
+        position: fixed;
+        top: 0;
+    }
+    
     .mastfoot {
         /*
         position: fixed;
@@ -159,11 +171,12 @@ body {
         margin-left: auto;
     }
     /* Start the vertical centering */
-    .site-wrapper-inner {
+    .site-wrapper-inner-middle {
         vertical-align: middle;
     }
     /* Handle the widths */
     .masthead,
+    .masthead-middle,
     .mastfoot,
     .cover-container {
         width: 100%; /* Must be percentage or pixels for horizontal alignment */
@@ -172,6 +185,7 @@ body {
 
 @media (min-width: 992px) {
     .masthead,
+    .masthead-middle,
     .mastfoot,
     .cover-container {
         width: 700px;
@@ -180,7 +194,8 @@ body {
 
 form, 
 .form-header,
-.white-text{
+.white-text,
+.about {
     color: #fff;
 }
 
@@ -193,5 +208,5 @@ form,
 
 #comment-form,
 #open-comment-form{
- margin-bottom: 20px;   
+    margin-bottom: 20px;   
 }

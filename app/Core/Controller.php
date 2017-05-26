@@ -22,6 +22,8 @@ class Controller
         // задает путь к директории /public/, чтобы скрипт было легко модифцировать
         // для выделенного или виртуального хостинга
         $this->data['publicDir'] = '/public/';
+        // заголовок страницы
+        $this->data['title'] = "Бобылецитатник";
         $this->request = new Request;
     }
 

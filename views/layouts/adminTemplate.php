@@ -9,7 +9,7 @@
         <meta name="author" content="">
         <link rel="icon" href="<?php echo $data['publicDir']; ?>favicon.ico">
 
-        <title>Администрирование</title>
+        <title><?php echo $data['title'] ?> - Админ</title>
 
         <!-- Bootstrap core CSS -->
         <link href="<?php echo $data['publicDir']; ?>dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +29,7 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        
+
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
@@ -39,41 +39,38 @@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="<?php echo $data['publicDir']; ?>assets/js/ie10-viewport-bug-workaround.js"></script>
     </head>
-
     <body>
-        <div class="masthead clearfix">
-            <div class="inner">
-                <h3 class="masthead-brand">Администрирование</h3>
-                <nav>
-                    <ul class="nav masthead-nav">
-                        <li class="<?php if ($data['thisPage'] === 'quotes') echo 'active' ?>"><a href="/admin/quotes">Цитаты</a></li>
-                        <li class="<?php if ($data['thisPage'] === 'authors') echo 'active' ?>"><a href="/admin/authors">Авторы</a></li>
-                        <li class="<?php if ($data['thisPage'] === 'offers') echo 'active' ?>"><a href="/admin/offer">Предложенные</a></li>
-                        <li class="<?php if ($data['thisPage'] === 'addQuote') echo 'active' ?>"><a href="/admin/quote/addquote">Добавить</a></li>
-                        <li><a href="/admin/auth/logout" title="Выйти"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
         <div class="site-wrapper">
-
             <div class="site-wrapper-inner">
-
                 <div class="cover-container">
-                    <br>
+                    <div class="masthead clearfix">
+                        <div class="inner">
+                            <h3 class="masthead-brand">Админ</h3>
+                            <nav>
+                                <ul class="nav masthead-nav">
+                                    <li class="<?php if ($data['thisPage'] === 'quotes') echo 'active' ?>"><a href="/admin/quotes">Цитаты</a></li>
+                                    <li class="<?php if ($data['thisPage'] === 'authors') echo 'active' ?>"><a href="/admin/authors">Авторы</a></li>
+                                    <li class="<?php if ($data['thisPage'] === 'offers') echo 'active' ?>"><a href="/admin/offer">Предложенные</a></li>
+                                    <li class="<?php if ($data['thisPage'] === 'addQuote') echo 'active' ?>"><a href="/admin/quote/addquote">Добавить</a></li>
+                                    <li><a href="/admin/auth/logout" title="Выйти"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                     <div class="inner cover">
                         <?php require __DIR__ . '/../notice/notice.php'; ?>
                     </div>
-                    <?php require_once __DIR__ . '/../' . $content_view ?>
-
+                    <div class="inner cover">
+                        <?php require_once __DIR__ . '/../' . $content_view ?>
+                    </div>
+                    <!--
+                    <div class="mastfoot">
+                        <div class="inner">
+                            <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+                        </div>
+                    </div>
+                    -->
                 </div>
-
-            </div>
-
-        </div>
-        <div class="mastfoot">
-            <div class="inner">
-                <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
             </div>
         </div>
     </body>

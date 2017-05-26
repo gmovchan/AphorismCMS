@@ -146,7 +146,7 @@ class OfferController extends AdminController
     
     public function getOffers()
     {
-        $this->data['thisPage'] = 'offersAdmin';
+        $this->data['thisPage'] = 'offers';
         $this->data['offers'] = $this->offer->getOffersAll();
         $this->view->generate('/admin/offers.php', 'adminTemplate.php', $this->data);
     }

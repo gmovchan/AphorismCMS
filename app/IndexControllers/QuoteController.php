@@ -37,13 +37,13 @@ class QuoteController extends Controller
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
                 $this->data['quote'] = $quote;
-                $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+                $this->view->generate('/index/quoteRandom.php', 'indexMiddleTemplate.php', $this->data);
             } else {
                 Errors::getErrorPage404();
             }
         } else {
             $this->data['quote'] = $this->quotes->getRandomQuote();
-            $this->view->generate('/index/quoteRandom.php', 'indexTemplate.php', $this->data);
+            $this->view->generate('/index/quoteRandom.php', 'indexMiddleTemplate.php', $this->data);
         }
     }
 

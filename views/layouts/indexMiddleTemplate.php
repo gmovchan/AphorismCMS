@@ -39,17 +39,16 @@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="<?php echo $data['publicDir']; ?>assets/js/ie10-viewport-bug-workaround.js"></script>
     </head>
-
     <body>
         <div class="site-wrapper">
-            <div class="site-wrapper-inner">
+            <div class="site-wrapper-inner-middle">
                 <div class="cover-container">
-                    <div class="masthead clearfix">
+                    <div class="masthead-middle clearfix">
                         <?php require __DIR__ . '/../menu/indexHeader.php'; ?>
                     </div>
                     <div class="inner cover">
                         <?php require __DIR__ . '/../notice/notice.php'; ?>
-                    </div>
+                    </div>                  
                     <div class="inner cover">
                         <?php require_once __DIR__ . '/../' . $content_view ?>
                     </div>

@@ -68,14 +68,14 @@ class AuthorsModel extends Model
     // добавляет нового автора
     public function addAuthor($name = null)
     {
-        if (is_null($name)) {
-            $this->errors[] = "Имя автора пустое";
+        if (empty($name)) {
+            $this->errors[] = "Имя автора не должно быть пустым.";
             return false;
         }
 
         // проверяет, существует ли автор с похожим именем в таблице
         if ($this->searchAuthor($name)) {
-            $this->errors[] = "Автор уже существует";
+            $this->errors[] = "Автор уже существует.";
             return false;
         } else {
             $this->dbh->query("INSERT INTO `authors` (`name`) VALUES (?)", 'none', '', array($name));

@@ -44,21 +44,16 @@
             <div class="site-wrapper-inner-middle">
                 <div class="cover-container">
                     <div class="masthead-middle clearfix">
+                        <!-- Пункты меню -->
                         <?php require __DIR__ . '/../menu/indexHeader.php'; ?>
                     </div>
                     <div class="inner cover">
+                        <!-- Элемент выводит информацию о результате выполнения некоторых скриптов -->
                         <?php require __DIR__ . '/../notice/notice.php'; ?>
                     </div>                  
                     <div class="inner cover">
                         <?php require_once __DIR__ . '/../' . $content_view ?>
                     </div>
-                    <!--
-                    <div class="mastfoot">
-                        <div class="inner">
-                            <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>

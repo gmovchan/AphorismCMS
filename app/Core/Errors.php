@@ -9,7 +9,7 @@ class Errors
 
     static public function getErrorPage404()
     {
-        $host = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+        //$host = 'http://' . $_SERVER['HTTP_HOST'] . '/';
         header('HTTP/1.1 404 Not Found');
         header('Status: 404 Not Found');
         /*
@@ -18,6 +18,15 @@ class Errors
          * Если страница не найдена, надо отдавать код 404. 
          */
         // header('Location:' . $host . '404');
+        exit;
+    }
+
+    static public function getErrorPage503()
+    {
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
+        header('Status: 503 Service Temporarily Unavailable');
+        header('Retry-After: 300');
+        // TODO: добавить функцию записи в лог
         exit;
     }
 

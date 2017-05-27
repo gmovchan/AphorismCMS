@@ -5,6 +5,7 @@ namespace Application;
 require __DIR__ . '/vendor/autoload.php';
 
 use Application\Core\Route;
+use Application\Core\Errors;
 use Application\Core\ExceptionMy;
 
 try {
@@ -30,9 +31,5 @@ try {
     $route = new Route();
     $route->start();
 } catch (ExceptionMy $ex) {
-    header('HTTP/1.1 503 Service Temporarily Unavailable');
-    header('Status: 503 Service Temporarily Unavailable');
-    header('Retry-After: 300');
-    // TODO: добавить функцию записи в лог
-    exit;
+    Errors::getErrorPage503();
 }

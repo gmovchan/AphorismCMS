@@ -7,11 +7,12 @@ use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Models\AuthorsModel;
 use Application\Models\CommentsModel;
+use Application\Core\Errors;
 
 class QuotesModel extends Model
 {
 
-    private $dbh;
+    //private $dbh;
     private $comments;
 
     public function __construct()
@@ -136,7 +137,7 @@ class QuotesModel extends Model
     // Удалить цитату из БД
     public function delQuote($id)
     {
-        $this->ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
+        Errors::ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
         $delete = $this->dbh->query("DELETE FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
             $this->successful[] = "Цитата id{$id} удалена.";
@@ -147,16 +148,9 @@ class QuotesModel extends Model
         }
     }
 
-    // проверяет существование цитаты
-    private function checkID($id)
-    {
-        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
-        return $query === 1;
-    }
-
     public function saveQuote($formContent)
     {
-        $this->ensure($this->checkID($formContent['idInDB']), "Цитата id{$formContent['idInDB']} не найдена в БД");
+        Errors::ensure($this->checkID($formContent['idInDB'], 'quotes'), "Цитата id{$formContent['idInDB']} не найдена в БД");
         
         if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;

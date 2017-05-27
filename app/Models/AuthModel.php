@@ -16,7 +16,7 @@ class AuthModel extends Model
 {
 
     // объект для работы с БД
-    private $dbh;
+    //private $dbh;
     private $userData = array();
 
     public function __construct()
@@ -43,9 +43,6 @@ class AuthModel extends Model
             return false;
         }
         
-        // получаю логин, чтобы потом его использовать в view для обращения к пользователю
-        // TODO: лучше в таблице сделать отдельную ячейку для имени, которая не
-        // участвует в авторизации и аутентификации
         $login = $this->dbh->query("SELECT `login_user` FROM `users` WHERE `id_user` = ?;", 'fetch', '', array($id_user));
         $this->userData['login'] = $login[0];
 

@@ -5,13 +5,14 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
+use Application\Core\Errors;
 
 class AuthorsModel extends Model
 {
 
     //private $quotesArray = array();
     //private $authorsArray = array();
-    private $dbh;
+    //private $dbh;
 
     public function __construct()
     {
@@ -58,7 +59,7 @@ class AuthorsModel extends Model
                 break;
 
             default:
-                $this->ensure(false, 'Не задан тип сортировки');
+                Errors::ensure(false, 'Не задан тип сортировки');
                 break;
         }
 
@@ -100,8 +101,9 @@ class AuthorsModel extends Model
     // Удаляет автора из БД и заменяет автора у цитат, которые раньше ему принадлежали, на "неизвестен".
     public function delAuthor($id)
     {
-        $this->ensure(!is_null($id), "Не удалось получить id автора.");
-        $name = $this->checkID($id);
+        Errors::ensure(!is_null($id), "Не удалось получить id автора.");
+        $author = $this->getAuthor($id);
+        $name = $author['name'];
         $this->replaceAuthor($id, $this->getConstants('unknown_author_id'));
         $delete = $this->dbh->query("DELETE FROM `authors` WHERE `id` = ?;", 'rowCount', '', array($id));
 
@@ -128,20 +130,9 @@ class AuthorsModel extends Model
         }
     }
 
-    // проверяет существование автора и возвращает его имя
-    private function checkID($id)
-    {
-        $author = $this->dbh->query("SELECT `name` FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
-
-        if (!empty($author)) {
-            return $author['name'];
-        } else {
-            $this->ensure(false, "Автор с id{$id} не найден в таблице.");
-        }
-    }
-
     public function getAuthor($id)
     {
+        Errors::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
         $author = $this->dbh->query("SELECT * FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
         return $author;
     }
@@ -152,7 +143,7 @@ class AuthorsModel extends Model
         $id = $formContent['idInDB'];
         $name = $formContent['authorName'];
                 
-        $this->ensure($this->checkID($id), "Автор id{$id} не найден в БД");
+        Errors::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
 
         if (empty($name)) {
             $this->errors[] = "Поле с именем не должно быть пустым.";

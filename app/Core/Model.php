@@ -2,7 +2,7 @@
 
 namespace Application\Core;
 
-use Application\Models\ConfigModel;
+use Application\Core\Config;
 
 /**
  * Содержит основную логику приложения - вычисления, запросы к БД и обработку полученных из БД данных.
@@ -12,6 +12,7 @@ class Model {
 
     protected $errors = array();
     protected $successful = array();
+    protected $dbh;
     
     public function __construct()
     {
@@ -27,24 +28,18 @@ class Model {
         return $this->successful;
     }
     
-    // централизованная проверка условия и вызов исключения
-    /*
-     * FIXME: возможно стоит вынести в отдельный класс. Но это не точно, потому что пока
-     * не думал как тогда реализовать для каждого класса свой класс исключения, если понадобится
-     */
-    protected function ensure($expr, $message)
-    {
-
-        if (!$expr) {
-            throw new \Exception($message);
-        }
-    }
-    
     protected function getConstants($name)
     {
-        $config = ConfigModel::getInstance();
-        $constants = $config->getConfig(ConfigModel::CONSTANTS);
+        $config = Config::getInstance();
+        $constants = $config->getConfig(Config::CONSTANTS);
         return $constants[$name];
+    }
+    
+    // проверяет существование элемента
+    protected function checkID($id, $tableName)
+    {
+        $query = $this->dbh->query("SELECT * FROM `$tableName` WHERE `id` = ?;", 'rowCount', '', array($id));
+        return $query === 1;
     }
 
 }

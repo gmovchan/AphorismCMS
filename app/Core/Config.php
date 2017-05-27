@@ -3,6 +3,7 @@
 namespace Application\Core;
 
 use Application\Core\Model;
+use Application\Core\Errors;
 
 class Config extends Model
 {
@@ -44,20 +45,20 @@ class Config extends Model
         switch ($settingValue) {
             case self::UNMARRIED:
 
-                $this->ensure(isset($this->configArray['unmarried']), "Настройки для константы STK не найдены");
+                Errors::ensure(isset($this->configArray['unmarried']), "Настройки для константы STK не найдены");
 
                 return $this->configArray['unmarried'];
                 break;
             
             case self::CONSTANTS:
 
-                $this->ensure(isset($this->configArray['constants']), "Настройки для константы CONSTANTS не найдены");
+                Errors::ensure(isset($this->configArray['constants']), "Настройки для константы CONSTANTS не найдены");
 
                 return $this->configArray['constants'];
                 break;
 
             default:
-                $this->ensure(false, "Переданная константа для получения настроек не задана");
+                Errors::ensure(false, "Переданная константа для получения настроек не задана");
                 break;
         }
     }
@@ -65,7 +66,7 @@ class Config extends Model
     // получает массив с содержимым файла конфигурации
     private function getAllConfig()
     {
-        $this->ensure(file_exists($this->configFilePath), "Файл с настройками не найден");       
+        Errors::ensure(file_exists($this->configFilePath), "Файл с настройками не найден");       
         // по возможности сохраняет тип значения
         $config_array = parse_ini_file($this->configFilePath, true, $scanner_mode = INI_SCANNER_TYPED);
         return $config_array;

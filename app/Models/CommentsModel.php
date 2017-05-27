@@ -5,11 +5,12 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
+use Application\Core\Errors;
 
 class CommentsModel extends Model
 {
 
-    private $dbh;
+    //private $dbh;
 
     public function __construct()
     {
@@ -87,7 +88,7 @@ class CommentsModel extends Model
 
     public function delComment($id)
     {
-        $this->ensure(!is_null($id), "Не удалось получить id комментария");
+        Errors::ensure(!is_null($id), "Не удалось получить id комментария");
         $delete = $this->dbh->query("DELETE FROM `comments` WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
             $this->successful[] = "Комментарий удален.";

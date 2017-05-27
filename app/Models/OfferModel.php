@@ -5,13 +5,14 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
+use Application\Core\Errors;
 
 class OfferModel extends Model
 {
 
     //private $quotesArray = array();
     //private $authorsArray = array();
-    private $dbh;
+    //private $dbh;
 
     public function __construct()
     {
@@ -24,13 +25,8 @@ class OfferModel extends Model
             $this->errors[] = "Текст цитаты не введен";
             return false;
         }
-        /*
-         * TODO: написать функцию, которая будет возвращать ошибку и её описания, если текст превышает максимальную длину
-         * пока скрипт просто выкидывает исключение
-         * 
-         */
 
-        // потому что в mysql для поля типа TEXT нельзя указать максимальную длину
+        // в mysql для поля типа TEXT нельзя указать максимальную длину
         if (iconv_strlen($formContent['quoteText']) > 15000) {
             $this->errors[] = "Текст цитаты длиннее 15 000 символов";
             return false;
@@ -52,7 +48,7 @@ class OfferModel extends Model
 
     public function delOffer($id)
     {
-        $this->ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
+        Errors::ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
         $delete = $this->dbh->query("DELETE FROM `offer_quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
             $this->successful[] = "Предожение id{$id} удалено.";
@@ -65,7 +61,7 @@ class OfferModel extends Model
 
     public function saveOffer($formContent)
     {
-        $this->ensure($this->checkID($formContent['idInDB']), "Цитата id{$formContent['idInDB']} не найдена в БД");
+        Errors::ensure($this->checkID($formContent['idInDB'], 'offer_quotes'), "Предложение id{$formContent['idInDB']} не найдена в БД");
 
         if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;
@@ -75,7 +71,7 @@ class OfferModel extends Model
                 . "  WHERE `id` = ?;", 'rowCount', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['creatorQuote'], $formContent['sourceQuote'], $formContent['comment'], $formContent['authorQuoteID'], $formContent['idInDB']));
 
         if ($rowCount === 1) {
-            $this->successful[] = "Изменения в цитате id{$formContent['idInDB']} сохранены";
+            $this->successful[] = "Изменения в предложении id{$formContent['idInDB']} сохранены";
             return true;
         } else {
             $this->errors[] = "Не удалось сохранить изменения id{$formContent['idInDB']}. Возможно, не было правок.";
@@ -109,14 +105,6 @@ class OfferModel extends Model
         }
 
         return true;
-    }
-    
-    // проверяет существование цитаты
-    // FIXME: дублируется метод, такой же есть в QuotesModel
-    private function checkID($id)
-    {
-        $query = $this->dbh->query("SELECT * FROM `quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
-        return $query === 1;
     }
 
 }

@@ -49,7 +49,7 @@ class QuotesController extends AdminController
             $this->data['quotes'] = $quotes;
             $this->view->generate('/admin/quotes.php', 'adminTemplate.php', $this->data);
         } else {
-            Errors::getErrorPage404();
+            Errors::printErrorPage404();
         }
     }
     

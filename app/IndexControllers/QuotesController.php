@@ -4,7 +4,7 @@ namespace Application\IndexControllers;
 
 use Application\Core\Controller;
 use Application\Models\QuotesModel;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class QuotesController extends Controller
 {
@@ -34,7 +34,7 @@ class QuotesController extends Controller
             $this->data['quotes'] = $quotes;
             $this->view->generate('/index/quotes.php', 'indexTemplate.php', $this->data);
         } else {
-            Errors::getErrorPage404();
+            ErrorHandler::printErrorPage404();
         }
     }
     

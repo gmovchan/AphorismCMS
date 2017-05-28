@@ -3,7 +3,6 @@
 namespace Application\AdminControllers;
 
 use Application\Core\Controller;
-use Application\Models\AuthorsModel;
 use Application\Core\Errors;
 
 class AdminController extends Controller

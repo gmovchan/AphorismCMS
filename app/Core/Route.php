@@ -2,7 +2,7 @@
 
 namespace Application\Core;
 
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class Route
 {
@@ -14,7 +14,7 @@ class Route
         $controllerlClass = 'Application\\' . $resultParseUrl['controllerDirName'] . '\\' . $controllerlClass;
 
         if (!class_exists($controllerlClass)) {
-            Errors::getErrorPage404();
+            ErrorHandler::printErrorPage404();
         }
 
         $controller = new $controllerlClass;
@@ -29,7 +29,7 @@ class Route
         if (method_exists($controller, $action)) {
             $controller->$action();
         } else {
-            Errors::getErrorPage404();
+            ErrorHandler::printErrorPage404();
         }
     }
 

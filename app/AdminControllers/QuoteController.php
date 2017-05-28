@@ -28,7 +28,7 @@ class QuoteController extends AdminController
 
     public function getPage()
     {
-        Errors::getErrorPage404();
+        Errors::printErrorPage404();
     }
 
     public function getQuotes($errors, $successful)
@@ -74,10 +74,10 @@ class QuoteController extends AdminController
                 $this->data['comments'] = $comments;
                 $this->view->generate('/admin/quote.php', 'adminTemplate.php', $this->data);
             } else {
-                Errors::getErrorPage404();
+                Errors::printErrorPage404();
             }
         } else {
-            Errors::getErrorPage404();
+            Errors::printErrorPage404();
         }
     }
 
@@ -110,12 +110,12 @@ class QuoteController extends AdminController
             if ($quote) {
                 $this->data['authors'] = $this->authors->getAllAuthors('quotes');
                 $this->data['quote'] = $quote;
-                $this->view->generate('/admin/quoteEdit.php', 'adminTemplate.php', $this->data);
+                $this->view->generate('/admin/editQuote.php', 'adminTemplate.php', $this->data);
             } else {
-                Errors::getErrorPage404();
+                Errors::printErrorPage404();
             }
         } else {
-            Errors::getErrorPage404();
+            Errors::printErrorPage404();
         }
     }
 
@@ -143,13 +143,13 @@ class QuoteController extends AdminController
 
             if ($this->quotes->addQuote($formContent)) {
                 $this->data['successful'] = $this->quotes->getSuccessful();
-                $this->view->generate('/admin/quoteAdd.php', 'adminTemplate.php', $this->data);
+                $this->view->generate('/admin/addQuote.php', 'adminTemplate.php', $this->data);
             } else {
                 $this->data['errors'] = $this->quotes->getErrors();
-                $this->view->generate('/admin/quoteAdd.php', 'adminTemplate.php', $this->data);
+                $this->view->generate('/admin/addQuote.php', 'adminTemplate.php', $this->data);
             }
         } else {
-            $this->view->generate('/admin/quoteAdd.php', 'adminTemplate.php', $this->data);
+            $this->view->generate('/admin/addQuote.php', 'adminTemplate.php', $this->data);
         }
     }
 

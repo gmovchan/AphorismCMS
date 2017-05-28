@@ -46,7 +46,7 @@
                 <div class="cover-container">
                     <div class="masthead clearfix">
                         <!-- Пункты меню -->
-                        <?php require __DIR__ . '/../menu/indexHeader.php'; ?>
+                        <?php require __DIR__ . '/../menu/indexMenu.php'; ?>
                     </div>
                     <div class="inner cover">
                         <!-- Элемент выводит информацию о результате выполнения некоторых скриптов -->

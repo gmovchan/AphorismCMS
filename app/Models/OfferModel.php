@@ -5,14 +5,10 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class OfferModel extends Model
 {
-
-    //private $quotesArray = array();
-    //private $authorsArray = array();
-    //private $dbh;
 
     public function __construct()
     {
@@ -48,7 +44,7 @@ class OfferModel extends Model
 
     public function delOffer($id)
     {
-        Errors::ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
+        ErrorHandler::ensure(!is_null($id), "Не удалось получить id удаляемой цитаты");
         $delete = $this->dbh->query("DELETE FROM `offer_quotes` WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
             $this->successful[] = "Предожение id{$id} удалено.";
@@ -61,12 +57,12 @@ class OfferModel extends Model
 
     public function saveOffer($formContent)
     {
-        Errors::ensure($this->checkID($formContent['idInDB'], 'offer_quotes'), "Предложение id{$formContent['idInDB']} не найдена в БД");
+        ErrorHandler::ensure($this->checkID($formContent['idInDB'], 'offer_quotes'), "Предложение id{$formContent['idInDB']} не найдена в БД");
 
         if (!$this->checkDataForm($formContent['quoteText'])) {
             return false;
         }
-        
+
         $rowCount = $this->dbh->query("UPDATE `offer_quotes` SET `quote_text` = ?, `author_quote` = ?, `author_offer` = ?, `source_quote` = ?, `comment` = ?, `author_id` = ?"
                 . "  WHERE `id` = ?;", 'rowCount', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['creatorQuote'], $formContent['sourceQuote'], $formContent['comment'], $formContent['authorQuoteID'], $formContent['idInDB']));
 
@@ -77,7 +73,6 @@ class OfferModel extends Model
             $this->errors[] = "Не удалось сохранить изменения id{$formContent['idInDB']}. Возможно, не было правок.";
             return false;
         }
-
     }
 
     public function getOffer($id)

@@ -15,8 +15,6 @@ use Application\Core\Config;
 class AuthModel extends Model
 {
 
-    // объект для работы с БД
-    //private $dbh;
     private $userData = array();
 
     public function __construct()

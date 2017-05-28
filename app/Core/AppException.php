@@ -2,7 +2,7 @@
 
 namespace Application\Core;
 
-class ExceptionMy extends \ErrorException
+class AppException extends \ErrorException
 {
     
 }

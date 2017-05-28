@@ -121,12 +121,12 @@ class OfferController extends AdminController
             if (!is_null($offer)) {
                 $this->data['authors'] = $this->authors->getAllAuthors('quotes');
                 $this->data['offer'] = $offer;
-                $this->view->generate('/admin/offerEdit.php', 'adminTemplate.php', $this->data);
+                $this->view->generate('/admin/editOffer.php', 'adminTemplate.php', $this->data);
             } else {
-                Errors::getErrorPage404();
+                Errors::printErrorPage404();
             }
         } else {
-            Errors::getErrorPage404();
+            Errors::printErrorPage404();
         }
     }
     

@@ -195,7 +195,8 @@ body {
 form, 
 .form-header,
 .white-text,
-.about {
+.about,
+.errors-fatal {
     color: #fff;
 }
 

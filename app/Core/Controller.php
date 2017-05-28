@@ -25,6 +25,7 @@ class Controller
         // заголовок страницы
         $this->data['title'] = "Бобылецитатник";
         $this->request = new Request;
+        $this->data['thisPage'] = null;
     }
 
     // Проверка авторизации

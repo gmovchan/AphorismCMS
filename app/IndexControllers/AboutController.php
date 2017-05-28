@@ -3,7 +3,7 @@
 namespace Application\IndexControllers;
 
 use Application\Core\Controller;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class AboutController extends Controller
 {

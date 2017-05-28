@@ -5,7 +5,7 @@ namespace Application\IndexControllers;
 use Application\Core\Controller;
 use Application\Models\AuthorsModel;
 use Application\Models\QuotesModel;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class AuthorsController extends Controller
 {

@@ -5,14 +5,10 @@ namespace Application\Models;
 use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class AuthorsModel extends Model
 {
-
-    //private $quotesArray = array();
-    //private $authorsArray = array();
-    //private $dbh;
 
     public function __construct()
     {
@@ -59,7 +55,7 @@ class AuthorsModel extends Model
                 break;
 
             default:
-                Errors::ensure(false, 'Не задан тип сортировки');
+                ErrorHandler::ensure(false, 'Не задан тип сортировки');
                 break;
         }
 
@@ -101,7 +97,7 @@ class AuthorsModel extends Model
     // Удаляет автора из БД и заменяет автора у цитат, которые раньше ему принадлежали, на "неизвестен".
     public function delAuthor($id)
     {
-        Errors::ensure(!is_null($id), "Не удалось получить id автора.");
+        ErrorHandler::ensure(!is_null($id), "Не удалось получить id автора.");
         $author = $this->getAuthor($id);
         $name = $author['name'];
         $this->replaceAuthor($id, $this->getConstants('unknown_author_id'));
@@ -132,7 +128,7 @@ class AuthorsModel extends Model
 
     public function getAuthor($id)
     {
-        Errors::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
+        ErrorHandler::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
         $author = $this->dbh->query("SELECT * FROM `authors` WHERE `id` = ?;", 'fetch', '', array($id));
         return $author;
     }
@@ -143,7 +139,7 @@ class AuthorsModel extends Model
         $id = $formContent['idInDB'];
         $name = $formContent['authorName'];
                 
-        Errors::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
+        ErrorHandler::ensure($this->checkID($id, 'authors'), "Автор id{$id} не найден в БД");
 
         if (empty($name)) {
             $this->errors[] = "Поле с именем не должно быть пустым.";

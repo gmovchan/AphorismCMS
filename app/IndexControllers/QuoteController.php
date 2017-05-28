@@ -5,7 +5,7 @@ namespace Application\IndexControllers;
 use Application\Core\Controller;
 use Application\Models\QuotesModel;
 use Application\Models\CommentsModel;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 
 class QuoteController extends Controller
 {
@@ -37,13 +37,13 @@ class QuoteController extends Controller
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
                 $this->data['quote'] = $quote;
-                $this->view->generate('/index/quoteRandom.php', 'indexMiddleTemplate.php', $this->data);
+                $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
             } else {
-                Errors::getErrorPage404();
+                ErrorHandler::printErrorPage404();
             }
         } else {
             $this->data['quote'] = $this->quotes->getRandomQuote();
-            $this->view->generate('/index/quoteRandom.php', 'indexMiddleTemplate.php', $this->data);
+            $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
         }
     }
 
@@ -83,10 +83,10 @@ class QuoteController extends Controller
                 $this->data['comments'] = $comments;
                 $this->view->generate('/index/quote.php', 'indexTemplate.php', $this->data);
             } else {
-                Errors::getErrorPage404();
+                ErrorHandler::printErrorPage404();
             }
         } else {
-            Errors::getErrorPage404();
+            ErrorHandler::printErrorPage404();
         }
     }
 

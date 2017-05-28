@@ -89,12 +89,12 @@ class AuthorsController extends AdminController
         $author = $this->authors->getAuthor($authorID);
 
         if (is_null($author)) {
-            Errors::getErrorPage404();
+            Errors::printErrorPage404();
         } else {
             $this->data['author'] = $author;
         }
 
-        $this->view->generate('/admin/authorEdit.php', 'adminTemplate.php', $this->data);
+        $this->view->generate('/admin/editAuthor.php', 'adminTemplate.php', $this->data);
     }
 
 }

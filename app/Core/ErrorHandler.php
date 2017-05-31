@@ -21,7 +21,6 @@ class ErrorHandler
         header('Status: 503 Service Temporarily Unavailable');
         header('Retry-After: 300');
         require_once __DIR__ . '/../../views/errors/error503.php';
-        // TODO: добавить функцию записи в лог
         exit;
     }
 
@@ -38,49 +37,99 @@ class ErrorHandler
         // 0 - проект на тестовом сервере, 1 - проект в поле
         $appStatus = $status;
 
-        // если нет явной иформации, что проект запущен в поле, то ошибки, в любом
-        // случае, будут скрыты за заглушкой
+        // если нет явной иформации, что проект запущен в поле, то ошибки в любом
+        // случае будут скрыты за заглушкой
         if ($appStatus !== 0) {
-
-            set_exception_handler(function ($exception) {
-                // TODO: добавить функцию записи в лог
+            set_exception_handler(function ($e) {
+                // открывает заглушку
                 self::printErrorPage503();
+                // записывает ошибку в лог
+                self::addToLog($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine());
             });
+        }
 
-            /*
-             * Общий обработчик ошибок (он вызывается при любой ошибке PHP, например обращении 
-             * к несуществующей переменной или невозможности чтения файла), и в нем выкидывать исключение.
-             * Таким образом, любая ошибка или предупреждение приведут к выбросу исключения.
-             * Все это делается в несколько строчек с помощью встроенного в PHP класса ErrorException
-             */
-            set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
-                // Не выбрасываем исключение если ошибка подавлена с помощью оператора @
-                if (!error_reporting()) {
-                    return;
-                }
+        /*
+         * Общий обработчик ошибок (он вызывается при любой ошибке PHP, например обращении 
+         * к несуществующей переменной или невозможности чтения файла), и в нем выкидывать исключение.
+         * Таким образом, любая ошибка или предупреждение приведут к выбросу исключения.
+         * Все это делается в несколько строчек с помощью встроенного в PHP класса ErrorException
+         */
+        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
 
-                throw new AppException($errstr, $errno, 0, $errfile, $errline);
-            });
+            // Не выбрасываем исключение если ошибка подавлена с помощью оператора @
+            if (!error_reporting()) {
+                return;
+            }
+
+            self::addToLog($errno, $errstr, $errfile, $errline);
+            throw new AppException($errstr, $errno, 0, $errfile, $errline);
+        });
+        
+        self::ensure(!is_null($appStatus), "Не удалось получить настройку режима работы приложения.");
+    }
+
+    /**
+     * Получает из файла app.ini информацию запущен ли проект в поле
+     * @param type $arrayName имя секции файла конфигурации, получается через 
+     * константу, например 'Config::CONSTANTS'
+     * @param string $elemName имя элемента из секции файла кофигурации
+     * @return type
+     */
+    static public function getConfigElement($elemName)
+    {
+        
+        // проверка нужна чтобы скрыть ошибки до того как будет объявлен обработчик исключений по умолчанию
+        if (class_exists('Application\Core\Config')) {
+            $config = Config::getInstance();
+            return $config->getConfigElement(Config::CONSTANTS, $elemName);
+        } else {
+            return null;
         }
     }
 
-    // получат из файла app.ini информацию запущен ли проект в поле
-    static public function getAppStatus()
+    // FIXME: Если произошла ошибка при добавлении в лог и если включена заглушка 
+    // для ошибок, например не получилось создать файл или записать в него строку, 
+    // то об этом никто не узнает
+    // TODO: Добавить функцию отправки информацию о фатальных ошибках администратору на почту
+    static public function addToLog($errno, $errstr, $errfile, $errline)
     {
-        if (class_exists('Application\Core\Config')) {
-            $config = Config::getInstance();
-            $constants = $config->getConfig(Config::CONSTANTS);
+        $logFileName = __DIR__ . '/../../' . self::getConfigElement('errors_log_file_name');
+        //максимальный размер лог файла в килобайтах
+        $logFileMaxSize = self::getConfigElement('errors_log_file_max_size') * 1024;
 
-            if (isset($constants['app_in_production'])) {
-                return $constants['app_in_production'];
-            } else {
-                // TODO: добавить функцию записи в лог
-                return null;
+        $timestamp = date("Y-m-d H:i:s");
+        $separator = ' || ';
+        $errorString = $timestamp . $separator . $errno . $separator . $errstr .
+                $separator . $errfile . $separator . $errline . PHP_EOL;
+
+        if (self::checkLogFile($logFileName, $logFileMaxSize)) {
+            error_log($errorString, 3, $logFileName);
+        }
+    }
+
+    static private function checkLogFile($logFileName, $logFileMaxSize)
+    {
+        if (file_exists($logFileName)) {
+
+            // если превышен размер файла, то он будет пересоздан
+            if (filesize($logFileName) >= $logFileMaxSize) {
+                unlink($logFileName);
+                // пытается создать файл и если не получится, то вернёт исключение
+                self::createLogFile($logFileName);
             }
         } else {
-            // TODO: добавить функцию записи в лог
-            return null;
+            self::createLogFile($logFileName);
         }
+
+        self::ensure(is_writable($logFileName), 'Лог-файл не доступен для записи.');
+
+        return true;
+    }
+
+    // создает лог-файл или сообщает об ошибке, если не удалось создать
+    static private function createLogFile($logFileName)
+    {
+        self::ensure(touch($logFileName), 'Не удалось создать лог-файл ошибок.');
     }
 
 }

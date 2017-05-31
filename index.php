@@ -9,7 +9,7 @@ use Application\Core\ErrorHandler;
 use Application\Core\Config;
 use Application\Core\AppException;
 
-ErrorHandler::handleErrors(ErrorHandler::getAppStatus());
+ErrorHandler::handleErrors(ErrorHandler::getConfigElement('app_in_production'));
 
 // умышленная ошибка - вызывает исключение
 // strpos();

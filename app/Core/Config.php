@@ -62,7 +62,20 @@ class Config extends Model
                 break;
         }
     }
+    
+    public function getConfigElement($arrayName, $elemName)
+    {
+            $configArray = $this->getConfig($arrayName);
 
+            if (isset($configArray[$elemName])) {
+                return $configArray[$elemName];
+            } else {
+                // TODO: добавить функцию записи в лог
+                return null;
+            }
+    }
+
+    
     // получает массив с содержимым файла конфигурации
     private function getAllConfig()
     {

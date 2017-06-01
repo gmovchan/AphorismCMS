@@ -24,6 +24,11 @@ class AuthorsModel extends Model
     public function getAllAuthors($sortingType)
     {
         $authors = $this->dbh->query("SELECT * FROM `authors`;", 'fetchAll', '');
+        
+        // вернет пустой массив, если в БД нет авторов, потому что если вернуть ошиб
+        if (empty($authors)) {
+            ErrorHandler::ensure(false, 'В БД нет ни одного автора.');
+        }
 
         // получает количество цитат автора
         foreach ($authors as $key => $author) {

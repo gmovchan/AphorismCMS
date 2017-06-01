@@ -118,7 +118,7 @@ class Quotes
     {
         // если таблица не пустая, то цитаты добавляться не будут
         $countRecords = $this->dbh->query("SELECT COUNT(*) FROM `quotes`", 'accos', '', array());
-        $this->ensure($countRecords["COUNT(*)"] == 0, "Таблица `qoutes` не пустая");
+        $this->ensure($countRecords["COUNT(*)"] == 0, "Таблица `quotes` не пустая");
 
         $countQuotes = 0;
         $countAuthors = 0;
@@ -144,7 +144,7 @@ class Quotes
                         $authorID = 157;
                     }
 
-                    $this->dbh->query("INSERT INTO `quotes` (`qoute_text`, `author_id`) VALUES (?, ?)", 'none', '', array($quote['quote'], $authorID));
+                    $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`) VALUES (?, ?)", 'none', '', array($quote['quote'], $authorID));
                     $countQuotes++;
                 }
             }
@@ -168,7 +168,7 @@ class Quotes
     public function printQuotesFromDB()
     {
         // связывает таблицу Цитаты с таблицей Авторы с помощью ID автора
-        $quotes = $this->dbh->query("SELECT quotes.qoute_text AS `text`, authors.name AS "
+        $quotes = $this->dbh->query("SELECT quotes.quote_text AS `text`, authors.name AS "
                 . "`author` FROM quotes JOIN authors ON quotes.author_id=authors.id;", 'fetchAll', '', array());
 
         foreach ($quotes as $quote) {
@@ -195,7 +195,7 @@ class Quotes
             $id = $this->getRandomQouteID();
         }
 
-        $quote = $this->dbh->query("SELECT quotes.qoute_text AS `text`, quotes.id AS `quote_id`, authors.name "
+        $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'accos', '', array($id));
 
         $randomID = $this->getRandomQouteID();
@@ -308,4 +308,4 @@ class Request
 
 $request = new Request;
 $quotes = new Quotes('./doc/quotes.json', $request);
-$quote = $quotes->getQuote();
+$quote = $quotes->addAllQoutesToDB();

@@ -33,8 +33,12 @@ class QuotesModel extends Model
                     . "quotes.author_id=authors.id  WHERE authors.id = ? ORDER BY quotes.id DESC;", 'fetchAll', '', array($author));
         }
         
+        if (empty($quotes)) {
+            ErrorHandler::ensure(false, "В БД нет ни одной цитаты.");
+        }
+        
         $quotes = $this->getAmountComments($quotes);
-
+        
         return $quotes;
     }
     
@@ -107,6 +111,11 @@ class QuotesModel extends Model
     {
         $countRows = $this->dbh->query("SELECT COUNT(*) FROM `quotes`;", 'fetch', '', array());
         $countRows = $countRows[0];
+
+        if ($countRows == 0) {
+            ErrorHandler::ensure(false, 'В БД нет ни одной цитаты.');
+        }
+        
         // отнял 1 из-за смещения при использовании LIMIT
         $randRow = rand(1, $countRows) - 1;
         $id = $this->dbh->query("SELECT `id` FROM `quotes` LIMIT $randRow, 1;", 'fetch', '', array());

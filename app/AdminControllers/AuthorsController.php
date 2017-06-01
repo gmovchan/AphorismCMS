@@ -42,7 +42,8 @@ class AuthorsController extends AdminController
     {
         $this->data['thisPage'] = 'authors';
         // 'quotes' - сортировка по количеству цитат;
-        $this->data['authors'] = $this->authors->getAllAuthors('quotes');
+        $authors = $this->authors->getAllAuthors('quotes');
+        $this->data['authors'] = $authors;
         $this->view->generate('/admin/authors.php', 'adminTemplate.php', $this->data);
     }
     

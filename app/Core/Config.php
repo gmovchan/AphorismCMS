@@ -18,7 +18,7 @@ class Config extends Model
 
     public function __construct()
     {
-        $this->configFilePath = __DIR__ . '/../configs/app.ini';
+        $this->configFilePath = __DIR__ . '/../Configs/app.ini';
         $this->configArray = $this->getAllConfig();
     }
 

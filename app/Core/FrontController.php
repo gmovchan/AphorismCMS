@@ -4,7 +4,7 @@ namespace Application\Core;
 
 use Application\Core\ErrorHandler;
 
-class Route
+class FrontController
 {
     public function start()
     {
@@ -19,12 +19,6 @@ class Route
 
         $controller = new $controllerlClass;
         $action = $resultParseUrl['actionName'];
-        
-        /*
-        var_dump($controller);
-        var_dump($action);
-         * 
-         */
 
         if (method_exists($controller, $action)) {
             $controller->$action();

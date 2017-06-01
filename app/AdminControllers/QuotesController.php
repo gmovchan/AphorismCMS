@@ -4,22 +4,22 @@ namespace Application\AdminControllers;
 
 use Application\Core\Controller;
 use Application\Models\QuotesModel;
-use Application\Core\Errors;
+use Application\Core\ErrorHandler;
 use Application\AdminControllers\AdminController;
 
 class QuotesController extends AdminController
 {
+
     private $quotes;
-    
+
     public function __construct()
     {
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'quotes';
         $this->quotes = new QuotesModel();
-        
     }
-    
+
     public function getPage()
     {
         $this->getQuotes();
@@ -30,14 +30,14 @@ class QuotesController extends AdminController
         if (!is_null($errors)) {
             $this->data['errors'] = $errors;
         }
-        
+
         if (!is_null($successful)) {
             $this->data['successful'] = $successful;
         }
-        
+
         $authorID = null;
         $getArray = $this->request->getProperty('GET');
-        
+
         if (isset($getArray['author_id'])) {
             $authorID = $getArray['author_id'];
         }
@@ -49,9 +49,8 @@ class QuotesController extends AdminController
             $this->data['quotes'] = $quotes;
             $this->view->generate('/admin/quotes.php', 'adminTemplate.php', $this->data);
         } else {
-            Errors::printErrorPage404();
+            ErrorHandler::printErrorPage404();
         }
     }
-    
-}
 
+}

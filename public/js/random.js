@@ -9,7 +9,7 @@ $(document).ready(function ()
 
     $(document).keydown(function (e)
     {
-        console.log(e.which);
+        //console.log(e.which);
         switch (e.which) {
 
             case 65:
@@ -30,6 +30,11 @@ $(document).ready(function ()
             case 39:
                 // вправо
                 clickBtn('#next-quote');
+                break;
+                
+            case 82:
+                // рандом
+                clickBtn('#random-quote-btn');
                 break;
 
             default:

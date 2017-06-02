@@ -26,7 +26,7 @@
     }
     ?>
 
-    <button id="random-quote" class="btn btn btn-default" type="button" onclick="self.location.href = '/quote?quote_id=<?php echo $data['quote']['random_id']; ?>';" data-toggle="tooltip" data-placement="bottom" title="R"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></button>
+    <button id="random-quote-btn" class="btn btn btn-default" type="button" onclick="self.location.href = '/quote?quote_id=<?php echo $data['quote']['random_id']; ?>';" data-toggle="tooltip" data-placement="bottom" title="R"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></button>
 
     <?php
     if ($data['quote']['next_id'] === 0) {

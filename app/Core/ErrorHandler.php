@@ -24,7 +24,7 @@ class ErrorHandler
         require_once __DIR__ . '/../../views/errors/error503.php';
         exit;
     }
-    
+
     // вызов исключения для класса Notificator. Необходимо, чтобы весь скрипт не падал, если не удалось отправить почту
     static public function ensure($expr, $message)
     {
@@ -42,10 +42,10 @@ class ErrorHandler
         // случае будут скрыты за заглушкой
         if ($appStatus !== 0) {
             set_exception_handler(function ($e) {
-                // открывает заглушку
-                self::printErrorPage503();
                 // записывает ошибку в лог
                 self::addToLog($e->getCode(), $e->getMessage(), $e->getFile(), $e->getLine());
+                // открывает заглушку
+                self::printErrorPage503();
             });
         }
 
@@ -65,7 +65,7 @@ class ErrorHandler
             self::addToLog($errno, $errstr, $errfile, $errline);
             throw new AppException($errstr, $errno, 0, $errfile, $errline);
         });
-        
+
         self::ensure(!is_null($appStatus), "Не удалось получить настройку режима работы приложения.");
     }
 
@@ -78,7 +78,7 @@ class ErrorHandler
      */
     static public function getConfigElement($elemName)
     {
-        
+
         // проверка нужна чтобы скрыть ошибки до того как будет объявлен обработчик исключений по умолчанию
         if (class_exists('Application\Core\Config')) {
             $config = Config::getInstance();
@@ -106,7 +106,7 @@ class ErrorHandler
         if (self::checkLogFile($logFileName, $logFileMaxSize)) {
             error_log($errorString, 3, $logFileName);
         }
-        
+
         self::sendMailToAdmin($errorString);
     }
 
@@ -134,7 +134,7 @@ class ErrorHandler
     {
         self::ensure(touch($logFileName), 'Не удалось создать лог-файл ошибок.');
     }
-    
+
     // отправляет администратору на почту уведомление об ошибке 
     static private function sendMailToAdmin($message)
     {

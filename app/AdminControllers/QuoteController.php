@@ -92,7 +92,8 @@ class QuoteController extends AdminController
             $this->getQuotes($this->quotes->getErrors(), null);
         }
     }
-
+    
+    // FIXME: В форме редактирования не подкгружаются поля Источник и Создал
     public function editQuote($id = null)
     {
         // нет пункта меню для этой страницы

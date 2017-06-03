@@ -6,6 +6,7 @@ use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Core\ErrorHandler;
+use Application\Core\Notificator;
 
 class OfferModel extends Model
 {

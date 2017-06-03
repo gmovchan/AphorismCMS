@@ -100,7 +100,9 @@ class Quotes
     {
         $countNew = 0;
         $countRepeat = 0;
-
+        
+        $this->dbh->query("SELECT * FROM `authors` WHERE `name` = 'неизвестный';", 'num_row');
+                
         foreach ($this->authorsArray as $author) {
             if ($this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'num_row', '', array($author)) !== 0) {
                 $countRepeat++;

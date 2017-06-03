@@ -5,8 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <meta name="description" content="">
+        <meta name="description" content="Сборник цитат и афоризмов знаменитых философов, писателей, художников и учёных о пользе холостого образа жизни.">
         <meta name="author" content="">
+        <!-- Яндекс Вебмастер -->
+        <meta name="yandex-verification" content="ea4fa0be0f70dee9" />
+        
         <link rel="icon" href="<?php echo $data['publicDir']; ?>/img/favicon.ico">
 
         <title><?php echo $data['title']; ?></title>

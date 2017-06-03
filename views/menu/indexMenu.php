@@ -1,4 +1,3 @@
-
 <div class="inner">
     <h3 class="masthead-brand"><?php echo $data['title']; ?></h3>
     <nav>

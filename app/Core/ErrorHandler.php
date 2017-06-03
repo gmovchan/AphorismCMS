@@ -25,7 +25,7 @@ class ErrorHandler
         exit;
     }
 
-    // вызов исключения для класса Notificator. Необходимо, чтобы весь скрипт не падал, если не удалось отправить почту
+    // централизованная обработка исключений выброшенных в ходе проверки условия
     static public function ensure($expr, $message)
     {
         if (!$expr) {
@@ -33,6 +33,7 @@ class ErrorHandler
         }
     }
 
+    /// FIXME: хорошо подумать как лучше переписать эту функцию
     static public function handleErrors($status)
     {
         // 0 - проект на тестовом сервере, 1 - проект на общедоступном сервере

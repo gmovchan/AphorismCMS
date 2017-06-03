@@ -101,7 +101,8 @@ class Quotes
         $countNew = 0;
         $countRepeat = 0;
         
-        $this->dbh->query("SELECT * FROM `authors` WHERE `name` = 'неизвестный';", 'num_row');
+        // сначала добавляет автора 'неизвестный', чтобы его id был равен 0
+        $this->dbh->query("INSERT INTO `authors` (`name`) VALUES (?)", 'none', '', array('неизвестный'));
                 
         foreach ($this->authorsArray as $author) {
             if ($this->dbh->query("SELECT * FROM `authors` WHERE `name` = ?;", 'num_row', '', array($author)) !== 0) {
@@ -139,11 +140,11 @@ class Quotes
                         if (!empty($authorID)) {
                             $countAuthors++;
                         } else {
-                            // 157 ID неизвестного автора
-                            $authorID = 157;
+                            // 0 ID неизвестного автора
+                            $authorID = 1;
                         }
                     } else {
-                        $authorID = 157;
+                        $authorID = 1;
                     }
 
                     $this->dbh->query("INSERT INTO `quotes` (`quote_text`, `author_id`) VALUES (?, ?)", 'none', '', array($quote['quote'], $authorID));
@@ -310,4 +311,5 @@ class Request
 
 $request = new Request;
 $quotes = new Quotes('./doc/quotes.json', $request);
+$quote = $quotes->addAllAuthorsToDB();
 $quote = $quotes->addAllQoutesToDB();

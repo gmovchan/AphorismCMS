@@ -54,7 +54,7 @@ class QuotesModel extends Model
     // Получает цитату по её id
     public function getQuote($id)
     {
-        $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, authors.name "
+        $quote = $this->dbh->query("SELECT quotes.quote_text AS `text`, quotes.id AS `quote_id`, quotes.source AS `source`, quotes.creator AS `creator`,  authors.name "
                 . "AS `author`, authors.id AS author_id FROM quotes LEFT JOIN authors ON quotes.author_id=authors.id WHERE quotes.id = ?;", 'fetch', '', array($id));
 
         if ($quote) {

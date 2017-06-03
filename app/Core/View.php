@@ -16,7 +16,8 @@ class View
     
     // Защита от XSS уязвимостей. Вызывается в представлении с помощью $this->html('text');
     public function html($text) {
-        return htmlspecialchars($text, ENT_QUOTES);
+        // nl2br требуется чтобы сохранить перенос строк
+        return nl2br(htmlspecialchars($text, ENT_QUOTES));
     }
 
 }

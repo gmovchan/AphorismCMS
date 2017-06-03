@@ -17,5 +17,6 @@ class AdminController extends Controller
 
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'quotes';
+        $this->data['title'] = $this->data['title'] . " - Админ";
     }
 }

@@ -25,7 +25,8 @@ class Notificator
             case 'comment':
                 $subject = "Bobylquote. Новый комментарий";
                 $link = "http://bobylquote.ru/quote/comments?quote_id=$id";
-                $mailMessage = "Появился новый комментарий к цитате. $link";
+                $message = htmlspecialchars($message, ENT_QUOTES);
+                $mailMessage = "Появился новый комментарий к цитате. $link\r\nТекст комментария: $message";
 
                 break;
 

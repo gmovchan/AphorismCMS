@@ -1,5 +1,5 @@
 <!-- Скрипт для кнопок -->
-<script src="<?php echo $data['publicDir']; ?>js/quote.js"></script>
+<script src="<?php echo $data['publicDir']; ?>/js/quote.js"></script>
 <?php if ($data['quote']): ?>
     <div class="panel panel-default panel-quote" id="quote<?php echo $data['quote']['quote_id']; ?>">
         <div class="panel-body">

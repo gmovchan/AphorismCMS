@@ -20,19 +20,19 @@
 <p class="lead ">
     <?php
     if ($data['quote']['previous_id'] === 0) {
-        echo '<button id="previous-quote" class="btn btn btn-default disabled" type="button" data-toggle="tooltip" data-placement="bottom" title="A, ←"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>';
+        echo '<button id="previous-quote" class="btn btn btn-default disabled" type="button" title="Клавиатура: A, ←"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>';
     } else {
-        echo '<button id="previous-quote" class="btn btn btn-default" type="button" onclick="self.location.href=\'/quote?quote_id=' . $data['quote']['previous_id'] . '\';" data-toggle="tooltip" data-placement="bottom" title="A, ←"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>';
+        echo '<button id="previous-quote" class="btn btn btn-default" type="button" onclick="self.location.href=\'/quote?quote_id=' . $data['quote']['previous_id'] . '\';" title="Клавиатура: A, ←"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>';
     }
     ?>
 
-    <button id="random-quote-btn" class="btn btn btn-default" type="button" onclick="self.location.href = '/quote?quote_id=<?php echo $data['quote']['random_id']; ?>';" data-toggle="tooltip" data-placement="bottom" title="R"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></button>
+    <button id="random-quote-btn" class="btn btn btn-default" type="button" onclick="self.location.href = '/quote?quote_id=<?php echo $data['quote']['random_id']; ?>';" title="Клавиатура: R"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></button>
 
     <?php
     if ($data['quote']['next_id'] === 0) {
-        echo '<button id="next-quote" class="btn btn btn-default disabled" type="button" data-toggle="tooltip" data-placement="bottom" title="D, →"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>';
+        echo '<button id="next-quote" class="btn btn btn-default disabled" type="button" title="Клавиатура: D, →"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>';
     } else {
-        echo '<button id="next-quote" class="btn btn btn-default" type="button" onclick="self.location.href=\'/quote?quote_id=' . $data['quote']['next_id'] . '\';" data-toggle="tooltip" data-placement="bottom" title="D, →"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>';
+        echo '<button id="next-quote" class="btn btn btn-default" type="button" onclick="self.location.href=\'/quote?quote_id=' . $data['quote']['next_id'] . '\';" title="Клавиатура: D, →"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>';
     }
     ?>
 </p>

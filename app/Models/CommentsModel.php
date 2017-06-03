@@ -59,7 +59,7 @@ class CommentsModel extends Model
 
         if ($result === 1) {
             $this->successful[] = "Комментарий успешно добавлен";
-            $this->notificator->sendMailNotification('comment', $quoteID);
+            $this->notificator->sendMailNotification('comment', $quoteID, $formContent['comment']);
             return true;
         } else {
             $this->errors[] = "Не удалось добавить комментарий.";

@@ -211,3 +211,17 @@ form,
 #open-comment-form{
     margin-bottom: 20px;   
 }
+
+/* вторая часть разрезанной цитаты, текст которой оказался слишком длинным */
+.endText {
+    display: none;
+}
+
+.get-full-text {
+    cursor: pointer;
+}
+
+blockquote {
+    font-size: 16px;
+}
+

@@ -37,6 +37,9 @@ class QuotesModel extends Model
             ErrorHandler::ensure(false, "В БД нет ни одной цитаты.");
         }
         
+        // обрезает длинные цитаты
+        $quotes = $this->checkLengthTextQuotes($quotes);
+        // получает количество комментариев
         $quotes = $this->getAmountComments($quotes);
         
         return $quotes;
@@ -185,6 +188,35 @@ class QuotesModel extends Model
         }
 
         return true;
+    }
+    
+    // обрезает текст слишком блинных цитат
+    private function checkLengthTextQuotes($quotes)
+    {
+        // получает максимальную допустимую длину текста цитаты
+        $config = Config::getInstance();
+        $maxTextLength = $config->getConfigElement(Config::CONSTANTS, 'max_text_length');
+        
+        foreach ($quotes as $keyQuote => $quote) {
+            $text = $quote['text'];
+            $length = mb_strlen($text);
+            
+            if ($length > $maxTextLength) {
+                $startText = mb_substr($text, 0, $maxTextLength);
+                $endText = mb_substr($text, $maxTextLength);
+                //$text = $text . "<a href=\"#\">...читать далее...</a>";
+                $quotes[$keyQuote]['startText'] = $startText;
+                $quotes[$keyQuote]['endText'] = $endText;
+                // указывает представлению на то что длина превышена и надо создать кнопку для получения оставшегося текста
+                $quotes[$keyQuote]['lengthExceeded'] = true;
+                unset($quotes[$keyQuote]['text']);
+                
+            } else {
+                $quotes[$keyQuote]['lengthExceeded'] = false;
+            }
+        }
+        
+        return $quotes;
     }
 
 }

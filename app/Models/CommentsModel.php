@@ -6,13 +6,16 @@ use Application\Core\Model;
 use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Core\ErrorHandler;
+use Application\Core\Notificator;
 
 class CommentsModel extends Model
 {
+    private $notificator;
 
     public function __construct()
     {
         $this->dbh = new Mysql(Config::UNMARRIED);
+        $this->notificator = new Notificator;
     }
 
     public function getComments($quoteID)
@@ -48,15 +51,18 @@ class CommentsModel extends Model
         if (empty($formContent['name'])) {
             $formContent['name'] = "Аноним";
         }
+        
+        $quoteID = $formContent['idInDB'];
 
         $result = $this->dbh->query("INSERT INTO `comments` (`comment_text`, `author_name`, `quote_id`) "
-                . "VALUES (?, ?, ?)", 'rowCount', '', array($formContent['comment'], $formContent['name'], $formContent['idInDB']));
+                . "VALUES (?, ?, ?)", 'rowCount', '', array($formContent['comment'], $formContent['name'], $quoteID));
 
         if ($result === 1) {
-            $this->successful[] = "Цитата успешно добавлена";
+            $this->successful[] = "Комментарий успешно добавлен";
+            $this->notificator->sendMailNotification('comment', $quoteID);
             return true;
         } else {
-            $this->errors[] = "Не удалось добавить цитату в БД";
+            $this->errors[] = "Не удалось добавить комментарий.";
             return false;
         }
     }

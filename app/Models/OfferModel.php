@@ -10,9 +10,12 @@ use Application\Core\ErrorHandler;
 class OfferModel extends Model
 {
 
+    private $notificator;
+
     public function __construct()
     {
         $this->dbh = new Mysql(Config::UNMARRIED);
+        $this->notificator = new Notificator;
     }
 
     public function addOffer($formContent)
@@ -28,12 +31,18 @@ class OfferModel extends Model
             return false;
         }
 
-        $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 'none', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['authorQuote'], $formContent['sourceQuote'], $formContent['comment']));
+        $result = $this->dbh->query("INSERT INTO `offer_quotes` (`quote_text`, `author_quote`, `author_offer`, `source_quote`, `comment`) VALUES (?, ?, ?, ?, ?)", 'rowCount', '', array($formContent['quoteText'], $formContent['authorQuote'], $formContent['authorQuote'], $formContent['sourceQuote'], $formContent['comment']));
 
-        $this->successful[] = "Цитата успешно отправлена";
-        $this->successful[] = "После проверки администраторам она появится в общем списке";
-
-        return true;
+        if ($result === 1) {
+            $offerId = $this->dbh->query('', 'lastInsertId');
+            $this->notificator->sendMailNotification('offer', $offerId);
+            $this->successful[] = "Цитата успешно отправлена";
+            $this->successful[] = "После проверки администраторам она появится в общем списке";
+            return true;
+        } else {
+            $this->errors[] = "Не удалось отправить предложение из-за ошибки на сервере.";
+            return false;
+        }  
     }
 
     public function getOffersAll()

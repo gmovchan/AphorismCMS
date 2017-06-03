@@ -25,9 +25,9 @@ class Controller
         $this->auth = new AuthModel();
         // задает путь к директории /public/, чтобы скрипт было легко модифцировать
         // для выделенного или виртуального хостинга
-        $this->data['publicDir'] = $config->getConfigElement(Config::CONSTANTS, 'public_dir');;
+        $this->data['publicDir'] = $config->getConfigElement(Config::CONSTANTS, 'public_dir');
         // заголовок страницы
-        $this->data['title'] = "Бобылецитатник";
+        $this->data['title'] = $config->getConfigElement(Config::CONSTANTS, 'title');
         $this->request = new Request;
         $this->data['thisPage'] = null;
     }

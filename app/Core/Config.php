@@ -12,6 +12,7 @@ class Config extends Model
     private static $instance;
     // путь к файлу с конфигурациями
     private $configFilePath;
+
     // вариант настроек для подключения БД
     const UNMARRIED = 1;
     const CONSTANTS = 2;
@@ -44,12 +45,24 @@ class Config extends Model
 
         switch ($settingValue) {
             case self::UNMARRIED:
+                
+                // проверяет на каком сервере запущен скрипт и исходя из этого 
+                // возвращает соответствующие настройки для БД
+                $appStatus = $this->getConfigElement(self::CONSTANTS, 'app_in_production');
+                
+                if ($appStatus === 0) {
+                    ErrorHandler::ensure(isset($this->configArray['test_db']), "Настройки для константы \"test_db\" не найдены");
+                    return $this->configArray['test_db'];
+                    break;
+                }
+                
+                if ($appStatus === 1) {
+                    ErrorHandler::ensure(isset($this->configArray['vds_db']), "Настройки для константы \"vds_db\" не найдены");
+                    return $this->configArray['vds_db'];
+                    break;
+                }
 
-                ErrorHandler::ensure(isset($this->configArray['unmarried']), "Настройки для константы STK не найдены");
 
-                return $this->configArray['unmarried'];
-                break;
-            
             case self::CONSTANTS:
 
                 ErrorHandler::ensure(isset($this->configArray['constants']), "Настройки для константы CONSTANTS не найдены");
@@ -62,24 +75,23 @@ class Config extends Model
                 break;
         }
     }
-    
+
     public function getConfigElement($arrayName, $elemName)
     {
-            $configArray = $this->getConfig($arrayName);
+        $configArray = $this->getConfig($arrayName);
 
-            if (isset($configArray[$elemName])) {
-                return $configArray[$elemName];
-            } else {
-                // TODO: добавить функцию записи в лог
-                return null;
-            }
+        if (isset($configArray[$elemName])) {
+            return $configArray[$elemName];
+        } else {
+            // TODO: добавить функцию записи в лог
+            return null;
+        }
     }
 
-    
     // получает массив с содержимым файла конфигурации
     private function getAllConfig()
     {
-        ErrorHandler::ensure(file_exists($this->configFilePath), "Файл с настройками не найден");       
+        ErrorHandler::ensure(file_exists($this->configFilePath), "Файл с настройками не найден");
         // по возможности сохраняет тип значения
         $config_array = parse_ini_file($this->configFilePath, true, $scanner_mode = INI_SCANNER_TYPED);
         return $config_array;

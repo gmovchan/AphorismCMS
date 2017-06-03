@@ -7,7 +7,7 @@
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="<?php echo $data['publicDir']; ?>/favicon.ico">
+        <link rel="icon" href="<?php echo $data['publicDir']; ?>/img/favicon.ico">
 
         <title><?php echo $data['title']; ?></title>
 
@@ -40,6 +40,11 @@
         <script src="<?php echo $data['publicDir']; ?>/assets/js/ie10-viewport-bug-workaround.js"></script>
     </head>
     <body>
+
+        <!-- Yandex.Metrika counter -->
+        <script src="<?php echo $data['publicDir']; ?>/js/yandex_metrica.js"></script>
+        <!-- /Yandex.Metrika counter -->
+
         <div class="site-wrapper">
             <div class="site-wrapper-inner-middle">
                 <div class="cover-container">

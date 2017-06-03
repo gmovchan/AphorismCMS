@@ -28,7 +28,6 @@ class Mysql extends Model
         // получает настройки для соединения с БД
         $mysqlConfig = Config::getInstance();
         $this->config_data = $mysqlConfig->getConfig($settingValue);
-
         $this->connect();
     }
 

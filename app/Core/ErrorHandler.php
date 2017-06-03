@@ -3,6 +3,7 @@
 namespace Application\Core;
 
 use Application\Core\AppException;
+use Application\Core\Notificator;
 
 class ErrorHandler
 {
@@ -23,8 +24,8 @@ class ErrorHandler
         require_once __DIR__ . '/../../views/errors/error503.php';
         exit;
     }
-
-    // централизованная проверка условия и вызов исключения
+    
+    // вызов исключения для класса Notificator. Необходимо, чтобы весь скрипт не падал, если не удалось отправить почту
     static public function ensure($expr, $message)
     {
         if (!$expr) {
@@ -105,6 +106,8 @@ class ErrorHandler
         if (self::checkLogFile($logFileName, $logFileMaxSize)) {
             error_log($errorString, 3, $logFileName);
         }
+        
+        self::sendMailToAdmin($errorString);
     }
 
     static private function checkLogFile($logFileName, $logFileMaxSize)
@@ -130,6 +133,14 @@ class ErrorHandler
     static private function createLogFile($logFileName)
     {
         self::ensure(touch($logFileName), 'Не удалось создать лог-файл ошибок.');
+    }
+    
+    // отправляет администратору на почту уведомление об ошибке 
+    static private function sendMailToAdmin($message)
+    {
+        $notificator = new Notificator;
+        $notificator->sendMailNotification('exception', '', $message);
+        unset($notificator);
     }
 
 }

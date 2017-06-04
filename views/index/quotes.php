@@ -15,6 +15,10 @@
                     <a href="/quotes?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
                 </footer>
             </blockquote>
+            <?php
+                // TODO: вставить кнопки для репоста
+                // FIXME: если вставлять кнопки, то страница не загружается до конца. Возможно из-за их большого количества. Надо попробовать сделать постраничный вывод для списка всех цитат.
+            ?>
         </div>
         <div class="panel-footer">
             <a href="/quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>

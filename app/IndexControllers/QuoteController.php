@@ -18,13 +18,13 @@ class QuoteController extends Controller
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'quote';
-        $this->data['title'] = "Цитата";
         $this->quotes = new QuotesModel();
         $this->comments = new CommentsModel();
     }
 
     public function getPage()
     {
+        /*
         $getArray = $this->request->getProperty('GET');
         
         if (!empty($getArray)) {
@@ -48,13 +48,19 @@ class QuoteController extends Controller
             $this->data['quote'] = $this->quotes->getRandomQuote();
             $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
         }
+         * 
+         */
+        
+        $this->data['title'] = "Карусель";
+        $this->data['quote'] = $this->quotes->getRandomQuote();
+        $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
     }
 
     public function comments()
     {
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
-        $this->data['title'] = "Комментарии";
+        $this->data['title'] = "Цитата";
 
         if (isset($_POST['comment'])) {
 

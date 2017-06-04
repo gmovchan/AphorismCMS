@@ -4,7 +4,7 @@
         <div class="cover-container">
             <div class="masthead clearfix">
                 <div class="inner">
-                    <h3 class="masthead-brand">Админ</h3>
+                    <h3 class="masthead-brand"><?php echo $data['menuTitle']; ?></h3>
                     <nav>
                         <ul class="nav masthead-nav">
                             <li class="<?php if ($data['thisPage'] === 'quotes') echo 'active' ?>"><a href="/admin/quotes">Цитаты</a></li>

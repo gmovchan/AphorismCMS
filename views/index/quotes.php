@@ -6,11 +6,10 @@
             <blockquote class="text-left">
                 <p>
                     <?php if ($qoute['lengthExceeded'] === true): ?>
-                    <span class="startText"><?php echo $this->html($qoute['startText']); ?></span><a data-id="<?php echo $qoute['quote_id']; ?>" class="get-full-text" onclick="retirn false"> ...показать полностью</a><span class="endText" id="end-text-id<?php echo $qoute['quote_id']; ?>"><?php echo $this->html($qoute['endText']); ?></span>
+                        <span class="startText"><?php echo $this->html($qoute['startText']); ?></span><a data-id="<?php echo $qoute['quote_id']; ?>" class="get-full-text" onclick="retirn false"> ...показать полностью</a><span class="endText" id="end-text-id<?php echo $qoute['quote_id']; ?>"><?php echo $this->html($qoute['endText']); ?></span>
                     <?php else: ?>
                         <?php echo $this->html($qoute['text']); ?>
                     <?php endif; ?>
-                    
                 </p>
                 <footer>
                     <a href="/quotes?author_id=<?php echo $qoute['author_id']; ?>"><cite title="<?php echo $this->html($qoute['author']); ?>"><?php echo $this->html($qoute['author']); ?></cite></a>
@@ -20,7 +19,7 @@
         <div class="panel-footer">
             <a href="/quotes#quote<?php echo $qoute['quote_id']; ?>">id<?php echo $qoute['quote_id']; ?></a>
             <span> / </span>
-            <a href="/quote/comments?quote_id=<?php echo $qoute['quote_id']; ?>">Комментарии (<?php echo $qoute['amountComments']; ?>)</a>
+            <a href="/quote/comments?quote_id=<?php echo $qoute['quote_id']; ?>">Комментировать (<?php echo $qoute['amountComments']; ?>)</a>
         </div>
     </div>
 <?php endforeach; ?>

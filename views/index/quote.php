@@ -9,6 +9,7 @@
                     <a href="/quotes?author_id=<?php echo $data['quote']['author_id']; ?>"><cite title="<?php echo $this->html($data['quote']['author']); ?>"><?php echo $this->html($data['quote']['author']); ?></cite></a>
                 </footer>
             </blockquote>
+            <?php require __DIR__ . '/repostQuote.php'; ?>
         </div>
         <div class="panel-footer">
             <a href="/quote/comments?quote_id=<?php echo $data['quote']['quote_id']; ?>">id<?php echo $data['quote']['quote_id']; ?></a>

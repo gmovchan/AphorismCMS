@@ -70,6 +70,7 @@ class QuotesModel extends Model
             $quote['previous_id'] = $prevAndNextRows['previous_id'];
             $quote['next_id'] = $prevAndNextRows['next_id'];
             $quote['random_id'] = $this->getRandomQuoteID();
+            $quote['description'] = mb_substr(trim($quote['text']), 0, 250)."...";
             return $quote;
         } else {
             return false;

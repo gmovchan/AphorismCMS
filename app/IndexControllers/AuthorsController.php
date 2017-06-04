@@ -18,6 +18,7 @@ class AuthorsController extends Controller
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'authors';
+        $this->data['title'] = "Авторы";
         $this->authors = new AuthorsModel();
         $this->quotes = new QuotesModel();
     }

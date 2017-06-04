@@ -42,6 +42,9 @@
         <script src="<?php echo $data['publicDir']; ?>/dist/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="<?php echo $data['publicDir']; ?>/assets/js/ie10-viewport-bug-workaround.js"></script>
+        <!-- Кнопка репоста Яндекс -->
+        <script src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js"></script>
+        <script src="//yastatic.net/share2/share.js"></script>
     </head>
     <body>
         <!-- Yandex.Metrika counter -->

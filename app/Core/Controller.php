@@ -30,6 +30,7 @@ class Controller
         $this->data['title'] = $config->getConfigElement(Config::CONSTANTS, 'title');
         $this->request = new Request;
         $this->data['thisPage'] = null;
+        $this->data['hostLink'] = $_SERVER['HTTP_HOST'];
     }
 
     // Проверка авторизации

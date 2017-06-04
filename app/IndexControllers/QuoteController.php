@@ -18,6 +18,7 @@ class QuoteController extends Controller
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'quote';
+        $this->data['title'] = "Цитата";
         $this->quotes = new QuotesModel();
         $this->comments = new CommentsModel();
     }
@@ -33,6 +34,7 @@ class QuoteController extends Controller
         }
 
         if (!is_null($quoteID)) {
+            $this->data['thisPage'] = null;
             $quote = $this->quotes->getQuote($quoteID);
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
@@ -42,6 +44,7 @@ class QuoteController extends Controller
                 ErrorHandler::printErrorPage404();
             }
         } else {
+            $this->data['title'] = "Рандом";
             $this->data['quote'] = $this->quotes->getRandomQuote();
             $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
         }
@@ -51,6 +54,7 @@ class QuoteController extends Controller
     {
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
+        $this->data['title'] = "Комментарии";
 
         if (isset($_POST['comment'])) {
 

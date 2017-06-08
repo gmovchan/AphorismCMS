@@ -61,7 +61,7 @@ class FrontController
         } else {
             // Если в пути не передано имя контроллера, то произойдет перенаправление
             // на страницу по ссылке в которой уже будет подставлено имя контроллера
-            $this->goToPage($redirectPath);
+            // $this->goToPage($redirectPath);
         }
 
         if (!empty($routes[$keyAction])) {

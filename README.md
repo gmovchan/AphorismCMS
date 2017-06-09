@@ -1,13 +1,18 @@
 ## Описание
 Сборник афоризмов знаменитых философов, писателей, художников и учёных о любви, женщинах и отношениях.
 
-[Перейти на сайт](http://bobylquote.ru)
+Проект запущен -> http://bobylquote.ru
 
 ## Использовал
 * Архитектура MVC
 * Composer
     * Автозагрузчик PSR-4
-* VDS Ubuntu
+* VDS 
+    * Ubuntu
+    * PHP 7
+    * Apache
+    * MySQL
+    * Sendmail
 
 [TODO](/TODO.md)
 

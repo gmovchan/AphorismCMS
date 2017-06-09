@@ -97,6 +97,8 @@ class OfferModel extends Model
 
     // проверяет поля формы на валидность
     // FIXME: дублируется метод, такой же есть в QuotesModel
+    // TODO: метод должен проверять все поля формы. Пока он возвращает заглушку 
+    // с ошибкой 503, если длина больше чем установлена в БД. Пользователю не очевидно где его ошибка.
     private function checkDataForm($quoteText)
     {
         if (empty($quoteText)) {

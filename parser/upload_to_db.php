@@ -310,6 +310,6 @@ class Request
 }
 
 $request = new Request;
-$quotes = new Quotes('./doc/quotes.json', $request);
+$quotes = new Quotes('./data/quotes.json', $request);
 $quote = $quotes->addAllAuthorsToDB();
 $quote = $quotes->addAllQoutesToDB();

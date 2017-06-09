@@ -1,6 +1,6 @@
 <?php
 
-$quotes = parseQuotes("./doc/quotes.txt");
+$quotes = parseQuotes("./data/quotes.txt");
 print_r($quotes);
 
 // сохранить в JSON файл

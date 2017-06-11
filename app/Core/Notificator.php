@@ -55,7 +55,7 @@ class Notificator
         }
 
         // отправляет письмо и вернет исключение в случае ошибки
-        ErrorHandler::ensure(mail($this->adminMail, $subject, $mailMessage), "Не удалось отправить письмо \"$type\" администратору.");
+        ErrorHandler::ensure(mail($this->adminMail, $subject, $mailMessage, '', '-fno-reply@bobylquote.ru'), "Не удалось отправить письмо \"$type\" администратору.");
 
         return true;
     }

@@ -3,17 +3,6 @@
 
 Проект запущен -> http://bobylquote.ru
 
-## Использовал
-* Архитектура MVC
-* Composer
-    * Автозагрузчик PSR-4
-* VDS 
-    * Ubuntu
-    * PHP 7
-    * Apache
-    * MySQL
-    * Sendmail
-
 [TODO](/TODO.md)
 
 [Бэкап БД](/backup/db.sql)

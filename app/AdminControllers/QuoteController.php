@@ -93,6 +93,21 @@ class QuoteController extends AdminController
         }
     }
     
+    public function delComment()
+    {
+        $getArray = $this->request->getProperty('GET');
+        $quoteId = $getArray['quote_id'];
+        $commentId = $getArray['comment_id'];
+
+        if ($this->comments->delComment($commentId)) {
+            $this->data['successful'] = $this->comments->getSuccessful();
+            $this->getQuotePage($quoteId);
+        } else {
+            $this->data['errors'] = $this->comments->getErrors();
+            $this->getQuotePage($quoteId);
+        }
+    }
+    
     public function editQuote($id = null)
     {
         // нет пункта меню для этой страницы

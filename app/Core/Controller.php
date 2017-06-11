@@ -6,6 +6,8 @@ use Application\Models\AuthModel;
 use Application\Core\Request;
 use Application\Core\Config;
 
+// FIXME: в контроллерах много повторяющегося куда, проверяющего результат выполнения
+// методов из моделей. Надо написать какуой-нибудь более-менее универмальный и наследуемый метод для этой цели
 class Controller
 {
 

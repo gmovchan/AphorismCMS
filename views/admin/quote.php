@@ -33,7 +33,7 @@
             <p><?php echo $this->html($comment['comment_text']); ?></p>
         </div>
         <div class="panel-footer">
-            <a href="/admin/delcomment?comment_id=<?php echo $comment['id']; ?>&quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
+            <a href="/admin/quote/delcomment?comment_id=<?php echo $comment['id']; ?>&quote_id=<?php echo $data['quote']['quote_id']; ?>">Удалить</a>
         </div>
     </div>
 <?php endforeach; ?>

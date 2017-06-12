@@ -7,15 +7,21 @@ use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Core\ErrorHandler;
 use Application\Core\Notificator;
+use Gregwar\Captcha\CaptchaBuilder;
+use Gregwar\Captcha\PhraseBuilder;
 
 class CommentsModel extends Model
 {
+
     private $notificator;
+    private $captchaBuilder;
 
     public function __construct()
     {
         $this->dbh = new Mysql(Config::UNMARRIED);
         $this->notificator = new Notificator;
+        $this->captchaBuilder = new CaptchaBuilder;
+        $this->captchaBuilder->build();
     }
 
     public function getComments($quoteID)
@@ -51,7 +57,7 @@ class CommentsModel extends Model
         if (empty($formContent['name'])) {
             $formContent['name'] = "Аноним";
         }
-        
+
         $quoteID = $formContent['idInDB'];
 
         $result = $this->dbh->query("INSERT INTO `comments` (`comment_text`, `author_name`, `quote_id`) "
@@ -83,6 +89,11 @@ class CommentsModel extends Model
             return null;
         }
 
+        // проверка каптчи
+        if (!$this->checkCaptcha($formContent['captcha'])) {
+            return null;
+        }
+
         if (empty($formContent['name'])) {
             $formContent['name'] = "Аноним";
         }
@@ -102,12 +113,58 @@ class CommentsModel extends Model
             return false;
         }
     }
-    
+
     // подсчитывает колличество комментариев у цитаты
     public function countComments($quote_id)
     {
-         $count = $this->dbh->query("SELECT * FROM `comments` WHERE `quote_id` = ?;", 'rowCount', '', array($quote_id));
-         return $count;
+        $count = $this->dbh->query("SELECT * FROM `comments` WHERE `quote_id` = ?;", 'rowCount', '', array($quote_id));
+        return $count;
+    }
+
+    // возвращает картинку и записывает текст на картинке в переменную сессии
+    public function getCaptchaImg()
+    {
+
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        $_SESSION['phrase'] = $this->captchaBuilder->getPhrase();
+        return $this->captchaBuilder->output();
+    }
+
+    private function checkCaptcha($captchaStrForm)
+    {
+
+        if (!empty($captchaStrForm)) {
+            $this->errors[] = "Каптча неправильная";
+        } else {
+            $this->errors[] = "Вы не ввели каптчу";
+        }
+
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+
+        $captchaStrSession = $_SESSION['phrase'];
+        unset($_SESSION['phrase']);
+
+        /*
+         * if ($this->captchaBuilder->testPhrase($captchaStrForm)) {
+         *   return true;
+         * }
+         * Почему-то эта конструкция не работает, метод testPhrase сравнивает старую капчу с новой,
+         * с которой надо сравнивать только после следуюзей отправки формы
+         * Поэтому, дальше идет переделанный код из этого метода, где требуется метод niceize из другого класса
+         * для форматирования строки
+         */
+        $phraseBuilder = new PhraseBuilder;
+
+        if ($phraseBuilder->niceize($captchaStrSession) == $phraseBuilder->niceize($captchaStrForm)) {
+            return true;
+        }
+
+        return false;
     }
 
 }

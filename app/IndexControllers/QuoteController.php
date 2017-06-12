@@ -84,13 +84,11 @@ class QuoteController extends Controller
     private function getQuotePage($quoteID)
     {
         if (!is_null($quoteID)) {
-            $quote = $this->quotes->getQuote($quoteID);
-            $comments = $this->comments->getComments($quoteID);
-            
+            $quote = $this->quotes->getQuote($quoteID);        
             // если не удалось получить цитату, то вернет страницу 404
             if ($quote) {
                 $this->data['quote'] = $quote;
-                $this->data['comments'] = $comments;
+                $this->data['comments'] = $this->comments->getComments($quoteID);
                 $this->view->generate('/index/quote.php', 'indexTemplate.php', $this->data);
             } else {
                 ErrorHandler::printErrorPage404();
@@ -98,6 +96,13 @@ class QuoteController extends Controller
         } else {
             ErrorHandler::printErrorPage404();
         }
+    }
+    
+    // возвращает картинку с каптчей
+    public function getCaptchaImg()
+    {
+        header('Content-type: image/jpeg');
+        echo $this->comments->getCaptchaImg();
     }
 
 }

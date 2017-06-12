@@ -225,3 +225,14 @@ blockquote {
     font-size: 16px;
 }
 
+.captcha {
+    text-align: left;
+}
+
+.captcha-img {
+    margin-bottom: 15px;
+}
+
+.captcha input {
+    width: 150px;
+}

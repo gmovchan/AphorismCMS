@@ -21,25 +21,27 @@ class Notificator
 
     public function sendMailNotification($type, $id = null, $message = null)
     {
+        $hostLink = "http://bobylquote.ru";
         switch ($type) {
             case 'comment':
                 $subject = "Bobylquote. Новый комментарий";
-                $link = "http://bobylquote.ru/quote/comments?quote_id=$id";
+                $link = "$hostLink/quote/comments?quote_id=$id";
+                $adminLink = "$hostLink/admin/quote/comments?quote_id=$id";
                 $message = htmlspecialchars($message, ENT_QUOTES);
-                $mailMessage = "Появился новый комментарий к цитате. $link\r\nТекст комментария: $message";
+                $mailMessage = "Появился новый комментарий к цитате.\r\nТекст комментария: $message\r\nПосмотреть $link\r\nРедактировать $adminLink";
 
                 break;
 
             case 'offer':
                 $subject = "Bobylquote. Предложили новую цитату";
-                $link = "http://bobylquote.ru/admin/offer/editoffer?offer_id=$id";
+                $link = "$hostLink/admin/offer/editoffer?offer_id=$id";
                 $mailMessage = "Вам предложили добавить цитату. $link";
 
                 break;
 
             case 'messageToAdmin':
                 $subject = "Bobylquote. Сообщение от посетителя";
-                $mailMessage = "Текст сообщения $link";
+                $mailMessage = "Текст сообщения $message";
 
                 break;
 
@@ -54,8 +56,13 @@ class Notificator
                 break;
         }
 
-        // отправляет письмо и вернет исключение в случае ошибки
-        ErrorHandler::ensure(mail($this->adminMail, $subject, $mailMessage, '', '-fno-reply@bobylquote.ru'), "Не удалось отправить письмо \"$type\" администратору.");
+        // если проект запущен на тестовом сервере, то письма не будут отправляться
+        $appStatus = ErrorHandler::getConfigElement('app_in_production');
+
+        if ($appStatus === 1) {
+            // отправляет письмо и вернет исключение в случае ошибки
+            ErrorHandler::ensure(mail($this->adminMail, $subject, $mailMessage, '', '-fno-reply@bobylquote.ru'), "Не удалось отправить письмо \"$type\" администратору.");
+        }
 
         return true;
     }

@@ -8,7 +8,9 @@
             "email": "grigory08@ya.ru"
         }
     ],
-    "require": {},
+    "require": {
+         "gregwar/captcha": "1.*"
+    },
     "autoload": {
         "psr-4": {
             "Application\\": "app/"

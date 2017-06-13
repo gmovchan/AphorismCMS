@@ -52,7 +52,13 @@ class QuoteController extends Controller
          */
         
         $this->data['title'] = "Карусель";
-        $this->data['quote'] = $this->quotes->getRandomQuote();
+        $quote = $this->quotes->getRandomQuote();
+        
+        if (is_null($quote)) {
+           ErrorHandler::printErrorPage404();
+        } 
+        
+        $this->data['quote'] = $quote;
         $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
     }
 
@@ -86,7 +92,7 @@ class QuoteController extends Controller
         if (!is_null($quoteID)) {
             $quote = $this->quotes->getQuote($quoteID);        
             // если не удалось получить цитату, то вернет страницу 404
-            if ($quote) {
+            if (!is_null($quote)) {
                 $this->data['quote'] = $quote;
                 $this->data['comments'] = $this->comments->getComments($quoteID);
                 $this->view->generate('/index/quote.php', 'indexTemplate.php', $this->data);

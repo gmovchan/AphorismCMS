@@ -73,7 +73,7 @@ class QuotesModel extends Model
             $quote['description'] = mb_substr(trim($quote['text']), 0, 250)."...";
             return $quote;
         } else {
-            return false;
+            return null;
         }
     }
 

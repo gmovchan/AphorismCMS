@@ -15,7 +15,7 @@ class OfferModel extends Model
 
     public function __construct()
     {
-        $this->dbh = new Mysql(Config::UNMARRIED);
+        $this->dbh = new Mysql(Config::DB);
         $this->notificator = new Notificator;
     }
 

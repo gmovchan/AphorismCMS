@@ -2,10 +2,9 @@
 
 namespace Application\Core;
 
-use Application\Core\Model;
 use Application\Core\ErrorHandler;
 
-class Config extends Model
+class Config
 {
 
     private $configArray;
@@ -14,10 +13,10 @@ class Config extends Model
     private $configFilePath;
 
     // вариант настроек для подключения БД
-    const UNMARRIED = 1;
+    const DB = 1;
     const CONSTANTS = 2;
 
-    public function __construct()
+    private function __construct()
     {
         $this->configFilePath = __DIR__ . '/../Configs/app.ini';
         $this->configArray = $this->getAllConfig();
@@ -29,7 +28,7 @@ class Config extends Model
         if (empty(self::$instance)) {
             // класс с закрытым конструктором может сам
             // себя создать
-            self::$instance = new Config();
+            self::$instance = new self();
         }
         // возвращает ссылку на созданный объект
         return self::$instance;
@@ -44,7 +43,7 @@ class Config extends Model
     {
 
         switch ($settingValue) {
-            case self::UNMARRIED:
+            case self::DB:
                 
                 // проверяет на каком сервере запущен скрипт и исходя из этого 
                 // возвращает соответствующие настройки для БД

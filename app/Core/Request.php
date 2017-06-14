@@ -41,6 +41,18 @@ class Request
                     break;
             }
         }
+        
+        /*
+         * 
+        // работа с аргументами командной строки
+        foreach ($_SERVER['argv'] as $arg) {
+            if (strpos($arg, '=')) {
+                list($key, $val) = explode("=", $arg);
+                $this->setProperty($key, $val);
+            }
+        }
+         * 
+         */
     }
 
     public function getProperty($key)

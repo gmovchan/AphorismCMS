@@ -18,7 +18,7 @@ class CommentsModel extends Model
 
     public function __construct()
     {
-        $this->dbh = new Mysql(Config::UNMARRIED);
+        $this->dbh = new Mysql(Config::DB);
         $this->notificator = new Notificator;
         $this->captchaBuilder = new CaptchaBuilder;
         $this->captchaBuilder->build();

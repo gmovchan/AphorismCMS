@@ -21,7 +21,7 @@ class AuthModel extends Model
     {
         // передает класса из которого вызывается, для каждого класса свои
         // настройки mysql
-        $this->dbh = new Mysql(Config::UNMARRIED);
+        $this->dbh = new Mysql(Config::DB);
     }
 
     /**

@@ -6,12 +6,14 @@ use Application\Core\Controller;
 use Application\Models\QuotesModel;
 use Application\Models\CommentsModel;
 use Application\Core\ErrorHandler;
+use Application\Model\CaptchaModel;
 
 class QuoteController extends Controller
 {
 
     private $quotes;
     private $comments;
+    private $captcha;
 
     public function __construct()
     {
@@ -20,37 +22,11 @@ class QuoteController extends Controller
         $this->data['thisPage'] = 'quote';
         $this->quotes = new QuotesModel();
         $this->comments = new CommentsModel();
+        $this->captcha = new CaptchaModel;
     }
 
     public function getPage()
     {
-        /*
-        $getArray = $this->request->getProperty('GET');
-        
-        if (!empty($getArray)) {
-            $quoteID = $getArray['quote_id'];
-        } else {
-            $quoteID = null;
-        }
-
-        if (!is_null($quoteID)) {
-            $this->data['thisPage'] = null;
-            $quote = $this->quotes->getQuote($quoteID);
-            // если не удалось получить цитату, то вернет страницу 404
-            if ($quote) {
-                $this->data['quote'] = $quote;
-                $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
-            } else {
-                ErrorHandler::printErrorPage404();
-            }
-        } else {
-            $this->data['title'] = "Рандом";
-            $this->data['quote'] = $this->quotes->getRandomQuote();
-            $this->view->generate('/index/randomQuote.php', 'indexMiddleTemplate.php', $this->data);
-        }
-         * 
-         */
-        
         $this->data['title'] = "Карусель";
         $quote = $this->quotes->getRandomQuote();
         
@@ -67,6 +43,7 @@ class QuoteController extends Controller
         // нет пункта меню для этой страницы
         $this->data['thisPage'] = null;
         $this->data['title'] = "Цитата";
+        $this->data['thisURI'] = $this->request->getURI();
 
         if (isset($_POST['comment'])) {
 
@@ -114,7 +91,7 @@ class QuoteController extends Controller
     public function getCaptchaImg()
     {
         header('Content-type: image/jpeg');
-        echo $this->comments->getCaptchaImg();
+        echo $this->captcha->getCaptchaImg();
     }
 
 }

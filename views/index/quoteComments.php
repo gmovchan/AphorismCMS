@@ -30,7 +30,7 @@
     <div class="form-group">
         <label for="comment" class="col-sm-1 control-label">Каптча</label>
         <div class="col-sm-10 captcha">
-            <img src="/quote/getcaptchaimg" id="" onclick="this.src = '/quote/getcaptchaimg?rid=' + Math.random();" title="Обновить картинку" class="captcha-img">
+            <img src="/quote/getcaptchaimg?uri=<?php echo urlencode($data['thisURI']); ?>" id="" onclick="this.src = '/quote/getcaptchaimg?uri=<?php echo urlencode($data['thisURI']); ?>';" title="Обновить картинку" class="captcha-img">
             <input type="text" name="captcha" class="form-control" placeholder="Введите код с картинки">
         </div>
     </div>

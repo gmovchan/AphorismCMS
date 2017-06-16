@@ -8,22 +8,20 @@ use Application\Core\Config;
 use Application\Core\ErrorHandler;
 use Application\Core\Notificator;
 use Application\Core\Request;
-use Gregwar\Captcha\CaptchaBuilder;
-use Gregwar\Captcha\PhraseBuilder;
+use Application\Model\CaptchaModel;
 
 class CommentsModel extends Model
 {
 
     private $notificator;
-    private $captchaBuilder;
     private $request;
+    private $captcha;
 
     public function __construct()
     {
         $this->dbh = new Mysql(Config::DB);
         $this->notificator = new Notificator;
-        $this->captchaBuilder = new CaptchaBuilder;
-        $this->captchaBuilder->build();
+        $this->captcha = new CaptchaModel;
         $this->request = new Request;
     }
 
@@ -98,7 +96,13 @@ class CommentsModel extends Model
         }
 
         // проверка каптчи
-        if (!$this->checkCaptcha($formContent['captcha'])) {
+        if (!$this->captcha->checkCaptcha($formContent['captcha'])) {
+            
+            // забирает ошибки из другой модели, чтобы потом вывести их в представление
+            foreach ($this->captcha->getErrors() as $value) {
+                $this->errors[] = $value;
+            }
+
             return null;
         }
 
@@ -127,59 +131,6 @@ class CommentsModel extends Model
     {
         $count = $this->dbh->query("SELECT * FROM `comments` WHERE `quote_id` = ?;", 'rowCount', '', array($quote_id));
         return $count;
-    }
-
-    // возвращает картинку и записывает текст на картинке в переменную сессии
-    public function getCaptchaImg()
-    {
-        /*
-          if (!isset($_SESSION)) {
-          session_start();
-          }
-
-          $_SESSION['phrase'] = $this->captchaBuilder->getPhrase();
-         * 
-         */
-
-        // стартует сессию, если её нет, и сохраняет в её переменной текст капчи
-        $this->request->setSessionProperty('phrase', $this->captchaBuilder->getPhrase());
-        return $this->captchaBuilder->output();
-    }
-
-    private function checkCaptcha($captchaStrForm)
-    {
-
-        if (!empty($captchaStrForm)) {
-            $this->errors[] = "Каптча неправильная";
-        } else {
-            $this->errors[] = "Вы не ввели каптчу";
-        }
-
-        /*
-          $captchaStrSession = $_SESSION['phrase'];
-          unset($_SESSION['phrase']);
-         * 
-         */
-
-        $captchaStrSession = $this->request->getSessionProperty('phrase');
-        $this->request->unsetSessionProperty('phrase');
-
-        /*
-         * if ($this->captchaBuilder->testPhrase($captchaStrForm)) {
-         *   return true;
-         * }
-         * Почему-то эта конструкция не работает, метод testPhrase сравнивает старую капчу с новой,
-         * с которой надо сравнивать только после следуюзей отправки формы
-         * Поэтому, дальше идет переделанный код из этого метода, где требуется метод niceize из другого класса
-         * для форматирования строки
-         */
-        $phraseBuilder = new PhraseBuilder;
-
-        if ($phraseBuilder->niceize($captchaStrSession) == $phraseBuilder->niceize($captchaStrForm)) {
-            return true;
-        }
-
-        return false;
     }
 
 }

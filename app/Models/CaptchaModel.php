@@ -23,13 +23,13 @@ class CaptchaModel extends Model
     // возвращает картинку и записывает текст на картинке в переменную сессии
     public function getCaptchaImg()
     {
-        // именем ключа является ссылка на страницу, чтобы для каждой страницы была своя капча
         $getArray = $this->request->getProperty('GET');
 
         if (!isset($getArray['uri'])) {
             return null;
         }
-
+        
+        // именем ключа является ссылка на страницу, чтобы для каждой страницы была своя капча
         $thisURI = urldecode($getArray['uri']);
         // стартует сессию, если её нет, и сохраняет в её переменной текст капчи
         $this->request->setSessionProperty($thisURI, array('phrase' => $this->captchaBuilder->getPhrase()));

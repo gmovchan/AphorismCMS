@@ -13,6 +13,14 @@
             </div><!-- /input-group -->
         </div>
     </div>
+    <div class="form-group" id="email">
+        <label for="email" class="col-sm-1 control-label">email</label>
+        <div class="col-sm-10">
+            <div class="input-group">
+                <input name="email" type="text" class="form-control" placeholder="" value="">
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label for="comment" class="col-sm-1 control-label">Пост</label>
         <div class="col-sm-10">
@@ -22,7 +30,7 @@
     <div class="form-group">
         <label for="comment" class="col-sm-1 control-label">Каптча</label>
         <div class="col-sm-10 captcha">
-            <img src="/quote/getcaptchaimg" id="" onclick="this.src='/quote/getcaptchaimg?rid=' + Math.random();" title="Обновить картинку" class="captcha-img">
+            <img src="/quote/getcaptchaimg" id="" onclick="this.src = '/quote/getcaptchaimg?rid=' + Math.random();" title="Обновить картинку" class="captcha-img">
             <input type="text" name="captcha" class="form-control" placeholder="Введите код с картинки">
         </div>
     </div>

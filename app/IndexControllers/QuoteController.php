@@ -82,6 +82,12 @@ class QuoteController extends Controller
             }
         } else {
             $getArray = $this->request->getProperty('GET');
+            
+            // спам-боты пытаются открыть комментарии не передав id цитаты
+            if (!isset($getArray['quote_id'])) {
+                ErrorHandler::printErrorPage404();
+            }
+            
             $quoteID = $getArray['quote_id'];
             $this->getQuotePage($quoteID);
         }

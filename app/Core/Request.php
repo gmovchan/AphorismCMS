@@ -16,8 +16,15 @@ class Request
 
     private function init()
     {
+        /*
+          if (!isset($_SESSION)) {
+          $this->properties['SESSION'] = $_SESSION;
+          }
+         * 
+         */
+
         if (isset($_SERVER['REQUEST_METHOD'])) {
-            
+
             /*
              * содержимое переменных POST и GET отправляется в одноименный массив
              * чтобы передать его из контроллера в модель одной переменной
@@ -41,16 +48,16 @@ class Request
                     break;
             }
         }
-        
+
         /*
          * 
-        // работа с аргументами командной строки
-        foreach ($_SERVER['argv'] as $arg) {
-            if (strpos($arg, '=')) {
-                list($key, $val) = explode("=", $arg);
-                $this->setProperty($key, $val);
-            }
-        }
+          // работа с аргументами командной строки
+          foreach ($_SERVER['argv'] as $arg) {
+          if (strpos($arg, '=')) {
+          list($key, $val) = explode("=", $arg);
+          $this->setProperty($key, $val);
+          }
+          }
          * 
          */
     }
@@ -77,6 +84,39 @@ class Request
     public function getFeedbackString()
     {
         return $this->feedback;
+    }
+    
+    public function getSessionProperty($key)
+    {
+        $this->startSession();
+
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+
+        return null;
+    }
+
+    public function setSessionProperty($key, $val)
+    {
+        $this->startSession();
+        $_SESSION[$key] = $val;
+    }
+
+    public function unsetSessionProperty($key)
+    {
+        $this->startSession();
+
+        if (isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+    }
+
+    private function startSession()
+    {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
     }
 
 }

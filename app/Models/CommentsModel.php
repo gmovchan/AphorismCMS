@@ -7,6 +7,7 @@ use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Core\ErrorHandler;
 use Application\Core\Notificator;
+use Application\Core\Request;
 use Gregwar\Captcha\CaptchaBuilder;
 use Gregwar\Captcha\PhraseBuilder;
 
@@ -15,6 +16,7 @@ class CommentsModel extends Model
 
     private $notificator;
     private $captchaBuilder;
+    private $request;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class CommentsModel extends Model
         $this->notificator = new Notificator;
         $this->captchaBuilder = new CaptchaBuilder;
         $this->captchaBuilder->build();
+        $this->request = new Request;
     }
 
     public function getComments($quoteID)
@@ -79,6 +82,11 @@ class CommentsModel extends Model
 
     private function validationDataForm($formContent)
     {
+        if (!empty($formContent['email'])) {
+            $this->errors[] = "Сработала защита от спама.";
+            return null;
+        }
+
         if (empty($formContent['comment'])) {
             $this->errors[] = "Текст цитаты не введен";
             return null;
@@ -124,12 +132,17 @@ class CommentsModel extends Model
     // возвращает картинку и записывает текст на картинке в переменную сессии
     public function getCaptchaImg()
     {
+        /*
+          if (!isset($_SESSION)) {
+          session_start();
+          }
 
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+          $_SESSION['phrase'] = $this->captchaBuilder->getPhrase();
+         * 
+         */
 
-        $_SESSION['phrase'] = $this->captchaBuilder->getPhrase();
+        // стартует сессию, если её нет, и сохраняет в её переменной текст капчи
+        $this->request->setSessionProperty('phrase', $this->captchaBuilder->getPhrase());
         return $this->captchaBuilder->output();
     }
 
@@ -142,12 +155,14 @@ class CommentsModel extends Model
             $this->errors[] = "Вы не ввели каптчу";
         }
 
-        if (!isset($_SESSION)) {
-            session_start();
-        }
+        /*
+          $captchaStrSession = $_SESSION['phrase'];
+          unset($_SESSION['phrase']);
+         * 
+         */
 
-        $captchaStrSession = $_SESSION['phrase'];
-        unset($_SESSION['phrase']);
+        $captchaStrSession = $this->request->getSessionProperty('phrase');
+        $this->request->unsetSessionProperty('phrase');
 
         /*
          * if ($this->captchaBuilder->testPhrase($captchaStrForm)) {

@@ -3,9 +3,7 @@
     <form action="" method="post" class="form-signin">
         <h2 class="form-signin-heading">Пожалуйста войдите</h2>
         <?php
-        if (isset($data['errors'])) {
-            require __DIR__ . '/../errors/errorsList.php';
-        }
+            require __DIR__ . '/../notice/notice.php';
         ?>
         <div class="form-group">
             <label for="name">Логин</label>

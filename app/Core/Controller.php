@@ -33,7 +33,8 @@ class Controller
         $this->request = new Request;
         $this->data['thisPage'] = null;
         // FIXME: работать из контроллера с суперглобальными переменными не безопасно
-        $this->data['hostLink'] = $_SERVER['HTTP_HOST'];
+        $this->data['hostLink'] = $this->request->getHostAdress();
+        
     }
 
     // Проверка авторизации

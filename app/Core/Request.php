@@ -123,5 +123,16 @@ class Request
     {
         return $_SERVER['REQUEST_URI'];
     }
+    
+    public function getHostAdress()
+    {
+        // если скрипт вызывают через командную строку, то переменная $_SERVER['HTTP_HOST'] 
+        // отсутствует и обращение к ней напрямую вызывает ошибку
+        if (isset($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
+        } else {
+            return '';
+        }
+    }
 
 }

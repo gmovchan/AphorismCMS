@@ -6,6 +6,7 @@ use Application\Core\ErrorHandler;
 
 class FrontController
 {
+
     public function start()
     {
         $resultParseUrl = $this->parseURL();
@@ -37,8 +38,14 @@ class FrontController
         // Название папки в которой находятся контроллеры
         $controllerDirName = 'IndexControllers';
 
-        $urlParsed = parse_url($_SERVER['REQUEST_URI']);
-        $routes = explode('/', $urlParsed['path']);
+        // если скрипт вызывают через командную строку, то переменная $_SERVER['REQUEST_URI'] 
+        // отсутствует и обращение к ней напрямую вызывает ошибку
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $urlParsed = parse_url($_SERVER['REQUEST_URI']);
+            $routes = explode('/', $urlParsed['path']);
+        } else {
+            $routes = '';
+        }
 
         /*
          * Если первый элемент пути указывает на админку, то дальнейший разбор 
@@ -84,4 +91,5 @@ class FrontController
         // останавливает скрипт, чтобы не было неожиданностей
         exit();
     }
+
 }

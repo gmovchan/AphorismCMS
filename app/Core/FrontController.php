@@ -28,8 +28,19 @@ class FrontController
         }
     }
 
+    // если скрипт вызывают через командную строку, то переменная $_SERVER['REQUEST_URI'] 
+    // пустая или отсутствует и обращение к ней напрямую вызывает ошибку
+    private function detectCLImode()
+    {
+        if (php_sapi_name() == "cli") {
+            exit();
+        }
+    }
+
     private function parseURL()
     {
+        $this->detectCLImode();
+        
         $controllerName = 'Quote';
         $redirectPath = $controllerName;
         $actionName = 'getPage';
@@ -38,14 +49,8 @@ class FrontController
         // Название папки в которой находятся контроллеры
         $controllerDirName = 'IndexControllers';
 
-        // если скрипт вызывают через командную строку, то переменная $_SERVER['REQUEST_URI'] 
-        // отсутствует и обращение к ней напрямую вызывает ошибку
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $urlParsed = parse_url($_SERVER['REQUEST_URI']);
-            $routes = explode('/', $urlParsed['path']);
-        } else {
-            $routes = '';
-        }
+        $urlParsed = parse_url($_SERVER['REQUEST_URI']);
+        $routes = explode('/', $urlParsed['path']);
 
         /*
          * Если первый элемент пути указывает на админку, то дальнейший разбор 

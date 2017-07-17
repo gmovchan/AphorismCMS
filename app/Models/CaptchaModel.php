@@ -47,11 +47,9 @@ class CaptchaModel extends Model
 
         $thisURI = $this->request->getURI();
         $captchaArraySession = $this->request->getSessionProperty($thisURI);
-        print_r($thisURI);
-        print_r($_SESSION);
+
         // проверяет сохранена ли в сессии капча для этой страницы. Например, сессия может просрочиться
         if (is_null($captchaArraySession)) {
-            print_r('is_null($captchaArraySession)');
             return false;          
         }
 

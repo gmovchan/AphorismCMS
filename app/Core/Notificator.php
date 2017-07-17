@@ -31,6 +31,15 @@ class Notificator
                 $mailMessage = "Появился новый комментарий к цитате.\r\nТекст комментария: $message\r\nПосмотреть $link\r\nРедактировать $adminLink";
 
                 break;
+            
+            case 'feedback':
+                $subject = "Bobylquote. Новый отзыв о проекте";
+                $link = "$hostLink/feedbacks";
+                $adminLink = "$hostLink/admin/quote/feedbacks?feedback_id=$id";
+                $message = htmlspecialchars($message, ENT_QUOTES);
+                $mailMessage = "Появился новый комментарий к цитате.\r\nТекст комментария: $message\r\nПосмотреть $link\r\nРедактировать $adminLink";
+
+                break;
 
             case 'offer':
                 $subject = "Bobylquote. Предложили новую цитату";

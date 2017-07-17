@@ -7,6 +7,11 @@ $(document).ready(function ()
         $('#comment-form').toggle();
         // ловушка для ботов в форме добавления комментария
         $("#email").toggle();
+        
+        if ($('#no-feedbecks-msg').length) {
+            console.log('#no-feedbecks-msg');
+            $('#no-feedbecks-msg').toggle();
+        }
 
         if ($('#comment-form').is(':visible')) {
             $('#open-comment-form').text('Скрыть форму');

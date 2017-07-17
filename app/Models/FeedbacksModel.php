@@ -10,9 +10,8 @@ use Application\Core\Notificator;
 use Application\Core\Request;
 use Application\Model\CaptchaModel;
 
-class CommentsModel extends Model
+class FeedbacksModel extends Model
 {
-
     private $notificator;
     private $request;
     private $captcha;
@@ -25,13 +24,13 @@ class CommentsModel extends Model
         $this->captcha = new CaptchaModel;
         $this->request = new Request;
         // эта же модель используется и для отзывов через наследования и замену имени таблицы
-        $this->dbTableName = "`comments`";
+        $this->dbTableName = "`feedbacks`";
     }
 
-    public function getComments($quoteID)
+    public function getComments()
     {
-        $comments = $this->dbh->query("SELECT * FROM $this->dbTableName WHERE `quote_id` = ? "
-                . "ORDER BY time_creation ASC;", 'fetchAll', '', array($quoteID));
+        $comments = $this->dbh->query("SELECT * FROM $this->dbTableName "
+                . "ORDER BY time_creation ASC;", 'fetchAll');
         $comments = $this->parseCommentsTime($comments);
         return $comments;
     }
@@ -62,17 +61,15 @@ class CommentsModel extends Model
             $formContent['name'] = "Аноним";
         }
 
-        $quoteID = $formContent['idInDB'];
-
-        $result = $this->dbh->query("INSERT INTO $this->dbTableName (`comment_text`, `author_name`, `quote_id`) "
-                . "VALUES (?, ?, ?)", 'rowCount', '', array($formContent['comment'], $formContent['name'], $quoteID));
+        $result = $this->dbh->query("INSERT INTO $this->dbTableName (`comment_text`, `author_name`) "
+                . "VALUES (?, ?)", 'rowCount', '', array($formContent['comment'], $formContent['name']));
 
         if ($result === 1) {
-            $this->successful[] = "Комментарий успешно добавлен";
-            $this->notificator->sendMailNotification('comment', $quoteID, $formContent['comment']);
+            $this->successful[] = "Отзыв успешно добавлен";
+            $this->notificator->sendMailNotification('comment', '', $formContent['comment']);
             return true;
         } else {
-            $this->errors[] = "Не удалось добавить комментарий.";
+            $this->errors[] = "Не удалось добавить отзыв.";
             return false;
         }
     }
@@ -121,19 +118,12 @@ class CommentsModel extends Model
         ErrorHandler::ensure(!is_null($id), "Не удалось получить id комментария");
         $delete = $this->dbh->query("DELETE FROM $this->dbTableName WHERE `id` = ?;", 'rowCount', '', array($id));
         if ($delete === 1) {
-            $this->successful[] = "Комментарий удален.";
+            $this->successful[] = "Отзыв удален.";
             return true;
         } else {
             $this->errors[] = "Не удалось удалить комментарий.";
             return false;
         }
-    }
-
-    // подсчитывает колличество комментариев у цитаты
-    public function countComments($quote_id)
-    {
-        $count = $this->dbh->query("SELECT * FROM $this->dbTableName WHERE `quote_id` = ?;", 'rowCount', '', array($quote_id));
-        return $count;
     }
 
 }

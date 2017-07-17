@@ -11,6 +11,7 @@
                             <li class="<?php if ($data['thisPage'] === 'authors') echo 'active' ?>"><a href="/admin/authors">Авторы</a></li>
                             <li class="<?php if ($data['thisPage'] === 'offers') echo 'active' ?>"><a href="/admin/offer">Предложенные</a></li>
                             <li class="<?php if ($data['thisPage'] === 'addQuote') echo 'active' ?>"><a href="/admin/quote/addquote">Добавить</a></li>
+                            <li class="<?php if ($data['thisPage'] === 'feedbacks') echo 'active' ?>"><a href="/admin/feedbacks" title="Оставить отзыв">Отзывы</a></li>
                             <li><a href="/admin/auth/logout" title="Выйти"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
                         </ul>
                     </nav>

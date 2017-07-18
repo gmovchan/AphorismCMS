@@ -66,7 +66,7 @@ class FeedbacksModel extends Model
 
         if ($result === 1) {
             $this->successful[] = "Отзыв успешно добавлен";
-            $this->notificator->sendMailNotification('comment', '', $formContent['comment']);
+            $this->notificator->sendMailNotification('feedback', '', $formContent['comment']);
             return true;
         } else {
             $this->errors[] = "Не удалось добавить отзыв.";

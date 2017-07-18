@@ -13,7 +13,7 @@ class AboutController extends Controller
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'about';
-        $this->data['title'] = "О сайте";
+        $this->data['title'] = "О проекте";
     }
 
     public function getPage()

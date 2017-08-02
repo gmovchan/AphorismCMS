@@ -7,22 +7,24 @@ use Application\Core\Mysql;
 use Application\Core\Config;
 use Application\Core\ErrorHandler;
 use Application\Core\Notificator;
+use Application\Model\CaptchaModel;
 
 class OfferModel extends Model
 {
 
     private $notificator;
+    private $captcha;
 
     public function __construct()
     {
         $this->dbh = new Mysql(Config::DB);
         $this->notificator = new Notificator;
+        $this->captcha = new CaptchaModel;
     }
 
     public function addOffer($formContent)
     {
-        if (empty($formContent['quoteText'])) {
-            $this->errors[] = "Текст цитаты не введен";
+        if (!$this->checkDataForm($formContent)) {
             return false;
         }
 
@@ -43,7 +45,7 @@ class OfferModel extends Model
         } else {
             $this->errors[] = "Не удалось отправить предложение из-за ошибки на сервере.";
             return false;
-        }  
+        }
     }
 
     public function getOffersAll()
@@ -69,7 +71,7 @@ class OfferModel extends Model
     {
         ErrorHandler::ensure($this->checkID($formContent['idInDB'], 'offer_quotes'), "Предложение id{$formContent['idInDB']} не найдена в БД");
 
-        if (!$this->checkDataForm($formContent['quoteText'])) {
+        if (!$this->checkDataForm($formContent)) {
             return false;
         }
 
@@ -99,15 +101,31 @@ class OfferModel extends Model
     // FIXME: дублируется метод, такой же есть в QuotesModel
     // TODO: метод должен проверять все поля формы. Пока он возвращает заглушку 
     // с ошибкой 503, если длина больше чем установлена в БД. Пользователю не очевидно где его ошибка.
-    private function checkDataForm($quoteText)
+    private function checkDataForm($formContent)
     {
-        if (empty($quoteText)) {
+        if (!empty($formContent['email'])) {
+            $this->errors[] = "Сработала защита от спама.";
+            return false;
+        }
+
+        if (empty($formContent['quoteText'])) {
             $this->errors[] = "Текст цитаты не введен";
             return false;
         }
 
-        if (iconv_strlen($quoteText) > 15000) {
+        if (iconv_strlen($formContent['quoteText']) > 15000) {
             $this->errors[] = "Текст длиннее 15 000 символов";
+            return false;
+        }
+
+        // проверка каптчи
+        if (!$this->captcha->checkCaptcha($formContent['captcha'])) {
+
+            // забирает ошибки из другой модели, чтобы потом вывести их в представление
+            foreach ($this->captcha->getErrors() as $value) {
+                $this->errors[] = $value;
+            }
+
             return false;
         }
 

@@ -16,6 +16,7 @@ class OfferController extends Controller
         $this->data['thisPage'] = 'offer';
         $this->data['title'] = "Добавить";
         $this->offer = new OfferModel();
+        $this->data['thisURI'] = $this->request->getURI();
     }
     
     public function getPage()

@@ -96,4 +96,17 @@ class Config
         return $config_array;
     }
 
+    // возвращает массив ссылок по которым разрешено открыть проект
+    public function getHostsArray() {
+        $hosts = $this->getConfigElement(Config::CONSTANTS, 'hosts');
+        
+        ErrorHandler::ensure(!is_null($hosts), 'Не удалось получить список разрешенных хостов');
+        
+        $hosts = explode(',', $hosts);
+        foreach ($hosts as $key => $value) {
+            $hosts[$key] = trim($value);
+        }
+        
+        return $hosts;
+    }
 }

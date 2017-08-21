@@ -40,7 +40,7 @@ class FrontController
     private function parseURL()
     {
         $this->detectCLImode();
-        
+
         $controllerName = 'Quote';
         $redirectPath = $controllerName;
         $actionName = 'getPage';
@@ -48,15 +48,17 @@ class FrontController
         $keyAction = 2;
         // Название папки в которой находятся контроллеры
         $controllerDirName = 'IndexControllers';
-
+              
         $urlParsed = parse_url($_SERVER['REQUEST_URI']);
-        $routes = explode('/', $urlParsed['path']);
-
+        $this->validationHost($_SERVER['HTTP_HOST'], $urlParsed['path']);
+        
         /*
          * Если первый элемент пути указывает на админку, то дальнейший разбор 
          * пути сдвигается на один элемент, чтобы получить контроллер и метод 
          * админки, а не основного приложения
          */
+        $routes = explode('/', $urlParsed['path']);
+        
         if ($routes[1] === 'admin') {
             $controllerName = 'Quotes';
             $redirectPath = 'admin/quotes';
@@ -95,6 +97,21 @@ class FrontController
         header($url);
         // останавливает скрипт, чтобы не было неожиданностей
         exit();
+    }
+
+    // проверяет есть ли этот домен в белом списке разрешенных доменов
+    private function validationHost($host, $path)
+    {
+        $config = Config::getInstance();
+        $hosts = $config->getHostsArray();
+
+        if (array_search($host, $hosts) === FALSE) {
+            $link = 'http://bobylquote.ru' . $path;
+            header('Location: ' . $link);
+            exit;
+        }
+        
+        return true;
     }
 
 }

@@ -105,8 +105,9 @@ class FrontController
         $config = Config::getInstance();
         $hosts = $config->getHostsArray();
 
-        if (array_search($host, $hosts) === FALSE) {
-            $link = 'http://bobylquote.ru' . $path;
+        if (array_search($host, $hosts) === FALSE) {           
+            $link = 'http://' . $hosts[0] . $path;
+            header("HTTP/1.1 301 Moved Permanently");
             header('Location: ' . $link);
             exit;
         }

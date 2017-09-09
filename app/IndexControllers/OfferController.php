@@ -14,7 +14,7 @@ class OfferController extends Controller
         parent::__construct();
         // переменная содержит название загружаемой страницы для выделения пункта меню
         $this->data['thisPage'] = 'offer';
-        $this->data['title'] = "Добавить";
+        $this->data['title'] = "Предложить";
         $this->offer = new OfferModel();
         $this->data['thisURI'] = $this->request->getURI();
     }

@@ -27,7 +27,7 @@ class QuoteController extends Controller
 
     public function getPage()
     {
-        $this->data['title'] = "Карусель";
+        $this->data['title'] = "Цитата";
         $quote = $this->quotes->getRandomQuote();
         
         if (is_null($quote)) {
